@@ -98,7 +98,7 @@ button { font-family: inherit; cursor: pointer; }
   height: 72px;
 }
 .nav-logo { display: flex; align-items: center; gap: 12px; }
-.nav-logo svg { width: 40px; height: 40px; }
+.nav-logo img { width: 40px; height: 40px; }
 .nav-logo-text {
   font-family: var(--serif);
   font-size: 22px;
@@ -505,7 +505,9 @@ section { padding: 110px 48px; }
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
+  margin-top: 12px;
   margin-bottom: 40px;
+  z-index: 0;
   box-shadow: 0 4px 24px rgba(10,31,68,0.06);
 }
 #research-map { height: 460px; width: 100%; }
@@ -743,7 +745,7 @@ footer::before {
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.footer-brand .nav-logo svg { filter: brightness(1.1); }
+.footer-brand .nav-logo img { filter: brightness(1.1); }
 .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-top: 18px; max-width: 280px; }
 .footer-brand .domain {
   font-family: var(--mono);
@@ -832,20 +834,7 @@ footer::before {
 <!-- ═══ NAV ═══ -->
 <nav class="nav">
   <div class="nav-logo">
-    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-      <!-- New PAG Alliance logo: interconnected nodes forming abstract leaf/network -->
-      <rect width="40" height="40" rx="2" fill="#0A1F44"/>
-      <!-- 3 nodes representing P, A, G connected -->
-      <circle cx="13" cy="14" r="2.5" fill="#D97757"/>
-      <circle cx="27" cy="14" r="2.5" fill="#F4A582"/>
-      <circle cx="20" cy="27" r="2.5" fill="#D97757"/>
-      <!-- Connecting lines -->
-      <line x1="13" y1="14" x2="27" y2="14" stroke="#D97757" stroke-width="0.7" opacity="0.7"/>
-      <line x1="13" y1="14" x2="20" y2="27" stroke="#D97757" stroke-width="0.7" opacity="0.7"/>
-      <line x1="27" y1="14" x2="20" y2="27" stroke="#D97757" stroke-width="0.7" opacity="0.7"/>
-      <!-- Central node -->
-      <circle cx="20" cy="18.5" r="1.5" fill="#FFF"/>
-    </svg>
+    <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
     <div>
       <div class="nav-logo-text">PAG Alliance</div>
       <div class="nav-logo-sub">Research · Empowerment</div>
