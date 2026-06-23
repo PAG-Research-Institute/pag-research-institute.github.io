@@ -98,7 +98,7 @@ button { font-family: inherit; cursor: pointer; }
   height: 72px;
 }
 .nav-logo { display: flex; align-items: center; gap: 12px; }
-.nav-logo img { width: 40px; height: 40px; }
+.nav-logo img { width: 54px; height: 54px; }
 .nav-logo-text {
   font-family: var(--serif);
   font-size: 22px;
@@ -336,7 +336,7 @@ section { padding: 110px 48px; }
 /* ─── IMPACT STRIP ─── */
 .impact-strip {
   background: var(--navy-900);
-  padding: 100px 48px;
+  padding: 50px 48px;
   position: relative;
   overflow: hidden;
 }
@@ -349,8 +349,8 @@ section { padding: 110px 48px; }
 }
 .impact-grid {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
+  display: grid; grid-template-columns: repeat(3, calc((100% - 2px) / 3));
+  gap: 2px;
   background: rgba(255,255,255,0.1);
   max-width: 1400px;
   margin: 0 auto;
@@ -358,13 +358,21 @@ section { padding: 110px 48px; }
 .impact-card {
   background: var(--navy-900);
   padding: 48px 36px;
+  text-align: left;
+  min-width: 0;
+}
+.impact-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem; 
+  margin-bottom: 2rem;
 }
 .impact-card-icon {
   width: 52px; height: 52px;
   background: rgba(217,119,87,0.15);
   border: 1px solid rgba(217,119,87,0.3);
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 28px;
+  margin-bottom: 0px;
 }
 .impact-card-icon svg { width: 26px; height: 26px; stroke: var(--copper-light); }
 .impact-card-num {
@@ -373,7 +381,7 @@ section { padding: 110px 48px; }
   color: #fff;
   line-height: 1;
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
   letter-spacing: -0.02em;
 }
 .impact-card-num em { font-style: italic; color: var(--copper-light); font-weight: 300; }
@@ -805,7 +813,8 @@ footer::before {
 @media (max-width: 768px) {
   .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero-vis { max-width: 320px; margin: 0 auto; }
-  .stat-bar, .impact-grid { grid-template-columns: 1fr 1fr; }
+  .stat-bar { grid-template-columns: 1fr 1fr; }
+  .impact-grid { grid-template-columns: 1fr; }
   .photo-strip { grid-template-columns: 1fr; height: auto; }
   .photo-cell { height: 240px; }
   .cluster-grid { grid-template-columns: 1fr; }
@@ -833,13 +842,13 @@ footer::before {
 
 <!-- ═══ NAV ═══ -->
 <nav class="nav">
-  <div class="nav-logo">
+  <a href="#home" class="nav-logo">
     <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
     <div>
       <div class="nav-logo-text">PAG Alliance</div>
       <div class="nav-logo-sub">Research · Empowerment</div>
     </div>
-  </div>
+  </a>
   <ul class="nav-links">
     <li><a href="#about" data-i18n="nav_about">Tentang</a></li>
     <li><a href="#impact" data-i18n="nav_impact">Dampak</a></li>
@@ -847,11 +856,11 @@ footer::before {
     <li><a href="#journey" data-i18n="nav_journey">Cara Kerja</a></li>
     <li><a href="#portfolio" data-i18n="nav_portfolio">Portofolio</a></li>
   </ul>
-  <button class="nav-cta" data-i18n="nav_join">Bergabung →</button>
+  <a href="support.html" class="nav-cta" data-i18n="nav_join">Dukung Kami</a>
 </nav>
 
 <!-- ═══ HERO ═══ -->
-<section class="hero">
+<section id="home" class="hero">
   <div class="hero-grid">
     <div class="hero-text">
       <div class="hero-eyebrow" data-i18n="hero_tag">Yayasan Riset & Pemberdayaan</div>
@@ -1046,33 +1055,42 @@ footer::before {
 <!-- ═══ IMPACT STRIP ═══ -->
 <div class="impact-strip" id="impact">
   <div class="impact-grid">
+    <!-- impact card 1 -->
     <div class="impact-card">
-      <div class="impact-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2v20M5 12H2M22 12h-3M19 5l-2 2M5 5l2 2M5 19l2-2M19 19l-2-2"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
+      <div class="impact-card-header">
+        <div class="impact-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M5 12H2M22 12h-3M19 5l-2 2M5 5l2 2M5 19l2-2M19 19l-2-2"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <span class="impact-card-num">401<em>+</em></span>
       </div>
-      <span class="impact-card-num">401<em>+</em></span>
       <p class="impact-card-desc" data-i18n="impact1_desc">Ibu hamil dianalisis dalam studi surveilans anemia Lombok Utara — model ML dengan akurasi 87.7%, AUC 0.97</p>
     </div>
+    <!-- impact card 2 -->
     <div class="impact-card">
-      <div class="impact-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
+      <div class="impact-card-header">
+        <div class="impact-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <span class="impact-card-num"><em>5</em></span>
       </div>
-      <span class="impact-card-num"><em>5</em></span>
       <p class="impact-card-desc" data-i18n="impact2_desc">Provinsi terdampak: Aceh, Sumatera Barat, Jawa Barat, Jawa Timur, Sulawesi Selatan, NTB — dengan pipeline hibah aktif</p>
     </div>
+    <!-- impact card 3 -->
     <div class="impact-card">
-      <div class="impact-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21h18M5 21V10l7-7 7 7v11M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/>
-        </svg>
+      <div class="impact-card-header">
+        <div class="impact-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M5 21V10l7-7 7 7v11M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/>
+          </svg>
+        </div>
+        <span class="impact-card-num">20<em>+</em></span>
       </div>
-      <span class="impact-card-num">20<em>+</em></span>
       <p class="impact-card-desc" data-i18n="impact3_desc">Proposal & grant aktif 2025–2026: BIMA Kemdiktisaintek, BRIDA, BPDPKS GRS, hingga kolaborasi internasional dengan University of Michigan</p>
     </div>
   </div>
@@ -1281,9 +1299,9 @@ footer::before {
           <div class="port-status status-active" data-i18n="status_active">Aktif</div>
           <div class="port-year">2025–2026</div>
         </div>
-        <h3 class="port-title">Dashboard Surveilans Anemia Ibu Hamil</h3>
-        <div class="port-meta">BRIDA NTB · Lombok Utara · N=401</div>
-        <p class="port-desc">K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.</p>
+        <h3 class="port-title" data-i18n="port_item1_title">Dashboard Surveilans Anemia Ibu Hamil</h3>
+        <div class="port-meta" data-i18n="port_item1_meta">BRIDA NTB · Lombok Utara · N=401</div>
+        <p class="port-desc" data-i18n="port_item1_desc">K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.</p>
       </div>
 
       <div class="portfolio-item">
@@ -1291,9 +1309,9 @@ footer::before {
           <div class="port-status status-active" data-i18n="status_active">Aktif</div>
           <div class="port-year">2026</div>
         </div>
-        <h3 class="port-title">AI Pangan Tradisional Sehat — NTB</h3>
-        <div class="port-meta">BRIDA NTB · Sasaran: ibu muda Lombok</div>
-        <p class="port-desc">Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi stunting dan penyakit tidak menular pada keluarga muda.</p>
+        <h3 class="port-title" data-i18n="port_item2_title">AI Pangan Tradisional Sehat — NTB</h3>
+        <div class="port-meta" data-i18n="port_item2_meta">BRIDA NTB · Sasaran: ibu muda Lombok</div>
+        <p class="port-desc" data-i18n="port_item2_desc">Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi stunting dan penyakit tidak menular pada keluarga muda.</p>
       </div>
 
       <div class="portfolio-item">
@@ -1301,9 +1319,9 @@ footer::before {
           <div class="port-status status-submitted" data-i18n="status_submitted">Disubmit</div>
           <div class="port-year">2026–2028</div>
         </div>
-        <h3 class="port-title">DSS Prioritisasi PSR Sawit — Kotabaru</h3>
-        <div class="port-meta">BPDPKS GRS · Kalimantan Selatan</div>
-        <p class="port-desc">ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun lintas PT.</p>
+        <h3 class="port-title" data-i18n="port_item3_title">DSS Prioritisasi PSR Sawit — Kotabaru</h3>
+        <div class="port-meta" data-i18n="port_item3_meta">BPDPKS GRS · Kalimantan Selatan</div>
+        <p class="port-desc" data-i18n="port_item3_desc">ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun lintas PT.</p>
       </div>
 
       <div class="portfolio-item">
@@ -1311,9 +1329,9 @@ footer::before {
           <div class="port-status status-international" data-i18n="status_international">Internasional</div>
           <div class="port-year">2025–2026</div>
         </div>
-        <h3 class="port-title">TABRIE–BRIGHT mHealth — Banda Aceh</h3>
-        <div class="port-meta">University of Michigan · CGHE</div>
-        <p class="port-desc">Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.</p>
+        <h3 class="port-title" data-i18n="port_item4_title">TABRIE–BRIGHT mHealth — Banda Aceh</h3>
+        <div class="port-meta" data-i18n="port_item4_meta">University of Michigan · CGHE</div>
+        <p class="port-desc" data-i18n="port_item4_desc">Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.</p>
       </div>
 
       <div class="portfolio-item">
@@ -1321,9 +1339,9 @@ footer::before {
           <div class="port-status status-active" data-i18n="status_active">Aktif</div>
           <div class="port-year">2025–2026</div>
         </div>
-        <h3 class="port-title">Value Chain KEK Banjarmasin & Mekar Putih</h3>
-        <div class="port-meta">Bappenas · KEK · Konsultansi Kebijakan</div>
-        <p class="port-desc">Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis untuk KEK Kotabaru.</p>
+        <h3 class="port-title" data-i18n="port_item5_title">Value Chain KEK Banjarmasin & Mekar Putih</h3>
+        <div class="port-meta" data-i18n="port_item5_meta">Bappenas · KEK · Konsultansi Kebijakan</div>
+        <p class="port-desc" data-i18n="port_item5_desc">Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis untuk KEK Kotabaru.</p>
       </div>
 
       <div class="portfolio-item">
@@ -1331,9 +1349,9 @@ footer::before {
           <div class="port-status status-submitted" data-i18n="status_submitted">Disubmit</div>
           <div class="port-year">2026</div>
         </div>
-        <h3 class="port-title">Agro-Waste Loop Platform</h3>
-        <div class="port-meta">CIIC 2026 · East Ventures · Temasek</div>
-        <p class="port-desc">Platform sirkular ekonomi pertanian untuk kompetisi inovasi pangan internasional. Fokus food security &amp; waste reduction.</p>
+        <h3 class="port-title" data-i18n="port_item6_title">Agro-Waste Loop Platform</h3>
+        <div class="port-meta" data-i18n="port_item6_meta">CIIC 2026 · East Ventures · Temasek</div>
+        <p class="port-desc" data-i18n="port_item6_desc">Platform sirkular ekonomi pertanian untuk kompetisi inovasi pangan internasional. Fokus food security &amp; waste reduction.</p>
       </div>
     </div>
   </div>
@@ -1376,7 +1394,7 @@ footer::before {
         </div>
         <div class="cta-title" data-i18n="cta3_h">Pendana & Donor</div>
         <p class="cta-desc" data-i18n="cta3_p">Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline hibah tersedia untuk kolaborasi strategis jangka panjang.</p>
-        <button class="cta-btn cta-btn-outline" data-i18n="cta3_btn">Diskusi →</button>
+        <a href="support.html" class="cta-btn cta-btn-outline" data-i18n="cta3_btn">Jadi Donor →</a>
       </div>
     </div>
   </div>
@@ -1387,22 +1405,13 @@ footer::before {
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="nav-logo">
-          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <rect width="40" height="40" rx="2" fill="#142849"/>
-            <circle cx="13" cy="14" r="2.5" fill="#D97757"/>
-            <circle cx="27" cy="14" r="2.5" fill="#F4A582"/>
-            <circle cx="20" cy="27" r="2.5" fill="#D97757"/>
-            <line x1="13" y1="14" x2="27" y2="14" stroke="#D97757" stroke-width="0.7" opacity="0.7"/>
-            <line x1="13" y1="14" x2="20" y2="27" stroke="#D97757" stroke-width="0.7" opacity="0.7"/>
-            <line x1="27" y1="14" x2="20" y2="27" stroke="#D97757" stroke-width="0.7" opacity="0.7"/>
-            <circle cx="20" cy="18.5" r="1.5" fill="#FFF"/>
-          </svg>
+        <a href="#home" class="nav-logo">
+          <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
           <div>
             <div class="nav-logo-text" style="color:#fff;">PAG Alliance</div>
             <div class="nav-logo-sub">Research · Empowerment</div>
           </div>
-        </div>
+        </a>
         <p data-i18n="footer_desc">Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus, komunitas, dan kebijakan dalam satu jaringan strategis.</p>
         <div class="domain">pagalliance.org</div>
       </div>
@@ -1550,7 +1559,7 @@ function refreshMapPopups() {
 const T = {
   id: {
     nav_about:"Tentang", nav_impact:"Dampak", nav_clusters:"Klaster", nav_journey:"Cakupan",
-    nav_portfolio:"Portofolio", nav_contact:"Kontak", nav_join:"Bergabung →",
+    nav_portfolio:"Portofolio", nav_contact:"Kontak", nav_join:"Dukung Kami",
     hero_tag:"Yayasan Riset & Pemberdayaan",
     hero_h1_html:"Riset yang Berdampak.<br><em>Komunitas yang Berdaya.</em>",
     hero_sub:"PAG Alliance menghubungkan akademisi dari 8 perguruan tinggi Indonesia untuk menjawab tantangan nyata — ketahanan pangan, kesehatan masyarakat, inovasi digital, dan pembangunan berkelanjutan.",
@@ -1578,11 +1587,29 @@ const T = {
     loc4_region:"Kalimantan Selatan", loc4_project:"DSS Prioritisasi PSR Sawit",
     port_eyebrow:"Rekam Jejak", port_title:"Portofolio Riset & <em>Grant Aktif</em>",
     port_sub:"Sebagian proyek yang telah dan sedang dijalankan tim PAG Alliance di berbagai skema hibah nasional dan internasional sepanjang 2025–2026.",
+    port_item1_title:"Dashboard Surveilans Anemia Ibu Hamil",
+    port_item1_meta:"BRIDA NTB · Lombok Utara · N=401",
+    port_item1_desc:"K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.",
+    port_item2_title:"AI Pangan Tradisional Sehat — NTB",
+    port_item2_meta:"BRIDA NTB · Sasaran: ibu muda Lombok",
+    port_item2_desc:"Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi stunting dan penyakit tidak menular pada keluarga muda.",
+    port_item3_title:"DSS Prioritisasi PSR Sawit — Kotabaru",
+    port_item3_meta:"BPDPKS GRS · Kalimantan Selatan",
+    port_item3_desc:"ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun lintas PT.",
+    port_item4_title:"TABRIE–BRIGHT mHealth — Banda Aceh",
+    port_item4_meta:"University of Michigan · CGHE",
+    port_item4_desc:"Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.",
+    port_item5_title:"Value Chain KEK Banjarmasin & Mekar Putih",
+    port_item5_meta:"Bappenas · KEK · Konsultansi Kebijakan",
+    port_item5_desc:"Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis untuk KEK Kotabaru.",
+    port_item6_title:"Agro-Waste Loop Platform",
+    port_item6_meta:"CIIC 2026 · East Ventures · Temasek",
+    port_item6_desc:"Platform sirkular ekonomi pertanian untuk kompetisi inovasi pangan internasional. Fokus food security &amp; waste reduction.",
     status_active:"Aktif", status_submitted:"Disubmit", status_international:"Internasional",
     cta_eyebrow:"Bergabung", cta_title:"Mari Berkontribusi Bersama <em>PAG Alliance</em>",
     cta1_h:"Peneliti & Akademisi", cta1_p:"Bergabung ke klaster riset sesuai kepakaran. Akses jaringan hibah nasional dan internasional (FAO, ADB, Kementerian RI, BPDPKS).", cta1_btn:"Daftar →",
     cta2_h:"Mitra Institusi", cta2_p:"Kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda. Dinas, BRIDA, dan pemerintah daerah dipersilakan.", cta2_btn:"Hubungi →",
-    cta3_h:"Pendana & Donor", cta3_p:"Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline hibah tersedia untuk kolaborasi strategis jangka panjang.", cta3_btn:"Diskusi →",
+    cta3_h:"Pendana & Donor", cta3_p:"Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline hibah tersedia untuk kolaborasi strategis jangka panjang.", cta3_btn:"Jadi Donor →",
     footer_desc:"Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus, komunitas, dan kebijakan dalam satu jaringan strategis.",
     footer_col1:"Lembaga", footer_col2:"Bergabung", footer_col3:"Kontak",
     footer_journal:"Jurnal", footer_researcher:"Peneliti", footer_partner:"Mitra Institusi", footer_funder:"Pendana",
@@ -1591,7 +1618,7 @@ const T = {
   },
   en: {
     nav_about:"About", nav_impact:"Impact", nav_clusters:"Clusters", nav_journey:"Coverage",
-    nav_portfolio:"Portfolio", nav_contact:"Contact", nav_join:"Join Us →",
+    nav_portfolio:"Portfolio", nav_contact:"Contact", nav_join:"Support Us",
     hero_tag:"Research & Community Empowerment Foundation",
     hero_h1_html:"Impactful Research.<br><em>Empowered Communities.</em>",
     hero_sub:"PAG Alliance connects academics from 8 Indonesian universities to address real challenges — food security, public health, digital innovation, and sustainable development.",
@@ -1619,11 +1646,29 @@ const T = {
     loc4_region:"South Kalimantan", loc4_project:"Palm Oil Replanting DSS",
     port_eyebrow:"Track Record", port_title:"Research Portfolio & <em>Active Grants</em>",
     port_sub:"A selection of projects undertaken by the PAG Alliance team across national and international grant schemes throughout 2025–2026.",
+    port_item1_title:"Anemia Surveillance Dashboard for Pregnant Women",
+    port_item1_meta:"BRIDA NTB · North Lombok · N=401",
+    port_item1_desc:"K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target journal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.",
+    port_item2_title:"AI Healthy Traditional Foods — NTB",
+    port_item2_meta:"BRIDA NTB · Target: young mothers in Lombok",
+    port_item2_desc:"Web app + LLM (Gemini 1.5 Flash) for 50 participants. Intervention for stunting and non-communicable diseases in young families.",
+    port_item3_title:"Palm Oil Replanting DSS — Kotabaru",
+    port_item3_meta:"BPDPKS GRS · South Kalimantan",
+    port_item3_desc:"ML + remote sensing for smallholder palm oil replanting prioritization. 3-year roadmap across institutions.",
+    port_item4_title:"TABRIE–BRIGHT mHealth — Banda Aceh",
+    port_item4_meta:"University of Michigan · CGHE",
+    port_item4_desc:"Telehealth platform for the Aceh community. Subject pool estimation, success metrics, and collaborative gap analysis.",
+    port_item5_title:"KEK Banjarmasin & Mekar Putih Value Chain",
+    port_item5_meta:"Bappenas · KEK · Policy Consultation",
+    port_item5_desc:"Downstream processing of 5 commodities: coal, CPO, shrimp, rattan, sasirangan. Digital twin gap analysis for KEK Kotabaru.",
+    port_item6_title:"Agro-Waste Loop Platform",
+    port_item6_meta:"CIIC 2026 · East Ventures · Temasek",
+    port_item6_desc:"Circular economy platform for agricultural innovation in international food competition. Focus on food security &amp; waste reduction.",
     status_active:"Active", status_submitted:"Submitted", status_international:"International",
     cta_eyebrow:"Get Involved", cta_title:"Contribute Together with <em>PAG Alliance</em>",
     cta1_h:"Researchers & Academics", cta1_p:"Join a research cluster matching your expertise. Access national and international grant networks (FAO, ADB, Ministries, BPDPKS).", cta1_btn:"Register →",
     cta2_h:"Institutional Partners", cta2_p:"Collaborate on applied research and community empowerment programs in your region. Government agencies and BRIDA are welcome.", cta2_btn:"Contact →",
-    cta3_h:"Funders & Donors", cta3_p:"Support evidence-based research that creates real impact. Long-term strategic collaboration pipelines available.", cta3_btn:"Discuss →",
+    cta3_h:"Funders & Donors", cta3_p:"Support evidence-based research that creates real impact. Long-term strategic collaboration pipelines available.", cta3_btn:"Become a Donor →",
     footer_desc:"Indonesia's multidisciplinary research and community empowerment foundation. Connecting campuses, communities, and policy in one strategic network.",
     footer_col1:"Organization", footer_col2:"Get Involved", footer_col3:"Contact",
     footer_journal:"Journal", footer_researcher:"Researchers", footer_partner:"Institutional Partners", footer_funder:"Funders",
