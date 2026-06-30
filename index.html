@@ -1,1734 +1,2458 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAG Alliance — Riset Berdampak, Komunitas Berdaya</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300..900;1,300..900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<style>
-:root {
-  /* Navy + Copper futuristic professional palette */
-  --navy-900: #0A1F44;
-  --navy-800: #142849;
-  --navy-700: #1E3A8A;
-  --navy-600: #2563EB;
-  --navy-50:  #EEF2FF;
-  --copper:   #D97757;
-  --copper-light: #F4A582;
-  --copper-pale:  #FBE5DD;
-  --gold:     #C9A84C;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAG Alliance — Riset Berdampak, Komunitas Berdaya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300..900;1,300..900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      /* Navy + Copper futuristic professional palette */
+      --navy-900: #0A1F44;
+      --navy-800: #142849;
+      --navy-700: #1E3A8A;
+      --navy-600: #2563EB;
+      --navy-50: #EEF2FF;
+      --copper: #D97757;
+      --copper-light: #F4A582;
+      --copper-pale: #FBE5DD;
+      --gold: #C9A84C;
 
-  --white:    #FFFFFF;
-  --surface:  #FAFAF8;
-  --surface-2:#F1F5F9;
-  --border:   #E5E7EB;
-  --border-strong: #CBD5E1;
+      --white: #FFFFFF;
+      --surface: #FAFAF8;
+      --surface-2: #F1F5F9;
+      --border: #E5E7EB;
+      --border-strong: #CBD5E1;
 
-  --text-1:   #0F172A;
-  --text-2:   #334155;
-  --text-3:   #64748B;
-  --text-4:   #94A3B8;
+      --text-1: #0F172A;
+      --text-2: #334155;
+      --text-3: #64748B;
+      --text-4: #94A3B8;
 
-  --serif: 'Fraunces', Georgia, serif;
-  --sans:  'Manrope', system-ui, sans-serif;
-  --mono:  'JetBrains Mono', monospace;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--sans);
-  background: var(--white);
-  color: var(--text-1);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-img { display: block; max-width: 100%; }
-a { text-decoration: none; color: inherit; }
-button { font-family: inherit; cursor: pointer; }
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Manrope', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
 
-/* ── Dotted background pattern ── */
-.dot-grid {
-  background-image: radial-gradient(rgba(15,23,42,0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* ─── LANG BAR ─── */
-.lang-bar {
-  background: var(--navy-900);
-  padding: 8px 48px;
-  display: flex; justify-content: flex-end; align-items: center; gap: 14px;
-  font-size: 11px;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.4px;
-  font-family: var(--mono);
-}
-.lang-detected { color: var(--copper-light); }
-.lang-toggle {
-  display: flex;
-  background: rgba(255,255,255,0.06);
-  border-radius: 0;
-  padding: 0;
-  gap: 0;
-  border: 1px solid rgba(255,255,255,0.12);
-}
-.lang-btn {
-  padding: 4px 14px;
-  border: none;
-  background: transparent;
-  color: rgba(255,255,255,0.55);
-  font-size: 11px;
-  font-family: var(--mono);
-  letter-spacing: 0.5px;
-  transition: all 0.2s;
-}
-.lang-btn.active { background: var(--copper); color: var(--navy-900); }
+    html {
+      scroll-behavior: smooth;
+    }
 
-/* ─── NAV ─── */
-.nav {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 48px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 72px;
-}
-.nav-logo { display: flex; align-items: center; gap: 12px; }
-.nav-logo img { width: 54px; height: 54px; }
-.nav-logo-text {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--navy-900);
-  letter-spacing: -0.5px;
-  line-height: 1;
-}
-.nav-logo-sub {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  color: var(--copper);
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-.nav-links { display: flex; gap: 36px; list-style: none; font-size: 14px; }
-.nav-links a { color: var(--text-2); transition: color 0.2s; font-weight: 500; }
-.nav-links a:hover { color: var(--copper); }
-.nav-cta {
-  background: var(--navy-900);
-  color: #fff;
-  padding: 11px 22px;
-  font-size: 13px; font-weight: 600;
-  border: none;
-  letter-spacing: 0.3px;
-  transition: background 0.2s;
-}
-.nav-cta:hover { background: var(--copper); }
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--text-1);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* ─── HERO ─── */
-.hero {
-  position: relative;
-  background: var(--white);
-  padding: 80px 48px 60px;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(15,31,68,0.05) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-}
-.hero-grid {
-  position: relative; z-index: 2;
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 60px;
-  align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--copper);
-  margin-bottom: 24px;
-}
-.hero-eyebrow::before {
-  content: ''; width: 24px; height: 1px; background: var(--copper);
-}
-.hero h1 {
-  font-family: var(--serif);
-  font-size: clamp(2.6rem, 5vw, 4.6rem);
-  font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  color: var(--navy-900);
-  margin-bottom: 24px;
-}
-.hero h1 em {
-  font-style: italic;
-  font-weight: 300;
-  color: var(--copper);
-}
-.hero-sub {
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--text-2);
-  max-width: 540px;
-  margin-bottom: 36px;
-}
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-.btn-primary {
-  background: var(--navy-900);
-  color: #fff;
-  padding: 14px 28px;
-  font-size: 13px; font-weight: 600;
-  border: none;
-  letter-spacing: 0.3px;
-  transition: all 0.2s;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-primary:hover { background: var(--copper); transform: translateY(-1px); }
-.btn-outline {
-  background: transparent;
-  color: var(--navy-900);
-  padding: 14px 28px;
-  font-size: 13px; font-weight: 600;
-  border: 1px solid var(--navy-900);
-  letter-spacing: 0.3px;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: all 0.2s;
-}
-.btn-outline:hover { background: var(--navy-900); color: #fff; }
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-/* Hero progress inline */
-.hero-progress {
-  display: flex; align-items: center; gap: 16px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-  max-width: 540px;
-}
-.hp-label {
-  font-family: var(--mono);
-  font-size: 10px; letter-spacing: 1.5px;
-  color: var(--text-3); text-transform: uppercase;
-  white-space: nowrap;
-}
-.hp-track { flex: 1; height: 3px; background: var(--surface-2); position: relative; }
-.hp-fill { position: absolute; left:0; top:0; height: 100%; width: 0; background: var(--copper); transition: width 1.4s ease-out; }
-.hp-pct { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--navy-900); }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* Hero illustration (SVG, no external image dependency) */
-.hero-vis {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  max-width: 480px;
-  justify-self: end;
-}
-.hero-vis svg { width: 100%; height: 100%; }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
 
-/* ─── STAT BAR ─── */
-.stat-bar {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  background: var(--navy-900);
-  border-bottom: 1px solid var(--border);
-}
-.stat-item {
-  padding: 36px 28px;
-  border-right: 1px solid rgba(255,255,255,0.08);
-  position: relative;
-}
-.stat-item:last-child { border-right: none; }
-.stat-num-row { display: flex; align-items: baseline; gap: 10px; }
-.stat-idx { font-family: var(--mono); font-size: 11px; color: var(--copper); letter-spacing: 1px; }
-.stat-num {
-  font-family: var(--serif);
-  font-size: 3rem;
-  font-weight: 400;
-  color: #fff;
-  line-height: 1;
-}
-.stat-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.5);
-  margin-top: 14px;
-}
+    /* ── Dotted background pattern ── */
+    .dot-grid {
+      background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
 
-/* ─── SECTION COMMONS ─── */
-section { padding: 110px 48px; }
-.container { max-width: 1400px; margin: 0 auto; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--mono);
-  font-size: 11px; text-transform: uppercase;
-  letter-spacing: 2px; color: var(--copper);
-  margin-bottom: 16px;
-}
-.eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--copper); }
-.section-title {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 3.4vw, 3.2rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--navy-900);
-}
-.section-title em { font-style: italic; font-weight: 300; color: var(--copper); }
-.text-body { font-size: 15px; line-height: 1.8; color: var(--text-2); }
-.link-arrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono);
-  font-size: 12px; font-weight: 500;
-  letter-spacing: 1px; text-transform: uppercase;
-  color: var(--navy-900);
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--copper);
-  transition: gap 0.2s, color 0.2s;
-}
-.link-arrow:hover { gap: 14px; color: var(--copper); }
+    /* ─── LANG BAR ─── */
+    .lang-bar {
+      background: var(--navy-900);
+      padding: 8px 48px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.4px;
+      font-family: var(--mono);
+    }
 
-/* ─── ABOUT ─── */
-.about-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: center;
-}
-.about-vis {
-  position: relative;
-  aspect-ratio: 4/5;
-  background: var(--surface);
-  overflow: hidden;
-}
-.about-vis svg { width: 100%; height: 100%; }
-.about-vis-tag {
-  position: absolute; bottom: 20px; left: 20px;
-  background: var(--white);
-  border-left: 3px solid var(--copper);
-  padding: 12px 16px;
-  max-width: 240px;
-  font-size: 12px;
-  color: var(--text-2);
-  line-height: 1.5;
-}
-.about-text { display: flex; flex-direction: column; gap: 22px; }
-.partner-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.pill {
-  font-family: var(--mono);
-  font-size: 10px;
-  padding: 6px 14px;
-  letter-spacing: 0.5px;
-  border: 1px solid var(--border-strong);
-  color: var(--text-2);
-  background: var(--white);
-}
+    .lang-detected {
+      color: var(--copper-light);
+    }
 
-/* ─── IMPACT STRIP ─── */
-.impact-strip {
-  background: var(--navy-900);
-  padding: 50px 48px;
-  position: relative;
-  overflow: hidden;
-}
-.impact-strip::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  pointer-events: none;
-}
-.impact-grid {
-  position: relative; z-index: 2;
-  display: grid; grid-template-columns: repeat(3, calc((100% - 2px) / 3));
-  gap: 2px;
-  background: rgba(255,255,255,0.1);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.impact-card {
-  background: var(--navy-900);
-  padding: 48px 36px;
-  text-align: left;
-  min-width: 0;
-}
-.impact-card-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem; 
-  margin-bottom: 2rem;
-}
-.impact-card-icon {
-  width: 52px; height: 52px;
-  background: rgba(217,119,87,0.15);
-  border: 1px solid rgba(217,119,87,0.3);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 0px;
-}
-.impact-card-icon svg { width: 26px; height: 26px; stroke: var(--copper-light); }
-.impact-card-num {
-  font-family: var(--serif);
-  font-size: 3.6rem; font-weight: 400;
-  color: #fff;
-  line-height: 1;
-  display: block;
-  margin-bottom: 0px;
-  letter-spacing: -0.02em;
-}
-.impact-card-num em { font-style: italic; color: var(--copper-light); font-weight: 300; }
-.impact-card-desc {
-  font-size: 14px;
-  color: rgba(255,255,255,0.65);
-  line-height: 1.7;
-}
+    .lang-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 0;
+      padding: 0;
+      gap: 0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
 
-/* ─── PHOTO STRIP ─── */
-.photo-strip {
-  padding: 0;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  height: 360px;
-  border-bottom: 1px solid var(--border);
-}
-.photo-cell {
-  position: relative;
-  overflow: hidden;
-}
-.photo-cell::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(10,31,68,0.5), transparent 50%);
-  pointer-events: none;
-}
-.photo-cell img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.6s;
-}
-.photo-cell:hover img { transform: scale(1.05); }
-.photo-cell-caption {
-  position: absolute;
-  bottom: 16px; left: 20px;
-  color: #fff;
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-  z-index: 2;
-}
-/* fallback solid gradients if photos fail */
-.photo-fallback-1 { background: linear-gradient(135deg, #1E3A8A 0%, #2D7A4F 100%); }
-.photo-fallback-2 { background: linear-gradient(135deg, #0A1F44 0%, #1E3A8A 100%); }
-.photo-fallback-3 { background: linear-gradient(135deg, #D97757 0%, #C9A84C 100%); }
+    .lang-btn {
+      padding: 4px 14px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 11px;
+      font-family: var(--mono);
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
 
-/* ─── CLUSTERS ─── */
-.clusters-bg { background: var(--surface); }
-.clusters-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 56px;
-  gap: 40px;
-}
-.cluster-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-}
-.cluster-card {
-  background: var(--white);
-  padding: 32px 28px;
-  transition: background 0.25s;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.cluster-card:hover { background: var(--surface); }
-.cluster-card.featured {
-  background: var(--navy-900);
-  color: #fff;
-}
-.cluster-card.featured:hover { background: var(--navy-800); }
-.cluster-card.featured .cluster-name { color: #fff; }
-.cluster-card.featured .cluster-lead { color: rgba(255,255,255,0.6); }
-.cluster-num {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: var(--text-4);
-}
-.cluster-card.featured .cluster-num { color: var(--copper-light); }
-.cluster-icon-wrap {
-  width: 44px; height: 44px;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-}
-.cluster-card.featured .cluster-icon-wrap {
-  border-color: rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.06);
-}
-.cluster-icon-wrap svg { width: 22px; height: 22px; stroke: var(--navy-900); }
-.cluster-card.featured .cluster-icon-wrap svg { stroke: var(--copper-light); }
-.cluster-name {
-  font-family: var(--serif);
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--navy-900);
-  line-height: 1.3;
-}
-.cluster-lead {
-  font-size: 12px;
-  color: var(--text-3);
-  line-height: 1.5;
-}
-.cluster-badge {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 9px;
-  padding: 4px 10px;
-  letter-spacing: 1px;
-  background: var(--copper);
-  color: var(--navy-900);
-  margin-top: auto;
-  align-self: flex-start;
-}
+    .lang-btn.active {
+      background: var(--copper);
+      color: var(--navy-900);
+    }
 
-/* ─── RESEARCH COVERAGE MAP ─── */
-.journey-section { background: var(--white); padding: 110px 48px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.journey-header { text-align: center; margin-bottom: 56px; }
-.journey-header .eyebrow { justify-content: center; }
-.journey-header .eyebrow::before { display: none; }
-.map-container {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  margin-top: 12px;
-  margin-bottom: 40px;
-  z-index: 0;
-  box-shadow: 0 4px 24px rgba(10,31,68,0.06);
-}
-#research-map { height: 460px; width: 100%; }
-.map-legend {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px 20px;
-  z-index: 1000;
-  box-shadow: 0 4px 16px rgba(10,31,68,0.1);
-}
-.legend-title {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--copper);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--text-2);
-  margin-bottom: 6px;
-  font-family: var(--sans);
-}
-.legend-item:last-child { margin-bottom: 0; }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.dot-active { background: var(--copper); }
-.dot-submitted { background: var(--navy-900); }
-.dot-international { background: var(--gold); }
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
 
-/* custom Leaflet marker */
-.custom-marker { position: relative; display: flex; align-items: center; justify-content: center; }
-.marker-core {
-  width: 14px; height: 14px; border-radius: 50%;
-  border: 2.5px solid #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.28);
-  position: relative; z-index: 2;
-}
-.marker-active   .marker-core { background: var(--copper); }
-.marker-submitted .marker-core { background: var(--navy-900); }
-.marker-international .marker-core { background: var(--gold); }
-.marker-pulse {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 30px; height: 30px; border-radius: 50%;
-  animation: mpulse 2.2s ease-out infinite;
-  pointer-events: none;
-}
-.marker-active   .marker-pulse { background: var(--copper); }
-.marker-international .marker-pulse { background: var(--gold); }
-.marker-submitted .marker-pulse { display: none; }
-@keyframes mpulse {
-  0%   { transform: translate(-50%,-50%) scale(0.4); opacity: 0.7; }
-  100% { transform: translate(-50%,-50%) scale(2.4); opacity: 0; }
-}
-/* map popup */
-.map-popup { font-family: var(--sans); min-width: 200px; }
-.map-popup-status {
-  font-family: var(--mono);
-  font-size: 9px; letter-spacing: 1.2px;
-  text-transform: uppercase; margin-bottom: 8px;
-  padding: 3px 7px; border-radius: 4px; display: inline-block;
-}
-.popup-active   { background: var(--copper-pale); color: var(--copper); }
-.popup-submitted { background: var(--navy-50); color: var(--navy-900); }
-.popup-international { background: rgba(201,168,76,0.15); color: #8a6c1e; }
-.map-popup h4 { font-family: var(--serif); font-size: 14px; font-weight: 600; color: var(--navy-900); margin: 0 0 4px; line-height: 1.3; }
-.map-popup-meta { font-size: 11px; color: var(--text-3); margin-bottom: 6px; }
-.map-popup p { font-size: 12px; color: var(--text-2); line-height: 1.55; margin: 0; }
-.leaflet-popup-content-wrapper { border-radius: 10px !important; box-shadow: 0 8px 28px rgba(10,31,68,0.14) !important; }
-.leaflet-popup-content { margin: 14px 16px !important; }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-/* location summary cards */
-.map-locations {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-.loc-card {
-  padding: 20px 18px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-}
-.loc-card:hover {
-  border-color: var(--copper);
-  box-shadow: 0 4px 18px rgba(217,119,87,0.12);
-  transform: translateY(-2px);
-}
-.loc-region {
-  font-family: var(--mono);
-  font-size: 10px; color: var(--copper);
-  letter-spacing: 1px; text-transform: uppercase;
-  margin-bottom: 5px;
-}
-.loc-title {
-  font-family: var(--serif);
-  font-size: 16px; font-weight: 500;
-  color: var(--navy-900); margin-bottom: 4px;
-}
-.loc-project { font-size: 12px; color: var(--text-3); line-height: 1.5; margin-bottom: 10px; }
-.loc-badge {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 10px; letter-spacing: 0.5px;
-  padding: 3px 8px; border-radius: 4px;
-}
-.badge-active { background: var(--copper-pale); color: var(--copper); }
-.badge-submitted { background: var(--navy-50); color: var(--navy-900); }
-.badge-international { background: rgba(201,168,76,0.15); color: #8a6c1e; }
+    .nav-logo img {
+      width: 54px;
+      height: 54px;
+    }
 
-/* ─── PORTFOLIO ─── */
-.portfolio-bg { background: var(--white); }
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 56px;
-}
-.portfolio-item {
-  background: var(--white);
-  padding: 36px 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transition: background 0.25s;
-}
-.portfolio-item:hover { background: var(--surface); }
-.port-row { display: flex; justify-content: space-between; align-items: center; }
-.port-status {
-  font-family: var(--mono);
-  font-size: 10px; text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 4px 10px;
-  font-weight: 500;
-}
-.status-active { background: var(--copper-pale); color: var(--copper); }
-.status-submitted { background: #FEF3C7; color: #92400E; }
-.status-international { background: var(--navy-50); color: var(--navy-700); }
-.port-year { font-family: var(--mono); font-size: 11px; color: var(--text-4); letter-spacing: 0.5px; }
-.port-title {
-  font-family: var(--serif);
-  font-size: 19px;
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--navy-900);
-}
-.port-meta {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 0.3px;
-}
-.port-desc {
-  font-size: 13px;
-  color: var(--text-2);
-  line-height: 1.65;
-}
+    .nav-logo-text {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy-900);
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
 
-/* ─── CTA ─── */
-.cta-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 56px;
-}
-.cta-card {
-  background: var(--white);
-  padding: 44px 32px;
-  display: flex; flex-direction: column; gap: 18px;
-}
-.cta-icon {
-  width: 56px; height: 56px;
-  border: 1px solid var(--border-strong);
-  display: flex; align-items: center; justify-content: center;
-  background: var(--surface);
-}
-.cta-icon svg { width: 28px; height: 28px; stroke: var(--navy-900); }
-.cta-card.featured .cta-icon { background: var(--copper); border-color: var(--copper); }
-.cta-card.featured .cta-icon svg { stroke: var(--navy-900); }
-.cta-title {
-  font-family: var(--serif);
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: var(--navy-900);
-  line-height: 1.2;
-}
-.cta-desc { font-size: 13px; color: var(--text-2); line-height: 1.7; flex: 1; }
-.cta-btn {
-  align-self: flex-start;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 12px 22px;
-  background: var(--navy-900);
-  color: #fff;
-  border: none;
-  transition: background 0.2s;
-}
-.cta-btn:hover { background: var(--copper); color: var(--navy-900); }
-.cta-btn-outline {
-  background: transparent;
-  color: var(--navy-900);
-  border: 1px solid var(--navy-900);
-}
-.cta-btn-outline:hover { background: var(--navy-900); color: #fff; }
+    .nav-logo-sub {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--copper);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
 
-/* ─── FOOTER ─── */
-footer { background: var(--navy-900); padding: 72px 48px 36px; position: relative; overflow: hidden; }
-footer::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-}
-.footer-inner { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; }
-.footer-top {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 48px;
-  padding-bottom: 48px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.footer-brand .nav-logo img { filter: brightness(1.1); }
-.footer-brand p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-top: 18px; max-width: 280px; }
-.footer-brand .domain {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--copper-light);
-  margin-top: 16px;
-  letter-spacing: 0.5px;
-}
-.footer-col h4 {
-  font-family: var(--mono);
-  font-size: 10px; text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--copper-light);
-  margin-bottom: 20px;
-  font-weight: 500;
-}
-.footer-col a {
-  display: block;
-  font-size: 13px;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: 12px;
-  transition: color 0.2s;
-}
-.footer-col a:hover { color: var(--copper-light); }
-.footer-bottom {
-  display: flex; justify-content: space-between; align-items: center;
-  padding-top: 28px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 0.5px;
-}
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      font-size: 14px;
+    }
 
-/* ─── TOAST ─── */
-.toast {
-  position: fixed; bottom: 28px; right: 28px;
-  background: var(--navy-900);
-  color: #fff;
-  padding: 14px 20px;
-  font-size: 13px;
-  display: flex; align-items: center; gap: 12px;
-  opacity: 0; transform: translateY(8px);
-  transition: all 0.3s;
-  z-index: 999;
-  border-left: 3px solid var(--copper);
-}
-.toast.show { opacity: 1; transform: translateY(0); }
-.toast svg { width: 18px; height: 18px; stroke: var(--copper); }
+    .nav-links a {
+      color: var(--text-2);
+      transition: color 0.2s;
+      font-weight: 500;
+    }
 
-/* ─── RESPONSIVE ─── */
-@media (max-width: 1024px) {
-  .cluster-grid { grid-template-columns: repeat(2, 1fr); }
-  .portfolio-grid, .cta-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-  .map-locations { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-vis { max-width: 320px; margin: 0 auto; }
-  .stat-bar { grid-template-columns: 1fr 1fr; }
-  .impact-grid { grid-template-columns: 1fr; }
-  .photo-strip { grid-template-columns: 1fr; height: auto; }
-  .photo-cell { height: 240px; }
-  .cluster-grid { grid-template-columns: 1fr; }
-  .portfolio-grid, .cta-grid { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; }
-  .map-locations { grid-template-columns: 1fr 1fr; }
-  #research-map { height: 300px; }
-  .nav-links { display: none; }
-  section { padding: 70px 24px; }
-  .hero { padding: 50px 24px 40px; }
-  .lang-bar, .nav, .impact-strip, footer { padding-left: 24px; padding-right: 24px; }
-}
-</style>
+    .nav-links a:hover {
+      color: var(--copper);
+    }
+
+    .nav-cta {
+      background: var(--navy-900);
+      color: #fff;
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--copper);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      background: var(--white);
+      padding: 80px 48px 60px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(15, 31, 68, 0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--copper);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5vw, 4.6rem);
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--navy-900);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--copper);
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-2);
+      max-width: 540px;
+      margin-bottom: 36px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      background: var(--navy-900);
+      color: #fff;
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      letter-spacing: 0.3px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--copper);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--navy-900);
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--navy-900);
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: var(--navy-900);
+      color: #fff;
+    }
+
+    /* Hero progress inline */
+    .hero-progress {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      max-width: 540px;
+    }
+
+    .hp-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hp-track {
+      flex: 1;
+      height: 3px;
+      background: var(--surface-2);
+      position: relative;
+    }
+
+    .hp-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0;
+      background: var(--copper);
+      transition: width 1.4s ease-out;
+    }
+
+    .hp-pct {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--navy-900);
+    }
+
+    /* Hero illustration (SVG, no external image dependency) */
+    .hero-vis {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      max-width: 480px;
+      justify-self: end;
+    }
+
+    .hero-vis svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ─── STAT BAR ─── */
+    .stat-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--navy-900);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-item {
+      padding: 36px 28px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-num-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .stat-idx {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--copper);
+      letter-spacing: 1px;
+    }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 14px;
+    }
+
+    /* ─── SECTION COMMONS ─── */
+    section {
+      padding: 110px 48px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--copper);
+      margin-bottom: 16px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--copper);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--navy-900);
+    }
+
+    .section-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--copper);
+    }
+
+    .text-body {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-2);
+    }
+
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--navy-900);
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--copper);
+      transition: gap 0.2s, color 0.2s;
+    }
+
+    .link-arrow:hover {
+      gap: 14px;
+      color: var(--copper);
+    }
+
+    /* ─── ABOUT ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-vis {
+      position: relative;
+      aspect-ratio: 4/5;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .about-vis svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .about-vis-tag {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: var(--white);
+      border-left: 3px solid var(--copper);
+      padding: 12px 16px;
+      max-width: 240px;
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    .about-text {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .partner-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 6px 14px;
+      letter-spacing: 0.5px;
+      border: 1px solid var(--border-strong);
+      color: var(--text-2);
+      background: var(--white);
+    }
+
+    /* ─── IMPACT STRIP ─── */
+    .impact-strip {
+      background: var(--navy-900);
+      padding: 50px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .impact-strip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .impact-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, calc((100% - 2px) / 3));
+      gap: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .impact-card {
+      background: var(--navy-900);
+      padding: 48px 36px;
+      text-align: left;
+      min-width: 0;
+    }
+
+    .impact-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .impact-card-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(217, 119, 87, 0.15);
+      border: 1px solid rgba(217, 119, 87, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0px;
+    }
+
+    .impact-card-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--copper-light);
+    }
+
+    .impact-card-num {
+      font-family: var(--serif);
+      font-size: 3.6rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1;
+      display: block;
+      margin-bottom: 0px;
+      letter-spacing: -0.02em;
+    }
+
+    .impact-card-num em {
+      font-style: italic;
+      color: var(--copper-light);
+      font-weight: 300;
+    }
+
+    .impact-card-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.7;
+    }
+
+    /* ─── PHOTO STRIP ─── */
+    .photo-strip {
+      padding: 0;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      height: 360px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .photo-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-cell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 31, 68, 0.5), transparent 50%);
+      pointer-events: none;
+    }
+
+    .photo-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s;
+      opacity: 0.90;
+    }
+
+    .photo-cell:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-cell-caption {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    /* fallback solid gradients if photos fail */
+    .photo-fallback-1 {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2D7A4F 100%);
+    }
+
+    .photo-fallback-2 {
+      background: linear-gradient(135deg, #0A1F44 0%, #1E3A8A 100%);
+    }
+
+    .photo-fallback-3 {
+      background: linear-gradient(135deg, #D97757 0%, #C9A84C 100%);
+    }
+
+    /* ─── CLUSTERS ─── */
+    .clusters-bg {
+      background: var(--surface);
+    }
+
+    .clusters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+      gap: 40px;
+    }
+
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--surface);
+    }
+
+    .cluster-card {
+      background: var(--white);
+      padding: 32px 28px;
+      transition: background 0.25s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .cluster-card:hover {
+      background: var(--surface);
+    }
+
+    .cluster-card.featured {
+      background: var(--navy-900);
+      color: #fff;
+    }
+
+    .cluster-card.featured:hover {
+      background: var(--navy-800);
+    }
+
+    .cluster-card.featured .cluster-name {
+      color: #fff;
+    }
+
+    .cluster-card.featured .cluster-lead {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .cluster-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-4);
+    }
+
+    .cluster-card.featured .cluster-num {
+      color: var(--copper-light);
+    }
+
+    .cluster-icon-wrap {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+    }
+
+    .cluster-card.featured .cluster-icon-wrap {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .cluster-icon-wrap svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--navy-900);
+    }
+
+    .cluster-card.featured .cluster-icon-wrap svg {
+      stroke: var(--copper-light);
+    }
+
+    .cluster-name {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--navy-900);
+      line-height: 1.3;
+    }
+
+    .cluster-lead {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.5;
+    }
+
+    .cluster-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 9px;
+      padding: 4px 10px;
+      letter-spacing: 1px;
+      background: var(--copper);
+      color: var(--navy-900);
+      margin-top: auto;
+      align-self: flex-start;
+    }
+
+    /* ─── RESEARCH COVERAGE MAP ─── */
+    .journey-section {
+      background: var(--white);
+      padding: 110px 48px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .journey-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .journey-header .eyebrow {
+      justify-content: center;
+    }
+
+    .journey-header .eyebrow::before {
+      display: none;
+    }
+
+    .map-container {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-top: 12px;
+      margin-bottom: 40px;
+      z-index: 0;
+      box-shadow: 0 4px 24px rgba(10, 31, 68, 0.06);
+    }
+
+    #research-map {
+      height: 460px;
+      width: 100%;
+    }
+
+    .map-legend {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      z-index: 1000;
+      box-shadow: 0 4px 16px rgba(10, 31, 68, 0.1);
+    }
+
+    .legend-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--copper);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-2);
+      margin-bottom: 6px;
+      font-family: var(--sans);
+    }
+
+    .legend-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-active {
+      background: var(--copper);
+    }
+
+    .dot-submitted {
+      background: var(--navy-900);
+    }
+
+    .dot-international {
+      background: var(--gold);
+    }
+
+    /* custom Leaflet marker */
+    .custom-marker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .marker-core {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2.5px solid #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+      position: relative;
+      z-index: 2;
+    }
+
+    .marker-active .marker-core {
+      background: var(--copper);
+    }
+
+    .marker-submitted .marker-core {
+      background: var(--navy-900);
+    }
+
+    .marker-international .marker-core {
+      background: var(--gold);
+    }
+
+    .marker-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      animation: mpulse 2.2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    .marker-active .marker-pulse {
+      background: var(--copper);
+    }
+
+    .marker-international .marker-pulse {
+      background: var(--gold);
+    }
+
+    .marker-submitted .marker-pulse {
+      display: none;
+    }
+
+    @keyframes mpulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(2.4);
+        opacity: 0;
+      }
+    }
+
+    /* map popup */
+    .map-popup {
+      font-family: var(--sans);
+      min-width: 200px;
+    }
+
+    .map-popup-status {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      padding: 3px 7px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .popup-active {
+      background: var(--copper-pale);
+      color: var(--copper);
+    }
+
+    .popup-submitted {
+      background: var(--navy-50);
+      color: var(--navy-900);
+    }
+
+    .popup-international {
+      background: rgba(201, 168, 76, 0.15);
+      color: #8a6c1e;
+    }
+
+    .map-popup h4 {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+
+    .map-popup-meta {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-bottom: 6px;
+    }
+
+    .map-popup p {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px !important;
+      box-shadow: 0 8px 28px rgba(10, 31, 68, 0.14) !important;
+    }
+
+    .leaflet-popup-content {
+      margin: 14px 16px !important;
+    }
+
+    /* location summary cards */
+    .map-locations {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .loc-card {
+      padding: 20px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .loc-card:hover {
+      border-color: var(--copper);
+      box-shadow: 0 4px 18px rgba(217, 119, 87, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .loc-region {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--copper);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .loc-title {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy-900);
+      margin-bottom: 4px;
+    }
+
+    .loc-project {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .loc-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-active {
+      background: var(--copper-pale);
+      color: var(--copper);
+    }
+
+    .badge-submitted {
+      background: var(--navy-50);
+      color: var(--navy-900);
+    }
+
+    .badge-international {
+      background: rgba(201, 168, 76, 0.15);
+      color: #8a6c1e;
+    }
+
+    /* ─── PORTFOLIO ─── */
+    .portfolio-bg {
+      background: var(--white);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 56px;
+    }
+
+    .portfolio-item {
+      background: var(--white);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: background 0.25s;
+    }
+
+    .portfolio-item:hover {
+      background: var(--surface);
+    }
+
+    .port-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .port-status {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      font-weight: 500;
+    }
+
+    .status-active {
+      background: var(--copper-pale);
+      color: var(--copper);
+    }
+
+    .status-submitted {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .status-international {
+      background: var(--navy-50);
+      color: var(--navy-700);
+    }
+
+    .port-year {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-4);
+      letter-spacing: 0.5px;
+    }
+
+    .port-title {
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--navy-900);
+    }
+
+    .port-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-3);
+      letter-spacing: 0.3px;
+    }
+
+    .port-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.65;
+    }
+
+    /* ─── CTA ─── */
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 56px;
+    }
+
+    .cta-card {
+      background: var(--white);
+      padding: 44px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .cta-icon {
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+    }
+
+    .cta-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--navy-900);
+    }
+
+    .cta-card.featured .cta-icon {
+      background: var(--copper);
+      border-color: var(--copper);
+    }
+
+    .cta-card.featured .cta-icon svg {
+      stroke: var(--navy-900);
+    }
+
+    .cta-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--navy-900);
+      line-height: 1.2;
+    }
+
+    .cta-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .cta-btn {
+      align-self: flex-start;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 12px 22px;
+      background: var(--navy-900);
+      color: #fff;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .cta-btn:hover {
+      background: var(--copper);
+      color: var(--navy-900);
+    }
+
+    .cta-btn-outline {
+      background: transparent;
+      color: var(--navy-900);
+      border: 1px solid var(--navy-900);
+    }
+
+    .cta-btn-outline:hover {
+      background: var(--navy-900);
+      color: #fff;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--navy-900);
+      padding: 72px 48px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    .footer-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-brand .nav-logo img {
+      filter: brightness(1.1);
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.7;
+      margin-top: 18px;
+      max-width: 280px;
+    }
+
+    .footer-brand .domain {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--copper-light);
+      margin-top: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--copper-light);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 12px;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--copper-light);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--navy-900);
+      color: #fff;
+      padding: 14px 20px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      z-index: 999;
+      border-left: 3px solid var(--copper);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--copper);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .cluster-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .map-locations {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      .hero-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-vis {
+        max-width: 320px;
+        margin: 0 auto;
+      }
+
+      .stat-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .impact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-strip {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+
+      .photo-cell {
+        height: 240px;
+      }
+
+      .cluster-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cluster-row {
+        width: 100%;
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-grid,
+      .cta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+
+      .map-locations {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #research-map {
+        height: 300px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 70px 24px;
+      }
+
+      .hero {
+        padding: 50px 24px 40px;
+      }
+
+      .lang-bar,
+      .nav,
+      .impact-strip,
+      footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ═══ LANG BAR ═══ -->
-<div class="lang-bar">
-  <span class="lang-detected" id="lang-msg"></span>
-  <div class="lang-toggle">
-    <button class="lang-btn" id="btn-id" onclick="setLang('id')">ID</button>
-    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-  </div>
-</div>
-
-<!-- ═══ NAV ═══ -->
-<nav class="nav">
-  <a href="#home" class="nav-logo">
-    <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
-    <div>
-      <div class="nav-logo-text">PAG Alliance</div>
-      <div class="nav-logo-sub">Research · Empowerment</div>
-    </div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#about" data-i18n="nav_about">Tentang</a></li>
-    <li><a href="#impact" data-i18n="nav_impact">Dampak</a></li>
-    <li><a href="#clusters" data-i18n="nav_clusters">Klaster</a></li>
-    <li><a href="#journey" data-i18n="nav_journey">Cara Kerja</a></li>
-    <li><a href="#portfolio" data-i18n="nav_portfolio">Portofolio</a></li>
-  </ul>
-  <a href="support.html" class="nav-cta" data-i18n="nav_join">Dukung Kami</a>
-</nav>
-
-<!-- ═══ HERO ═══ -->
-<section id="home" class="hero">
-  <div class="hero-grid">
-    <div class="hero-text">
-      <div class="hero-eyebrow" data-i18n="hero_tag">Yayasan Riset & Pemberdayaan</div>
-      <h1 data-i18n="hero_h1_html">Riset yang Berdampak.<br><em>Komunitas yang Berdaya.</em></h1>
-      <p class="hero-sub" data-i18n="hero_sub">PAG Alliance menghubungkan akademisi dari 8 perguruan tinggi Indonesia untuk menjawab tantangan nyata — ketahanan pangan, kesehatan masyarakat, inovasi digital, dan pembangunan berkelanjutan.</p>
-      <div class="hero-btns">
-        <button class="btn-primary" data-i18n="hero_btn1">
-          <span>Lihat Program</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-        <button class="btn-outline" data-i18n="hero_btn2">
-          <span>Bergabung Sebagai Peneliti</span>
-        </button>
-      </div>
-      <div class="hero-progress">
-        <span class="hp-label" data-i18n="hero_progress_label">Proyek Aktif</span>
-        <div class="hp-track"><div class="hp-fill" id="hp-fill"></div></div>
-        <span class="hp-pct">09 / 50</span>
-      </div>
-    </div>
-
-    <!-- HERO ILLUSTRATION: Abstract network of universities/researchers -->
-    <div class="hero-vis">
-      <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" fill="none">
-        <!-- Outer ring -->
-        <circle cx="240" cy="240" r="220" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="2 4"/>
-        <circle cx="240" cy="240" r="160" stroke="#E5E7EB" stroke-width="1"/>
-        <circle cx="240" cy="240" r="100" stroke="#CBD5E1" stroke-width="1"/>
-
-        <!-- Connecting lines between nodes -->
-        <g stroke="#D97757" stroke-width="0.8" opacity="0.4">
-          <line x1="240" y1="80" x2="380" y2="190"/>
-          <line x1="380" y1="190" x2="350" y2="350"/>
-          <line x1="350" y1="350" x2="140" y2="380"/>
-          <line x1="140" y1="380" x2="90" y2="220"/>
-          <line x1="90" y1="220" x2="240" y2="80"/>
-          <line x1="240" y1="80" x2="240" y2="240"/>
-          <line x1="380" y1="190" x2="240" y2="240"/>
-          <line x1="350" y1="350" x2="240" y2="240"/>
-          <line x1="140" y1="380" x2="240" y2="240"/>
-          <line x1="90" y1="220" x2="240" y2="240"/>
-        </g>
-
-        <!-- Outer nodes (universities) -->
-        <g>
-          <circle cx="240" cy="80" r="22" fill="#0A1F44"/>
-          <text x="240" y="85" font-family="JetBrains Mono" font-size="9" fill="#F4A582" text-anchor="middle">UB</text>
-          <text x="240" y="55" font-family="Manrope" font-size="10" fill="#64748B" text-anchor="middle">Malang</text>
-        </g>
-        <g>
-          <circle cx="380" cy="190" r="22" fill="#0A1F44"/>
-          <text x="380" y="195" font-family="JetBrains Mono" font-size="9" fill="#F4A582" text-anchor="middle">USK</text>
-          <text x="420" y="195" font-family="Manrope" font-size="10" fill="#64748B">Aceh</text>
-        </g>
-        <g>
-          <circle cx="350" cy="350" r="22" fill="#0A1F44"/>
-          <text x="350" y="354" font-family="JetBrains Mono" font-size="8" fill="#F4A582" text-anchor="middle">TEL-U</text>
-          <text x="390" y="355" font-family="Manrope" font-size="10" fill="#64748B">Bandung</text>
-        </g>
-        <g>
-          <circle cx="140" cy="380" r="22" fill="#0A1F44"/>
-          <text x="140" y="384" font-family="JetBrains Mono" font-size="8" fill="#F4A582" text-anchor="middle">UNAND</text>
-          <text x="140" y="420" font-family="Manrope" font-size="10" fill="#64748B" text-anchor="middle">Padang</text>
-        </g>
-        <g>
-          <circle cx="90" cy="220" r="22" fill="#0A1F44"/>
-          <text x="90" y="224" font-family="JetBrains Mono" font-size="8" fill="#F4A582" text-anchor="middle">UNHAS</text>
-          <text x="50" y="225" font-family="Manrope" font-size="10" fill="#64748B" text-anchor="end">Makassar</text>
-        </g>
-
-        <!-- Central node (PAG Alliance) -->
-        <circle cx="240" cy="240" r="44" fill="#0A1F44"/>
-        <circle cx="240" cy="240" r="44" stroke="#D97757" stroke-width="1.5"/>
-        <text x="240" y="234" font-family="Fraunces" font-size="14" font-weight="500" fill="#FFF" text-anchor="middle">PAG</text>
-        <text x="240" y="252" font-family="JetBrains Mono" font-size="8" fill="#D97757" text-anchor="middle" letter-spacing="1">ALLIANCE</text>
-
-        <!-- Decorative pulse rings -->
-        <circle cx="240" cy="240" r="60" stroke="#D97757" stroke-width="0.5" opacity="0.5" stroke-dasharray="1 3"/>
-        <circle cx="240" cy="240" r="80" stroke="#D97757" stroke-width="0.5" opacity="0.3" stroke-dasharray="1 3"/>
-
-        <!-- Compass corners -->
-        <text x="240" y="30" font-family="JetBrains Mono" font-size="9" fill="#94A3B8" text-anchor="middle" letter-spacing="2">UTARA</text>
-        <text x="240" y="465" font-family="JetBrains Mono" font-size="9" fill="#94A3B8" text-anchor="middle" letter-spacing="2">SELATAN</text>
-      </svg>
+  <!-- ═══ LANG BAR ═══ -->
+  <div class="lang-bar">
+    <span class="lang-detected" id="lang-msg"></span>
+    <div class="lang-toggle">
+      <button class="lang-btn" id="btn-id" onclick="setLang('id')">ID</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
     </div>
   </div>
-</section>
 
-<!-- ═══ STAT BAR ═══ -->
-<div class="stat-bar">
-  <div class="stat-item">
-    <div class="stat-num-row"><span class="stat-idx">01</span><span class="stat-num">8</span></div>
-    <div class="stat-label" data-i18n="stat1">Universitas Mitra</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num-row"><span class="stat-idx">02</span><span class="stat-num">7</span></div>
-    <div class="stat-label" data-i18n="stat2">Klaster Riset</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num-row"><span class="stat-idx">03</span><span class="stat-num">30+</span></div>
-    <div class="stat-label" data-i18n="stat3">Peneliti Aktif</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num-row"><span class="stat-idx">04</span><span class="stat-num">20+</span></div>
-    <div class="stat-label" data-i18n="stat4">Proposal & Grant</div>
-  </div>
-</div>
-
-<!-- ═══ ABOUT ═══ -->
-<section id="about">
-  <div class="container about-grid">
-
-    <!-- LEFT: Editorial illustration (SVG, no external dependency) -->
-    <div class="about-vis">
-      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-        <!-- Background gradient mesh -->
-        <defs>
-          <linearGradient id="aboutBg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#FAFAF8"/>
-            <stop offset="100%" stop-color="#EEF2FF"/>
-          </linearGradient>
-          <pattern id="dotPattern" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1" fill="#0A1F44" opacity="0.08"/>
-          </pattern>
-        </defs>
-        <rect width="400" height="500" fill="url(#aboutBg)"/>
-        <rect width="400" height="500" fill="url(#dotPattern)"/>
-
-        <!-- Mountain/Indonesia silhouette -->
-        <path d="M0 380 L60 320 L120 360 L180 280 L240 340 L300 290 L360 330 L400 310 L400 500 L0 500 Z" fill="#0A1F44" opacity="0.9"/>
-        <path d="M0 420 L80 380 L160 410 L240 370 L320 400 L400 380 L400 500 L0 500 Z" fill="#142849"/>
-
-        <!-- Sun/research light -->
-        <circle cx="280" cy="140" r="48" fill="#D97757" opacity="0.95"/>
-        <circle cx="280" cy="140" r="60" stroke="#D97757" stroke-width="1" opacity="0.4" fill="none"/>
-        <circle cx="280" cy="140" r="76" stroke="#D97757" stroke-width="0.5" opacity="0.2" fill="none"/>
-
-        <!-- Plants growing (representing community/research growth) -->
-        <g transform="translate(80 420)">
-          <line x1="0" y1="0" x2="0" y2="-50" stroke="#C9A84C" stroke-width="2"/>
-          <path d="M0 -30 Q-12 -36 -16 -28 Q-8 -22 0 -28" fill="#C9A84C"/>
-          <path d="M0 -42 Q12 -48 16 -40 Q8 -34 0 -40" fill="#C9A84C"/>
-        </g>
-        <g transform="translate(160 410)">
-          <line x1="0" y1="0" x2="0" y2="-60" stroke="#C9A84C" stroke-width="2"/>
-          <path d="M0 -35 Q-14 -42 -18 -32 Q-9 -26 0 -32" fill="#C9A84C"/>
-          <path d="M0 -50 Q14 -56 18 -48 Q9 -42 0 -48" fill="#C9A84C"/>
-        </g>
-        <g transform="translate(320 400)">
-          <line x1="0" y1="0" x2="0" y2="-55" stroke="#C9A84C" stroke-width="2"/>
-          <path d="M0 -32 Q-13 -38 -17 -30 Q-8 -24 0 -30" fill="#C9A84C"/>
-          <path d="M0 -46 Q13 -52 17 -44 Q8 -38 0 -44" fill="#C9A84C"/>
-        </g>
-
-        <!-- Floating data points -->
-        <g opacity="0.8">
-          <circle cx="100" cy="120" r="3" fill="#D97757"/>
-          <circle cx="150" cy="180" r="3" fill="#D97757"/>
-          <circle cx="80" cy="220" r="3" fill="#D97757"/>
-          <circle cx="180" cy="100" r="3" fill="#D97757"/>
-          <line x1="100" y1="120" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5"/>
-          <line x1="80" y1="220" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5"/>
-          <line x1="180" y1="100" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5"/>
-        </g>
-
-        <!-- Caption text inside SVG -->
-        <text x="30" y="60" font-family="JetBrains Mono" font-size="10" fill="#0A1F44" letter-spacing="2">PAG/ALLIANCE</text>
-        <text x="30" y="78" font-family="Fraunces" font-size="22" font-style="italic" font-weight="400" fill="#0A1F44">From data</text>
-        <text x="30" y="100" font-family="Fraunces" font-size="22" font-style="italic" font-weight="400" fill="#0A1F44">to communities.</text>
-      </svg>
-      <div class="about-vis-tag" data-i18n="about_img_caption">Jaringan riset multidisiplin lintas pulau, dari kampus ke desa</div>
-    </div>
-
-    <div class="about-text">
-      <div class="eyebrow" data-i18n="about_eyebrow">Tentang Kami</div>
-      <h2 class="section-title" data-i18n="about_title">Dari Kampus ke Lapangan — <em>Riset yang Hidup</em></h2>
-      <p class="text-body" data-i18n="about_p1">PAG Alliance adalah yayasan riset dan pemberdayaan multidisiplin yang lahir dari kolaborasi akademisi terkemuka Indonesia. Berdiri resmi pada 2026 dengan akta notaris, NIB, dan SK pendirian lengkap.</p>
-      <p class="text-body" data-i18n="about_p2">Kami tidak sekadar menerbitkan jurnal. Kami hadir di lapangan — bersama petani, ibu hamil, pelaku UMKM, dan pemerintah daerah — merancang solusi berbasis bukti yang siap diimplementasikan.</p>
-      <div class="partner-pills">
-        <span class="pill">Bappenas</span>
-        <span class="pill">FAO</span>
-        <span class="pill">ADB</span>
-        <span class="pill">BPDPKS</span>
-        <span class="pill">BRIDA NTB</span>
-        <span class="pill">Kementerian RI</span>
-      </div>
-      <a class="link-arrow" href="#portfolio" data-i18n="about_link">Lihat Portofolio Riset →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ IMPACT STRIP ═══ -->
-<div class="impact-strip" id="impact">
-  <div class="impact-grid">
-    <!-- impact card 1 -->
-    <div class="impact-card">
-      <div class="impact-card-header">
-        <div class="impact-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v20M5 12H2M22 12h-3M19 5l-2 2M5 5l2 2M5 19l2-2M19 19l-2-2"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </div>
-        <span class="impact-card-num">401<em>+</em></span>
-      </div>
-      <p class="impact-card-desc" data-i18n="impact1_desc">Ibu hamil dianalisis dalam studi surveilans anemia Lombok Utara — model ML dengan akurasi 87.7%, AUC 0.97</p>
-    </div>
-    <!-- impact card 2 -->
-    <div class="impact-card">
-      <div class="impact-card-header">
-        <div class="impact-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-        </div>
-        <span class="impact-card-num"><em>5</em></span>
-      </div>
-      <p class="impact-card-desc" data-i18n="impact2_desc">Provinsi terdampak: Aceh, Sumatera Barat, Jawa Barat, Jawa Timur, Sulawesi Selatan, NTB — dengan pipeline hibah aktif</p>
-    </div>
-    <!-- impact card 3 -->
-    <div class="impact-card">
-      <div class="impact-card-header">
-        <div class="impact-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 21h18M5 21V10l7-7 7 7v11M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/>
-          </svg>
-        </div>
-        <span class="impact-card-num">20<em>+</em></span>
-      </div>
-      <p class="impact-card-desc" data-i18n="impact3_desc">Proposal & grant aktif 2025–2026: BIMA Kemdiktisaintek, BRIDA, BPDPKS GRS, hingga kolaborasi internasional dengan University of Michigan</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ PHOTO STRIP ═══ -->
-<div class="photo-strip">
-  <div class="photo-cell photo-fallback-1">
-    <img
-      src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80"
-      alt="Persawahan Indonesia"
-      onerror="this.style.display='none'">
-    <div class="photo-cell-caption" data-i18n="photo_cap1">Lapangan · Ketahanan Pangan</div>
-  </div>
-  <div class="photo-cell photo-fallback-2">
-    <img
-      src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80"
-      alt="Data science research"
-      onerror="this.style.display='none'">
-    <div class="photo-cell-caption" data-i18n="photo_cap2">AI · Big Data</div>
-  </div>
-  <div class="photo-cell photo-fallback-3">
-    <img
-      src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800&q=80"
-      alt="Komunitas riset"
-      onerror="this.style.display='none'">
-    <div class="photo-cell-caption" data-i18n="photo_cap3">Komunitas · Pemberdayaan</div>
-  </div>
-</div>
-
-<!-- ═══ CLUSTERS ═══ -->
-<section id="clusters" class="clusters-bg">
-  <div class="container">
-    <div class="clusters-header">
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav">
+    <a href="#home" class="nav-logo">
+      <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
       <div>
-        <div class="eyebrow" data-i18n="cluster_eyebrow">Fokus Riset</div>
-        <h2 class="section-title" data-i18n="cluster_title">Tujuh Klaster <em>Multidisiplin</em></h2>
+        <div class="nav-logo-text">PAG Alliance</div>
+        <div class="nav-logo-sub">Research · Empowerment</div>
       </div>
-      <a class="link-arrow" href="#contact" data-i18n="cluster_link">Bergabung ke Klaster →</a>
-    </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav_about">Tentang</a></li>
+      <li><a href="#impact" data-i18n="nav_impact">Dampak</a></li>
+      <li><a href="#clusters" data-i18n="nav_clusters">Klaster</a></li>
+      <li><a href="#journey" data-i18n="nav_journey">Cara Kerja</a></li>
+      <li><a href="#portfolio" data-i18n="nav_portfolio">Portofolio</a></li>
+    </ul>
+    <a href="support.html" class="nav-cta" data-i18n="nav_join">Dukung Kami</a>
+  </nav>
 
-    <div class="cluster-grid">
-      <!-- 1 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.01</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 22l5-5M7 17v-3l3-3M14 6l4 4M16 8l-5 5M11 13l-5 5M21 11l-7-7M9 21l-6-6"/>
-          </svg>
+  <!-- ═══ HERO ═══ -->
+  <section id="home" class="hero">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="hero-eyebrow" data-i18n="hero_tag">Yayasan Riset & Pemberdayaan</div>
+        <h1 data-i18n="hero_h1_html">Riset yang Berdampak.<br><em>Komunitas yang Berdaya.</em></h1>
+        <p class="hero-sub" data-i18n="hero_sub">PAG Alliance menghubungkan akademisi dari 8 perguruan tinggi Indonesia
+          untuk menjawab tantangan nyata — ketahanan pangan, kesehatan masyarakat, inovasi digital, dan pembangunan
+          berkelanjutan.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" data-i18n="hero_btn1">
+            <span>Lihat Program</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+          <button class="btn-outline" data-i18n="hero_btn2">
+            <span>Bergabung Sebagai Peneliti</span>
+          </button>
         </div>
-        <div class="cluster-name">Food Security</div>
-        <div class="cluster-lead">Lead: Prof. Agussabti<br><span style="opacity:0.7;">USK Aceh</span></div>
-      </div>
-
-      <!-- 2 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.02</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 19v-3M12 21v-3M16 19v-3M3 9a4 4 0 1 1 7 3M5 9h10a3 3 0 1 1 0 6H5"/>
-          </svg>
-        </div>
-        <div class="cluster-name">Disaster & Climate</div>
-        <div class="cluster-lead" data-i18n="cluster_open">Rekrutmen terbuka</div>
-      </div>
-
-      <!-- 3 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.03</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12h4l3-9 4 18 3-9h4"/>
-          </svg>
-        </div>
-        <div class="cluster-name">One Health</div>
-        <div class="cluster-lead">Lead: Dr. Lina Nurbaiti<br><span style="opacity:0.7;">Unram Mataram</span></div>
-      </div>
-
-      <!-- 4 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.04</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>
-          </svg>
-        </div>
-        <div class="cluster-name">Human Capital</div>
-        <div class="cluster-lead">Lead: Prof. Sitti Bulkis<br><span style="opacity:0.7;">Unhas Makassar</span></div>
-      </div>
-
-      <!-- 5 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.05</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="4" width="16" height="16" rx="2"/>
-            <rect x="9" y="9" width="6" height="6"/>
-            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>
-          </svg>
-        </div>
-        <div class="cluster-name">Digital Innovation & AI</div>
-        <div class="cluster-lead">Lead: Dr. Rifki Wijaya<br><span style="opacity:0.6;">Telkom University Bandung</span></div>
-      </div>
-
-      <!-- 6 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.06</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 21h18M5 21V7l7-4 7 4v14M9 9v.01M9 12v.01M9 15v.01M9 18v.01M15 9v.01M15 12v.01M15 15v.01M15 18v.01"/>
-          </svg>
-        </div>
-        <div class="cluster-name">Governance</div>
-        <div class="cluster-lead">Lead: Prof. Gunawan Prayitno<br><span style="opacity:0.7;">UB Malang</span></div>
-      </div>
-
-      <!-- 7 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.07</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19.2 2.96a1 1 0 0 1 1.8.66c.61 5.86-.66 13.4-9 16.38Z"/>
-            <path d="M2 21c0-3 1.85-5.36 5.08-6"/>
-          </svg>
-        </div>
-        <div class="cluster-name">Environmental & Sustainability</div>
-        <div class="cluster-lead">Lead: Prof. Hagus Tarno<br><span style="opacity:0.7;">UB Malang</span></div>
-      </div>
-
-      <!-- 8 -->
-      <div class="cluster-card">
-        <div class="cluster-num">CL.08</div>
-        <div class="cluster-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-        </div>
-        <div class="cluster-name" data-i18n="cluster_new">Klaster Baru</div>
-        <div class="cluster-lead" data-i18n="cluster_propose">Ajukan proposal klaster baru →</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CAKUPAN PENELITIAN ═══ -->
-<section id="journey" class="journey-section">
-  <div class="container">
-    <div class="journey-header">
-      <div class="eyebrow" data-i18n="journey_eyebrow">Cakupan Penelitian</div>
-      <h2 class="section-title" data-i18n="journey_title">Sebaran Riset PAG Alliance di <em>Seluruh Indonesia</em></h2>
-      <p class="text-body" style="margin-top:20px; max-width: 640px; margin-left:auto; margin-right:auto;" data-i18n="journey_sub">Dari Aceh hingga Kalimantan — riset PAG Alliance menjangkau berbagai wilayah Indonesia dengan fokus dampak nyata di tingkat daerah.</p>
-    </div>
-
-    <!-- Interactive map -->
-    <div class="map-container">
-      <div id="research-map"></div>
-      <div class="map-legend">
-        <div class="legend-title" data-i18n="legend_title">Status Proyek</div>
-        <div class="legend-item"><span class="legend-dot dot-active"></span><span data-i18n="status_active">Aktif</span></div>
-        <div class="legend-item"><span class="legend-dot dot-submitted"></span><span data-i18n="status_submitted">Disubmit</span></div>
-        <div class="legend-item"><span class="legend-dot dot-international"></span><span data-i18n="status_international">Internasional</span></div>
-      </div>
-    </div>
-
-    <!-- Location summary cards -->
-    <div class="map-locations">
-      <div class="loc-card" onclick="focusMarker(0)">
-        <div class="loc-region" data-i18n="loc1_region">Aceh</div>
-        <h4 class="loc-title">Banda Aceh</h4>
-        <p class="loc-project" data-i18n="loc1_project">TABRIE–BRIGHT mHealth</p>
-        <span class="loc-badge badge-international" data-i18n="status_international">Internasional</span>
-      </div>
-      <div class="loc-card" onclick="focusMarker(1)">
-        <div class="loc-region" data-i18n="loc2_region">Nusa Tenggara Barat</div>
-        <h4 class="loc-title">Lombok Utara</h4>
-        <p class="loc-project" data-i18n="loc2_project">Dashboard Anemia & AI Pangan</p>
-        <span class="loc-badge badge-active" data-i18n="status_active">Aktif</span>
-      </div>
-      <div class="loc-card" onclick="focusMarker(2)">
-        <div class="loc-region" data-i18n="loc3_region">Kalimantan Selatan</div>
-        <h4 class="loc-title">Banjarmasin</h4>
-        <p class="loc-project" data-i18n="loc3_project">Value Chain KEK</p>
-        <span class="loc-badge badge-active" data-i18n="status_active">Aktif</span>
-      </div>
-      <div class="loc-card" onclick="focusMarker(3)">
-        <div class="loc-region" data-i18n="loc4_region">Kalimantan Selatan</div>
-        <h4 class="loc-title">Kotabaru</h4>
-        <p class="loc-project" data-i18n="loc4_project">DSS Prioritisasi PSR Sawit</p>
-        <span class="loc-badge badge-submitted" data-i18n="status_submitted">Disubmit</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PORTFOLIO ═══ -->
-<section id="portfolio" class="portfolio-bg">
-  <div class="container">
-    <div class="eyebrow" data-i18n="port_eyebrow">Rekam Jejak</div>
-    <h2 class="section-title" data-i18n="port_title">Portofolio Riset & <em>Grant Aktif</em></h2>
-    <p class="text-body" style="margin-top:16px; max-width: 600px;" data-i18n="port_sub">Sebagian proyek yang telah dan sedang dijalankan tim PAG Alliance di berbagai skema hibah nasional dan internasional sepanjang 2025–2026.</p>
-
-    <div class="portfolio-grid">
-      <div class="portfolio-item">
-        <div class="port-row">
-          <div class="port-status status-active" data-i18n="status_active">Aktif</div>
-          <div class="port-year">2025–2026</div>
-        </div>
-        <h3 class="port-title" data-i18n="port_item1_title">Dashboard Surveilans Anemia Ibu Hamil</h3>
-        <div class="port-meta" data-i18n="port_item1_meta">BRIDA NTB · Lombok Utara · N=401</div>
-        <p class="port-desc" data-i18n="port_item1_desc">K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.</p>
-      </div>
-
-      <div class="portfolio-item">
-        <div class="port-row">
-          <div class="port-status status-active" data-i18n="status_active">Aktif</div>
-          <div class="port-year">2026</div>
-        </div>
-        <h3 class="port-title" data-i18n="port_item2_title">AI Pangan Tradisional Sehat — NTB</h3>
-        <div class="port-meta" data-i18n="port_item2_meta">BRIDA NTB · Sasaran: ibu muda Lombok</div>
-        <p class="port-desc" data-i18n="port_item2_desc">Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi stunting dan penyakit tidak menular pada keluarga muda.</p>
-      </div>
-
-      <div class="portfolio-item">
-        <div class="port-row">
-          <div class="port-status status-submitted" data-i18n="status_submitted">Disubmit</div>
-          <div class="port-year">2026–2028</div>
-        </div>
-        <h3 class="port-title" data-i18n="port_item3_title">DSS Prioritisasi PSR Sawit — Kotabaru</h3>
-        <div class="port-meta" data-i18n="port_item3_meta">BPDPKS GRS · Kalimantan Selatan</div>
-        <p class="port-desc" data-i18n="port_item3_desc">ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun lintas PT.</p>
-      </div>
-
-      <div class="portfolio-item">
-        <div class="port-row">
-          <div class="port-status status-international" data-i18n="status_international">Internasional</div>
-          <div class="port-year">2025–2026</div>
-        </div>
-        <h3 class="port-title" data-i18n="port_item4_title">TABRIE–BRIGHT mHealth — Banda Aceh</h3>
-        <div class="port-meta" data-i18n="port_item4_meta">University of Michigan · CGHE</div>
-        <p class="port-desc" data-i18n="port_item4_desc">Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.</p>
-      </div>
-
-      <div class="portfolio-item">
-        <div class="port-row">
-          <div class="port-status status-active" data-i18n="status_active">Aktif</div>
-          <div class="port-year">2025–2026</div>
-        </div>
-        <h3 class="port-title" data-i18n="port_item5_title">Value Chain KEK Banjarmasin & Mekar Putih</h3>
-        <div class="port-meta" data-i18n="port_item5_meta">Bappenas · KEK · Konsultansi Kebijakan</div>
-        <p class="port-desc" data-i18n="port_item5_desc">Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis untuk KEK Kotabaru.</p>
-      </div>
-
-      <div class="portfolio-item">
-        <div class="port-row">
-          <div class="port-status status-submitted" data-i18n="status_submitted">Disubmit</div>
-          <div class="port-year">2026</div>
-        </div>
-        <h3 class="port-title" data-i18n="port_item6_title">Agro-Waste Loop Platform</h3>
-        <div class="port-meta" data-i18n="port_item6_meta">CIIC 2026 · East Ventures · Temasek</div>
-        <p class="port-desc" data-i18n="port_item6_desc">Platform sirkular ekonomi pertanian untuk kompetisi inovasi pangan internasional. Fokus food security &amp; waste reduction.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ GET INVOLVED ═══ -->
-<section id="contact">
-  <div class="container">
-    <div class="eyebrow" data-i18n="cta_eyebrow">Bergabung</div>
-    <h2 class="section-title" data-i18n="cta_title">Mari Berkontribusi Bersama <em>PAG Alliance</em></h2>
-
-    <div class="cta-grid">
-      <div class="cta-card featured">
-        <div class="cta-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 18h8M3 22h18M14 22a7 7 0 1 0 0-14h-1M9 14h2M9 12a2 2 0 0 1 4 0v2M8 4h4M9 2v6"/>
-          </svg>
-        </div>
-        <div class="cta-title" data-i18n="cta1_h">Peneliti & Akademisi</div>
-        <p class="cta-desc" data-i18n="cta1_p">Bergabung ke klaster riset sesuai kepakaran. Akses jaringan hibah nasional dan internasional (FAO, ADB, Kementerian RI, BPDPKS).</p>
-        <button class="cta-btn" data-i18n="cta1_btn">Daftar →</button>
-      </div>
-
-      <div class="cta-card">
-        <div class="cta-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 17a2 2 0 1 0 4 0M14 11h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-7M3 11h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3M3 11V8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v3"/>
-          </svg>
-        </div>
-        <div class="cta-title" data-i18n="cta2_h">Mitra Institusi</div>
-        <p class="cta-desc" data-i18n="cta2_p">Kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda. Dinas, BRIDA, dan pemerintah daerah dipersilakan.</p>
-        <button class="cta-btn cta-btn-outline" data-i18n="cta2_btn">Hubungi →</button>
-      </div>
-
-      <div class="cta-card">
-        <div class="cta-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18M7 16l4-4 4 4 6-6M14 8h5v5"/>
-          </svg>
-        </div>
-        <div class="cta-title" data-i18n="cta3_h">Pendana & Donor</div>
-        <p class="cta-desc" data-i18n="cta3_p">Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline hibah tersedia untuk kolaborasi strategis jangka panjang.</p>
-        <a href="support.html" class="cta-btn cta-btn-outline" data-i18n="cta3_btn">Jadi Donor →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#home" class="nav-logo">
-          <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
-          <div>
-            <div class="nav-logo-text" style="color:#fff;">PAG Alliance</div>
-            <div class="nav-logo-sub">Research · Empowerment</div>
+        <div class="hero-progress">
+          <span class="hp-label" data-i18n="hero_progress_label">Proyek Aktif</span>
+          <div class="hp-track">
+            <div class="hp-fill" id="hp-fill"></div>
           </div>
-        </a>
-        <p data-i18n="footer_desc">Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus, komunitas, dan kebijakan dalam satu jaringan strategis.</p>
-        <div class="domain">pagalliance.org</div>
+          <span class="hp-pct">09 / 50</span>
+        </div>
       </div>
-      <div class="footer-col">
-        <h4 data-i18n="footer_col1">Lembaga</h4>
-        <a href="#about" data-i18n="nav_about">Tentang</a>
-        <a href="#clusters" data-i18n="nav_clusters">Klaster Riset</a>
-        <a href="#portfolio" data-i18n="nav_portfolio">Portofolio</a>
-        <a href="#" data-i18n="footer_journal">Jurnal</a>
-      </div>
-      <div class="footer-col">
-        <h4 data-i18n="footer_col2">Bergabung</h4>
-        <a href="#contact" data-i18n="footer_researcher">Peneliti</a>
-        <a href="#contact" data-i18n="footer_partner">Mitra Institusi</a>
-        <a href="#contact" data-i18n="footer_funder">Pendana</a>
-      </div>
-      <div class="footer-col">
-        <h4 data-i18n="footer_col3">Kontak</h4>
-        <a href="mailto:info@pagalliance.org">info@pagalliance.org</a>
-        <a href="tel:+6285190866645">+62 851-9086-6645</a>
-        <a href="#">pagalliance.org</a>
+
+      <!-- HERO ILLUSTRATION: Abstract network of universities/researchers -->
+      <div class="hero-vis">
+        <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <!-- Outer ring -->
+          <circle cx="240" cy="240" r="220" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="2 4" />
+          <circle cx="240" cy="240" r="160" stroke="#E5E7EB" stroke-width="1" />
+          <circle cx="240" cy="240" r="100" stroke="#CBD5E1" stroke-width="1" />
+
+          <!-- Connecting lines between nodes -->
+          <g stroke="#D97757" stroke-width="0.8" opacity="0.4">
+            <line x1="240" y1="80" x2="380" y2="190" />
+            <line x1="380" y1="190" x2="350" y2="350" />
+            <line x1="350" y1="350" x2="140" y2="380" />
+            <line x1="140" y1="380" x2="90" y2="220" />
+            <line x1="90" y1="220" x2="240" y2="80" />
+            <line x1="240" y1="80" x2="240" y2="240" />
+            <line x1="380" y1="190" x2="240" y2="240" />
+            <line x1="350" y1="350" x2="240" y2="240" />
+            <line x1="140" y1="380" x2="240" y2="240" />
+            <line x1="90" y1="220" x2="240" y2="240" />
+          </g>
+
+          <!-- Outer nodes (universities) -->
+          <g>
+            <circle cx="240" cy="80" r="22" fill="#0A1F44" />
+            <text x="240" y="85" font-family="JetBrains Mono" font-size="9" fill="#F4A582"
+              text-anchor="middle">UB</text>
+            <text x="240" y="55" font-family="Manrope" font-size="10" fill="#64748B" text-anchor="middle">Malang</text>
+          </g>
+          <g>
+            <circle cx="380" cy="190" r="22" fill="#0A1F44" />
+            <text x="380" y="195" font-family="JetBrains Mono" font-size="9" fill="#F4A582"
+              text-anchor="middle">USK</text>
+            <text x="420" y="195" font-family="Manrope" font-size="10" fill="#64748B">Aceh</text>
+          </g>
+          <g>
+            <circle cx="350" cy="350" r="22" fill="#0A1F44" />
+            <text x="350" y="354" font-family="JetBrains Mono" font-size="8" fill="#F4A582"
+              text-anchor="middle">TEL-U</text>
+            <text x="390" y="355" font-family="Manrope" font-size="10" fill="#64748B">Bandung</text>
+          </g>
+          <g>
+            <circle cx="140" cy="380" r="22" fill="#0A1F44" />
+            <text x="140" y="384" font-family="JetBrains Mono" font-size="8" fill="#F4A582"
+              text-anchor="middle">UNAND</text>
+            <text x="140" y="420" font-family="Manrope" font-size="10" fill="#64748B" text-anchor="middle">Padang</text>
+          </g>
+          <g>
+            <circle cx="90" cy="220" r="22" fill="#0A1F44" />
+            <text x="90" y="224" font-family="JetBrains Mono" font-size="8" fill="#F4A582"
+              text-anchor="middle">UNHAS</text>
+            <text x="50" y="225" font-family="Manrope" font-size="10" fill="#64748B" text-anchor="end">Makassar</text>
+          </g>
+
+          <!-- Central node (PAG Alliance) -->
+          <circle cx="240" cy="240" r="44" fill="#0A1F44" />
+          <circle cx="240" cy="240" r="44" stroke="#D97757" stroke-width="1.5" />
+          <text x="240" y="234" font-family="Fraunces" font-size="14" font-weight="500" fill="#FFF"
+            text-anchor="middle">PAG</text>
+          <text x="240" y="252" font-family="JetBrains Mono" font-size="8" fill="#D97757" text-anchor="middle"
+            letter-spacing="1">ALLIANCE</text>
+
+          <!-- Decorative pulse rings -->
+          <circle cx="240" cy="240" r="60" stroke="#D97757" stroke-width="0.5" opacity="0.5" stroke-dasharray="1 3" />
+          <circle cx="240" cy="240" r="80" stroke="#D97757" stroke-width="0.5" opacity="0.3" stroke-dasharray="1 3" />
+
+          <!-- Compass corners -->
+          <text x="240" y="30" font-family="JetBrains Mono" font-size="9" fill="#94A3B8" text-anchor="middle"
+            letter-spacing="2">UTARA</text>
+          <text x="240" y="465" font-family="JetBrains Mono" font-size="9" fill="#94A3B8" text-anchor="middle"
+            letter-spacing="2">SELATAN</text>
+        </svg>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 YAYASAN PAG ALLIANCE — <span data-i18n="footer_copy">SEMUA HAK DILINDUNGI</span></span>
-      <span>BUILT WITH CARE · BANDUNG / MALANG / ACEH</span>
+  </section>
+
+  <!-- ═══ STAT BAR ═══ -->
+  <div class="stat-bar">
+    <div class="stat-item">
+      <div class="stat-num-row"><span class="stat-idx">01</span><span class="stat-num" data-target="8">0</span></div>
+      <div class="stat-label" data-i18n="stat1">Universitas Mitra</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num-row"><span class="stat-idx">02</span><span class="stat-num" data-target="6">0</span></div>
+      <div class="stat-label" data-i18n="stat2">Klaster Riset</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num-row"><span class="stat-idx">03</span><span class="stat-num" data-target="30"
+          data-suffix="+">0<em>+</em></span></div>
+      <div class="stat-label" data-i18n="stat3">Peneliti Aktif</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num-row"><span class="stat-idx">04</span><span class="stat-num" data-target="20"
+          data-suffix="+">0<em>+</em></span></div>
+      <div class="stat-label" data-i18n="stat4">Proposal & Grant</div>
     </div>
   </div>
-</footer>
 
-<!-- ═══ TOAST ═══ -->
-<div class="toast" id="toast">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
-  <span id="toast-msg"></span>
-</div>
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="container about-grid">
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-/* ─── Research map ─── */
-const researchData = [
-  {
-    latlng: [5.55, 95.32], status: 'international',
-    title_id: 'TABRIE–BRIGHT mHealth',
-    title_en: 'TABRIE–BRIGHT mHealth',
-    meta: 'University of Michigan · CGHE · Banda Aceh',
-    desc_id: 'Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.',
-    desc_en: 'Telehealth platform for the Aceh community. Subject pool estimation, success metrics, and collaborative gap analysis.',
-    year: '2025–2026'
-  },
-  {
-    latlng: [-8.36, 116.1], status: 'active',
-    title_id: 'Dashboard Anemia & AI Pangan NTB',
-    title_en: 'Anemia Dashboard & AI Nutrition NTB',
-    meta: 'BRIDA NTB · Lombok Utara · N=401',
-    desc_id: 'K-Means + Random Forest (Acc 87.7%, AUC 0.97). LLM untuk rekomendasi pangan tradisional sehat.',
-    desc_en: 'K-Means + Random Forest (Acc 87.7%, AUC 0.97). LLM for healthy traditional food recommendations.',
-    year: '2025–2026'
-  },
-  {
-    latlng: [-3.32, 114.59], status: 'active',
-    title_id: 'Value Chain KEK Banjarmasin',
-    title_en: 'KEK Banjarmasin Value Chain',
-    meta: 'Bappenas · KEK · Konsultansi Kebijakan',
-    desc_id: 'Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis.',
-    desc_en: 'Value chain for 5 commodities: coal, CPO, shrimp, rattan, sasirangan. Digital twin gap analysis.',
-    year: '2025–2026'
-  },
-  {
-    latlng: [-3.29, 116.2], status: 'submitted',
-    title_id: 'DSS Prioritisasi PSR Sawit',
-    title_en: 'Palm Oil Replanting DSS',
-    meta: 'BPDPKS GRS · Kalimantan Selatan',
-    desc_id: 'ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun.',
-    desc_en: 'ML + remote sensing for smallholder palm oil replanting prioritization. 3-year roadmap.',
-    year: '2026–2028'
-  }
-];
+      <!-- LEFT: Editorial illustration (SVG, no external dependency) -->
+      <div class="about-vis">
+        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background gradient mesh -->
+          <defs>
+            <linearGradient id="aboutBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FAFAF8" />
+              <stop offset="100%" stop-color="#EEF2FF" />
+            </linearGradient>
+            <pattern id="dotPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="#0A1F44" opacity="0.08" />
+            </pattern>
+          </defs>
+          <rect width="400" height="500" fill="url(#aboutBg)" />
+          <rect width="400" height="500" fill="url(#dotPattern)" />
 
-const statusLabel = {
-  id: { active: 'Aktif', submitted: 'Disubmit', international: 'Internasional' },
-  en: { active: 'Active', submitted: 'Submitted', international: 'International' }
-};
+          <!-- Mountain/Indonesia silhouette -->
+          <path d="M0 380 L60 320 L120 360 L180 280 L240 340 L300 290 L360 330 L400 310 L400 500 L0 500 Z"
+            fill="#0A1F44" opacity="0.9" />
+          <path d="M0 420 L80 380 L160 410 L240 370 L320 400 L400 380 L400 500 L0 500 Z" fill="#142849" />
 
-let researchMap, researchMarkers = [];
+          <!-- Sun/research light -->
+          <circle cx="280" cy="140" r="48" fill="#D97757" opacity="0.95" />
+          <circle cx="280" cy="140" r="60" stroke="#D97757" stroke-width="1" opacity="0.4" fill="none" />
+          <circle cx="280" cy="140" r="76" stroke="#D97757" stroke-width="0.5" opacity="0.2" fill="none" />
 
-function buildMarkerIcon(status) {
-  return L.divIcon({
-    className: '',
-    html: `<div class="custom-marker marker-${status}"><div class="marker-pulse"></div><div class="marker-core"></div></div>`,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -16]
-  });
-}
+          <!-- Plants growing (representing community/research growth) -->
+          <g transform="translate(80 420)">
+            <line x1="0" y1="0" x2="0" y2="-50" stroke="#C9A84C" stroke-width="2" />
+            <path d="M0 -30 Q-12 -36 -16 -28 Q-8 -22 0 -28" fill="#C9A84C" />
+            <path d="M0 -42 Q12 -48 16 -40 Q8 -34 0 -40" fill="#C9A84C" />
+          </g>
+          <g transform="translate(160 410)">
+            <line x1="0" y1="0" x2="0" y2="-60" stroke="#C9A84C" stroke-width="2" />
+            <path d="M0 -35 Q-14 -42 -18 -32 Q-9 -26 0 -32" fill="#C9A84C" />
+            <path d="M0 -50 Q14 -56 18 -48 Q9 -42 0 -48" fill="#C9A84C" />
+          </g>
+          <g transform="translate(320 400)">
+            <line x1="0" y1="0" x2="0" y2="-55" stroke="#C9A84C" stroke-width="2" />
+            <path d="M0 -32 Q-13 -38 -17 -30 Q-8 -24 0 -30" fill="#C9A84C" />
+            <path d="M0 -46 Q13 -52 17 -44 Q8 -38 0 -44" fill="#C9A84C" />
+          </g>
 
-function buildPopup(d, l) {
-  const lbl = statusLabel[l][d.status];
-  const title = l === 'id' ? d.title_id : d.title_en;
-  const desc  = l === 'id' ? d.desc_id  : d.desc_en;
-  return `<div class="map-popup">
+          <!-- Floating data points -->
+          <g opacity="0.8">
+            <circle cx="100" cy="120" r="3" fill="#D97757" />
+            <circle cx="150" cy="180" r="3" fill="#D97757" />
+            <circle cx="80" cy="220" r="3" fill="#D97757" />
+            <circle cx="180" cy="100" r="3" fill="#D97757" />
+            <line x1="100" y1="120" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5" />
+            <line x1="80" y1="220" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5" />
+            <line x1="180" y1="100" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5" />
+          </g>
+
+          <!-- Caption text inside SVG -->
+          <text x="30" y="60" font-family="JetBrains Mono" font-size="10" fill="#0A1F44"
+            letter-spacing="2">PAG/ALLIANCE</text>
+          <text x="30" y="78" font-family="Fraunces" font-size="22" font-style="italic" font-weight="400"
+            fill="#0A1F44">From data</text>
+          <text x="30" y="100" font-family="Fraunces" font-size="22" font-style="italic" font-weight="400"
+            fill="#0A1F44">to communities.</text>
+        </svg>
+        <div class="about-vis-tag" data-i18n="about_img_caption">Jaringan riset multidisiplin lintas pulau, dari kampus
+          ke desa</div>
+      </div>
+
+      <div class="about-text">
+        <div class="eyebrow" data-i18n="about_eyebrow">Tentang Kami</div>
+        <h2 class="section-title" data-i18n="about_title">Dari Kampus ke Lapangan — <em>Riset yang Hidup</em></h2>
+        <p class="text-body" data-i18n="about_p1">PAG Alliance adalah yayasan riset dan pemberdayaan multidisiplin yang
+          lahir dari kolaborasi akademisi terkemuka Indonesia. Berdiri resmi pada 2026 dengan akta notaris, NIB, dan SK
+          pendirian lengkap.</p>
+        <p class="text-body" data-i18n="about_p2">Kami tidak sekadar menerbitkan jurnal. Kami hadir di lapangan —
+          bersama petani, ibu hamil, pelaku UMKM, dan pemerintah daerah — merancang solusi berbasis bukti yang siap
+          diimplementasikan.</p>
+        <div class="partner-pills">
+          <span class="pill">Bappenas</span>
+          <span class="pill">FAO</span>
+          <span class="pill">ADB</span>
+          <span class="pill">BPDPKS</span>
+          <span class="pill">BRIDA NTB</span>
+          <span class="pill">Kementerian RI</span>
+        </div>
+        <a class="link-arrow" href="#portfolio" data-i18n="about_link">Lihat Portofolio Riset →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ IMPACT STRIP ═══ -->
+  <div class="impact-strip" id="impact">
+    <div class="impact-grid">
+      <!-- impact card 1 -->
+      <div class="impact-card">
+        <div class="impact-card-header">
+          <div class="impact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2v20M5 12H2M22 12h-3M19 5l-2 2M5 5l2 2M5 19l2-2M19 19l-2-2" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <span class="impact-card-num" data-target="401" data-suffix="+">0<em>+</em></span>
+        </div>
+        <p class="impact-card-desc" data-i18n="impact1_desc">Ibu hamil dianalisis dalam studi surveilans anemia Lombok
+          Utara — model ML dengan akurasi 87.7%, AUC 0.97</p>
+      </div>
+      <!-- impact card 2 -->
+      <div class="impact-card">
+        <div class="impact-card-header">
+          <div class="impact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+          </div>
+          <span class="impact-card-num" data-target="6">0</span>
+        </div>
+        <p class="impact-card-desc" data-i18n="impact2_desc">Provinsi terdampak: Aceh, Sumatera Barat, Jawa Barat, Jawa
+          Timur, Sulawesi Selatan, NTB — dengan pipeline hibah aktif</p>
+      </div>
+      <!-- impact card 3 -->
+      <div class="impact-card">
+        <div class="impact-card-header">
+          <div class="impact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 21h18M5 21V10l7-7 7 7v11M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01" />
+            </svg>
+          </div>
+          <span class="impact-card-num" data-target="20" data-suffix="+">0<em>+</em></span>
+        </div>
+        <p class="impact-card-desc" data-i18n="impact3_desc">Proposal & grant aktif 2025–2026: BIMA Kemdiktisaintek,
+          BRIDA, BPDPKS GRS, hingga kolaborasi internasional dengan University of Michigan</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PHOTO STRIP ═══ -->
+  <div class="photo-strip">
+    <div class="photo-cell photo-fallback-1">
+      <img src="assets/img/field-food.jpeg" alt="Persawahan Indonesia" onerror="this.style.display='none'">
+      <div class="photo-cell-caption" data-i18n="photo_cap1">Lapangan · Ketahanan Pangan</div>
+    </div>
+    <div class="photo-cell photo-fallback-2">
+      <img src="assets/img/ai-bigdata.jpeg" alt="Data science research" onerror="this.style.display='none'">
+      <div class="photo-cell-caption" data-i18n="photo_cap2">AI · Big Data</div>
+    </div>
+    <div class="photo-cell photo-fallback-3">
+      <img src="assets/img/community-empowerment.jpeg" alt="Komunitas riset" onerror="this.style.display='none'">
+      <div class="photo-cell-caption" data-i18n="photo_cap3">Komunitas · Pemberdayaan</div>
+    </div>
+  </div>
+
+  <!-- ═══ CLUSTERS ═══ -->
+  <section id="clusters" class="clusters-bg">
+    <div class="container">
+      <div class="clusters-header">
+        <div>
+          <div class="eyebrow" data-i18n="cluster_eyebrow">Fokus Riset</div>
+          <h2 class="section-title" data-i18n="cluster_title">Enam Klaster <em>Riset</em></h2>
+        </div>
+        <a class="link-arrow" href="#contact" data-i18n="cluster_link">Bergabung ke Klaster →</a>
+      </div>
+
+      <div class="cluster-grid">
+        <!-- 1 -->
+        <div class="cluster-card">
+          <div class="cluster-num">RC.01</div>
+          <div class="cluster-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M2 22l5-5M7 17v-3l3-3M14 6l4 4M16 8l-5 5M11 13l-5 5M21 11l-7-7M9 21l-6-6" />
+            </svg>
+          </div>
+          <div class="cluster-name">Agri-Food and Rural Livelihoods (AFRL)</div>
+          <div class="cluster-lead">Lead: Dr. Agus Nugroho<br><span style="opacity:0.7;"></span></div>
+        </div>
+
+        <!-- 2 -->
+        <div class="cluster-card">
+          <div class="cluster-num">RC.02</div>
+          <div class="cluster-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M8 19v-3M12 21v-3M16 19v-3M3 9a4 4 0 1 1 7 3M5 9h10a3 3 0 1 1 0 6H5" />
+            </svg>
+          </div>
+          <div class="cluster-name">Climate and Disaster Resilience (CDR)</div>
+          <div class="cluster-lead" data-i18n="cluster_open">Rekrutmen terbuka</div>
+        </div>
+
+        <!-- 3 -->
+        <div class="cluster-card">
+          <div class="cluster-num">RC.03</div>
+          <div class="cluster-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 12h4l3-9 4 18 3-9h4" />
+            </svg>
+          </div>
+          <div class="cluster-name">Global Research on One Health, Nutrition, and Transformative Health (GROWTH)</div>
+          <div class="cluster-lead">Lead: Dr. Lina Nurbaiti<br><span style="opacity:0.7;">Unram Mataram</span></div>
+        </div>
+
+        <!-- 4 -->
+        <div class="cluster-card">
+          <div class="cluster-num">RC.04</div>
+          <div class="cluster-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
+            </svg>
+          </div>
+          <div class="cluster-name">Human Capital, Education, Gender, and Social Inclusion (HEGSI)</div>
+          <div class="cluster-lead">Lead: Prof. Sitti Bulkis<br><span style="opacity:0.7;">Unhas Makassar</span></div>
+        </div>
+
+        <!-- 5 -->
+        <div class="cluster-card">
+          <div class="cluster-num">RC.05</div>
+          <div class="cluster-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <rect x="9" y="9" width="6" height="6" />
+              <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
+            </svg>
+          </div>
+          <div class="cluster-name">Digital Innovation & AI Systems (DIAIS)</div>
+          <div class="cluster-lead">Lead: Dr. Rifki Wijaya<br><span style="opacity:0.6;">Telkom University
+              Bandung</span></div>
+        </div>
+
+        <!-- 6 -->
+        <div class="cluster-card">
+          <div class="cluster-num">RC.06</div>
+          <div class="cluster-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 3v18M3 12h18M6 6l12 12M6 18l12-12" />
+            </svg>
+          </div>
+          <div class="cluster-name">Governance, Policy, and Regional Transformation (GPRT)</div>
+          <div class="cluster-lead">Lead: Prof. Gunawan Prayitno<br><span style="opacity:0.6;"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CAKUPAN PENELITIAN ═══ -->
+  <section id="journey" class="journey-section">
+    <div class="container">
+      <div class="journey-header">
+        <div class="eyebrow" data-i18n="journey_eyebrow">Cakupan Penelitian</div>
+        <h2 class="section-title" data-i18n="journey_title">Sebaran Riset PAG Alliance di <em>Seluruh Indonesia</em>
+        </h2>
+        <p class="text-body" style="margin-top:20px; max-width: 640px; margin-left:auto; margin-right:auto;"
+          data-i18n="journey_sub">Dari Aceh hingga Kalimantan — riset PAG Alliance menjangkau berbagai wilayah Indonesia
+          dengan fokus dampak nyata di tingkat daerah.</p>
+      </div>
+
+      <!-- Interactive map -->
+      <div class="map-container">
+        <div id="research-map"></div>
+        <div class="map-legend">
+          <div class="legend-title" data-i18n="legend_title">Status Proyek</div>
+          <div class="legend-item"><span class="legend-dot dot-active"></span><span
+              data-i18n="status_active">Aktif</span></div>
+          <div class="legend-item"><span class="legend-dot dot-submitted"></span><span
+              data-i18n="status_submitted">Disubmit</span></div>
+          <div class="legend-item"><span class="legend-dot dot-international"></span><span
+              data-i18n="status_international">Internasional</span></div>
+        </div>
+      </div>
+
+      <!-- Location summary cards -->
+      <div class="map-locations">
+        <div class="loc-card" onclick="focusMarker(0)">
+          <div class="loc-region" data-i18n="loc1_region">Aceh</div>
+          <h4 class="loc-title">Banda Aceh</h4>
+          <p class="loc-project" data-i18n="loc1_project">TABRIE–BRIGHT mHealth</p>
+          <span class="loc-badge badge-international" data-i18n="status_international">Internasional</span>
+        </div>
+        <div class="loc-card" onclick="focusMarker(1)">
+          <div class="loc-region" data-i18n="loc2_region">Nusa Tenggara Barat</div>
+          <h4 class="loc-title">Lombok Utara</h4>
+          <p class="loc-project" data-i18n="loc2_project">Dashboard Anemia & AI Pangan</p>
+          <span class="loc-badge badge-active" data-i18n="status_active">Aktif</span>
+        </div>
+        <div class="loc-card" onclick="focusMarker(2)">
+          <div class="loc-region" data-i18n="loc3_region">Kalimantan Selatan</div>
+          <h4 class="loc-title">Banjarmasin</h4>
+          <p class="loc-project" data-i18n="loc3_project">Value Chain KEK</p>
+          <span class="loc-badge badge-active" data-i18n="status_active">Aktif</span>
+        </div>
+        <div class="loc-card" onclick="focusMarker(3)">
+          <div class="loc-region" data-i18n="loc4_region">Kalimantan Selatan</div>
+          <h4 class="loc-title">Kotabaru</h4>
+          <p class="loc-project" data-i18n="loc4_project">DSS Prioritisasi PSR Sawit</p>
+          <span class="loc-badge badge-submitted" data-i18n="status_submitted">Disubmit</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PORTFOLIO ═══ -->
+  <section id="portfolio" class="portfolio-bg">
+    <div class="container">
+      <div class="eyebrow" data-i18n="port_eyebrow">Rekam Jejak</div>
+      <h2 class="section-title" data-i18n="port_title">Portofolio Riset & <em>Grant Aktif</em></h2>
+      <p class="text-body" style="margin-top:16px; max-width: 600px;" data-i18n="port_sub">Sebagian proyek yang telah
+        dan sedang dijalankan tim PAG Alliance di berbagai skema hibah nasional dan internasional sepanjang 2025–2026.
+      </p>
+
+      <div class="portfolio-grid">
+        <div class="portfolio-item">
+          <div class="port-row">
+            <div class="port-status status-active" data-i18n="status_active">Aktif</div>
+            <div class="port-year">2025–2026</div>
+          </div>
+          <h3 class="port-title" data-i18n="port_item1_title">Dashboard Surveilans Anemia Ibu Hamil</h3>
+          <div class="port-meta" data-i18n="port_item1_meta">BRIDA NTB · Lombok Utara · N=401</div>
+          <p class="port-desc" data-i18n="port_item1_desc">K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97).
+            Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.</p>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="port-row">
+            <div class="port-status status-active" data-i18n="status_active">Aktif</div>
+            <div class="port-year">2026</div>
+          </div>
+          <h3 class="port-title" data-i18n="port_item2_title">AI Pangan Tradisional Sehat — NTB</h3>
+          <div class="port-meta" data-i18n="port_item2_meta">BRIDA NTB · Sasaran: ibu muda Lombok</div>
+          <p class="port-desc" data-i18n="port_item2_desc">Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi
+            stunting dan penyakit tidak menular pada keluarga muda.</p>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="port-row">
+            <div class="port-status status-submitted" data-i18n="status_submitted">Disubmit</div>
+            <div class="port-year">2026–2028</div>
+          </div>
+          <h3 class="port-title" data-i18n="port_item3_title">DSS Prioritisasi PSR Sawit — Kotabaru</h3>
+          <div class="port-meta" data-i18n="port_item3_meta">BPDPKS GRS · Kalimantan Selatan</div>
+          <p class="port-desc" data-i18n="port_item3_desc">ML + remote sensing untuk prioritisasi replanting lahan sawit
+            rakyat. Roadmap 3 tahun lintas PT.</p>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="port-row">
+            <div class="port-status status-international" data-i18n="status_international">Internasional</div>
+            <div class="port-year">2025–2026</div>
+          </div>
+          <h3 class="port-title" data-i18n="port_item4_title">TABRIE–BRIGHT mHealth — Banda Aceh</h3>
+          <div class="port-meta" data-i18n="port_item4_meta">University of Michigan · CGHE</div>
+          <p class="port-desc" data-i18n="port_item4_desc">Platform telehealth untuk komunitas Aceh. Estimasi subject
+            pool, success metrics, dan gap analysis kolaboratif.</p>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="port-row">
+            <div class="port-status status-active" data-i18n="status_active">Aktif</div>
+            <div class="port-year">2025–2026</div>
+          </div>
+          <h3 class="port-title" data-i18n="port_item5_title">Value Chain KEK Banjarmasin & Mekar Putih</h3>
+          <div class="port-meta" data-i18n="port_item5_meta">Bappenas · KEK · Konsultansi Kebijakan</div>
+          <p class="port-desc" data-i18n="port_item5_desc">Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan,
+            sasirangan. Digital twin gap analysis untuk KEK Kotabaru.</p>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="port-row">
+            <div class="port-status status-submitted" data-i18n="status_submitted">Disubmit</div>
+            <div class="port-year">2026</div>
+          </div>
+          <h3 class="port-title" data-i18n="port_item6_title">Agro-Waste Loop Platform</h3>
+          <div class="port-meta" data-i18n="port_item6_meta">CIIC 2026 · East Ventures · Temasek</div>
+          <p class="port-desc" data-i18n="port_item6_desc">Platform sirkular ekonomi pertanian untuk kompetisi inovasi
+            pangan internasional. Fokus food security &amp; waste reduction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GET INVOLVED ═══ -->
+  <section id="contact">
+    <div class="container">
+      <div class="eyebrow" data-i18n="cta_eyebrow">Bergabung</div>
+      <h2 class="section-title" data-i18n="cta_title">Mari Berkontribusi Bersama <em>PAG Alliance</em></h2>
+
+      <div class="cta-grid">
+        <div class="cta-card featured">
+          <div class="cta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M6 18h8M3 22h18M14 22a7 7 0 1 0 0-14h-1M9 14h2M9 12a2 2 0 0 1 4 0v2M8 4h4M9 2v6" />
+            </svg>
+          </div>
+          <div class="cta-title" data-i18n="cta1_h">Peneliti & Akademisi</div>
+          <p class="cta-desc" data-i18n="cta1_p">Bergabung ke klaster riset sesuai kepakaran. Akses jaringan hibah
+            nasional dan internasional (FAO, ADB, Kementerian RI, BPDPKS).</p>
+          <button class="cta-btn" data-i18n="cta1_btn">Daftar →</button>
+        </div>
+
+        <div class="cta-card">
+          <div class="cta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M11 17a2 2 0 1 0 4 0M14 11h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-7M3 11h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3M3 11V8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v3" />
+            </svg>
+          </div>
+          <div class="cta-title" data-i18n="cta2_h">Mitra Institusi</div>
+          <p class="cta-desc" data-i18n="cta2_p">Kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda.
+            Dinas, BRIDA, dan pemerintah daerah dipersilakan.</p>
+          <button class="cta-btn cta-btn-outline" data-i18n="cta2_btn">Hubungi →</button>
+        </div>
+
+        <div class="cta-card">
+          <div class="cta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 3v18h18M7 16l4-4 4 4 6-6M14 8h5v5" />
+            </svg>
+          </div>
+          <div class="cta-title" data-i18n="cta3_h">Pendana & Donor</div>
+          <p class="cta-desc" data-i18n="cta3_p">Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline
+            hibah tersedia untuk kolaborasi strategis jangka panjang.</p>
+          <a href="support.html" class="cta-btn cta-btn-outline" data-i18n="cta3_btn">Jadi Donor →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#home" class="nav-logo">
+            <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
+            <div>
+              <div class="nav-logo-text" style="color:#fff;">PAG Alliance</div>
+              <div class="nav-logo-sub">Research · Empowerment</div>
+            </div>
+          </a>
+          <p data-i18n="footer_desc">Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus,
+            komunitas, dan kebijakan dalam satu jaringan strategis.</p>
+          <div class="domain">pagalliance.org</div>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_col1">Lembaga</h4>
+          <a href="#about" data-i18n="nav_about">Tentang</a>
+          <a href="#clusters" data-i18n="nav_clusters">Klaster Riset</a>
+          <a href="#portfolio" data-i18n="nav_portfolio">Portofolio</a>
+          <a href="#" data-i18n="footer_journal">Jurnal</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_col2">Bergabung</h4>
+          <a href="#contact" data-i18n="footer_researcher">Peneliti</a>
+          <a href="#contact" data-i18n="footer_partner">Mitra Institusi</a>
+          <a href="#contact" data-i18n="footer_funder">Pendana</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_col3">Kontak</h4>
+          <a href="mailto:info@pagalliance.org">info@pagalliance.org</a>
+          <a href="tel:+6285190866645">+62 851-9086-6645</a>
+          <a href="#">pagalliance.org</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 YAYASAN PAG ALLIANCE — <span data-i18n="footer_copy">SEMUA HAK DILINDUNGI</span></span>
+        <span>BUILT WITH CARE · BANDUNG / MALANG / ACEH</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ TOAST ═══ -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z" />
+    </svg>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    /* ─── Research map ─── */
+    const researchData = [
+      {
+        latlng: [5.55, 95.32], status: 'international',
+        title_id: 'TABRIE–BRIGHT mHealth',
+        title_en: 'TABRIE–BRIGHT mHealth',
+        meta: 'University of Michigan · CGHE · Banda Aceh',
+        desc_id: 'Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.',
+        desc_en: 'Telehealth platform for the Aceh community. Subject pool estimation, success metrics, and collaborative gap analysis.',
+        year: '2025–2026'
+      },
+      {
+        latlng: [-8.36, 116.1], status: 'active',
+        title_id: 'Dashboard Anemia & AI Pangan NTB',
+        title_en: 'Anemia Dashboard & AI Nutrition NTB',
+        meta: 'BRIDA NTB · Lombok Utara · N=401',
+        desc_id: 'K-Means + Random Forest (Acc 87.7%, AUC 0.97). LLM untuk rekomendasi pangan tradisional sehat.',
+        desc_en: 'K-Means + Random Forest (Acc 87.7%, AUC 0.97). LLM for healthy traditional food recommendations.',
+        year: '2025–2026'
+      },
+      {
+        latlng: [-3.32, 114.59], status: 'active',
+        title_id: 'Value Chain KEK Banjarmasin',
+        title_en: 'KEK Banjarmasin Value Chain',
+        meta: 'Bappenas · KEK · Konsultansi Kebijakan',
+        desc_id: 'Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis.',
+        desc_en: 'Value chain for 5 commodities: coal, CPO, shrimp, rattan, sasirangan. Digital twin gap analysis.',
+        year: '2025–2026'
+      },
+      {
+        latlng: [-3.29, 116.2], status: 'submitted',
+        title_id: 'DSS Prioritisasi PSR Sawit',
+        title_en: 'Palm Oil Replanting DSS',
+        meta: 'BPDPKS GRS · Kalimantan Selatan',
+        desc_id: 'ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun.',
+        desc_en: 'ML + remote sensing for smallholder palm oil replanting prioritization. 3-year roadmap.',
+        year: '2026–2028'
+      }
+    ];
+
+    const statusLabel = {
+      id: { active: 'Aktif', submitted: 'Disubmit', international: 'Internasional' },
+      en: { active: 'Active', submitted: 'Submitted', international: 'International' }
+    };
+
+    let researchMap, researchMarkers = [];
+
+    function buildMarkerIcon(status) {
+      return L.divIcon({
+        className: '',
+        html: `<div class="custom-marker marker-${status}"><div class="marker-pulse"></div><div class="marker-core"></div></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, -16]
+      });
+    }
+
+    function buildPopup(d, l) {
+      const lbl = statusLabel[l][d.status];
+      const title = l === 'id' ? d.title_id : d.title_en;
+      const desc = l === 'id' ? d.desc_id : d.desc_en;
+      return `<div class="map-popup">
     <span class="map-popup-status popup-${d.status}">${lbl}</span>
     <h4>${title}</h4>
     <div class="map-popup-meta">${d.meta} · ${d.year}</div>
     <p>${desc}</p>
   </div>`;
-}
-
-function initMap() {
-  if (typeof L === 'undefined' || researchMap) return;
-  researchMap = L.map('research-map', {
-    center: [-2.5, 118],
-    zoom: 5,
-    scrollWheelZoom: false,
-    zoomControl: true
-  });
-
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 19
-  }).addTo(researchMap);
-
-  const l = (typeof lang !== 'undefined') ? lang : 'id';
-  researchData.forEach((d, i) => {
-    const marker = L.marker(d.latlng, { icon: buildMarkerIcon(d.status) })
-      .addTo(researchMap)
-      .bindPopup(buildPopup(d, l), { maxWidth: 260 });
-    researchMarkers.push(marker);
-  });
-}
-
-function focusMarker(i) {
-  const d = researchData[i];
-  researchMap.setView(d.latlng, 7, { animate: true, duration: 0.8 });
-  setTimeout(() => researchMarkers[i].openPopup(), 600);
-}
-
-function refreshMapPopups() {
-  const l = (typeof lang !== 'undefined') ? lang : 'id';
-  researchMarkers.forEach((m, i) => m.setPopupContent(buildPopup(researchData[i], l)));
-}
-
-/* initMap is called right after detectLang() below, once all defs are ready */
-
-const T = {
-  id: {
-    nav_about:"Tentang", nav_impact:"Dampak", nav_clusters:"Klaster", nav_journey:"Cakupan",
-    nav_portfolio:"Portofolio", nav_contact:"Kontak", nav_join:"Dukung Kami",
-    hero_tag:"Yayasan Riset & Pemberdayaan",
-    hero_h1_html:"Riset yang Berdampak.<br><em>Komunitas yang Berdaya.</em>",
-    hero_sub:"PAG Alliance menghubungkan akademisi dari 8 perguruan tinggi Indonesia untuk menjawab tantangan nyata — ketahanan pangan, kesehatan masyarakat, inovasi digital, dan pembangunan berkelanjutan.",
-    hero_btn1:"Lihat Program", hero_btn2:"Bergabung Sebagai Peneliti",
-    hero_progress_label:"Proyek Aktif",
-    stat1:"Universitas Mitra", stat2:"Klaster Riset", stat3:"Peneliti Aktif", stat4:"Proposal & Grant",
-    about_eyebrow:"Tentang Kami", about_title:"Dari Kampus ke Lapangan — <em>Riset yang Hidup</em>",
-    about_p1:"PAG Alliance adalah yayasan riset dan pemberdayaan multidisiplin yang lahir dari kolaborasi akademisi terkemuka Indonesia. Berdiri resmi pada 2026 dengan akta notaris, NIB, dan SK pendirian lengkap.",
-    about_p2:"Kami tidak sekadar menerbitkan jurnal. Kami hadir di lapangan — bersama petani, ibu hamil, pelaku UMKM, dan pemerintah daerah — merancang solusi berbasis bukti yang siap diimplementasikan.",
-    about_img_caption:"Jaringan riset multidisiplin lintas pulau, dari kampus ke desa",
-    about_link:"Lihat Portofolio Riset →",
-    impact1_desc:"Ibu hamil dianalisis dalam studi surveilans anemia Lombok Utara — model ML dengan akurasi 87.7%, AUC 0.97",
-    impact2_desc:"Provinsi terdampak: Aceh, Sumatera Barat, Jawa Barat, Jawa Timur, Sulawesi Selatan, NTB — dengan pipeline hibah aktif",
-    impact3_desc:"Proposal & grant aktif 2025–2026: BIMA Kemdiktisaintek, BRIDA, BPDPKS GRS, hingga kolaborasi internasional dengan University of Michigan",
-    photo_cap1:"Lapangan · Ketahanan Pangan", photo_cap2:"AI · Big Data", photo_cap3:"Komunitas · Pemberdayaan",
-    cluster_eyebrow:"Fokus Riset", cluster_title:"Tujuh Klaster <em>Multidisiplin</em>",
-    cluster_link:"Bergabung ke Klaster →", cluster_open:"Rekrutmen terbuka",
-    cluster_new:"Klaster Baru", cluster_propose:"Ajukan proposal klaster baru →",
-    journey_eyebrow:"Cakupan Penelitian", journey_title:"Sebaran Riset PAG Alliance di <em>Seluruh Indonesia</em>",
-    journey_sub:"Dari Aceh hingga Kalimantan — riset PAG Alliance menjangkau berbagai wilayah Indonesia dengan fokus dampak nyata di tingkat daerah.",
-    legend_title:"Status Proyek",
-    loc1_region:"Aceh", loc1_project:"TABRIE–BRIGHT mHealth",
-    loc2_region:"Nusa Tenggara Barat", loc2_project:"Dashboard Anemia & AI Pangan",
-    loc3_region:"Kalimantan Selatan", loc3_project:"Value Chain KEK",
-    loc4_region:"Kalimantan Selatan", loc4_project:"DSS Prioritisasi PSR Sawit",
-    port_eyebrow:"Rekam Jejak", port_title:"Portofolio Riset & <em>Grant Aktif</em>",
-    port_sub:"Sebagian proyek yang telah dan sedang dijalankan tim PAG Alliance di berbagai skema hibah nasional dan internasional sepanjang 2025–2026.",
-    port_item1_title:"Dashboard Surveilans Anemia Ibu Hamil",
-    port_item1_meta:"BRIDA NTB · Lombok Utara · N=401",
-    port_item1_desc:"K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.",
-    port_item2_title:"AI Pangan Tradisional Sehat — NTB",
-    port_item2_meta:"BRIDA NTB · Sasaran: ibu muda Lombok",
-    port_item2_desc:"Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi stunting dan penyakit tidak menular pada keluarga muda.",
-    port_item3_title:"DSS Prioritisasi PSR Sawit — Kotabaru",
-    port_item3_meta:"BPDPKS GRS · Kalimantan Selatan",
-    port_item3_desc:"ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun lintas PT.",
-    port_item4_title:"TABRIE–BRIGHT mHealth — Banda Aceh",
-    port_item4_meta:"University of Michigan · CGHE",
-    port_item4_desc:"Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.",
-    port_item5_title:"Value Chain KEK Banjarmasin & Mekar Putih",
-    port_item5_meta:"Bappenas · KEK · Konsultansi Kebijakan",
-    port_item5_desc:"Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis untuk KEK Kotabaru.",
-    port_item6_title:"Agro-Waste Loop Platform",
-    port_item6_meta:"CIIC 2026 · East Ventures · Temasek",
-    port_item6_desc:"Platform sirkular ekonomi pertanian untuk kompetisi inovasi pangan internasional. Fokus food security &amp; waste reduction.",
-    status_active:"Aktif", status_submitted:"Disubmit", status_international:"Internasional",
-    cta_eyebrow:"Bergabung", cta_title:"Mari Berkontribusi Bersama <em>PAG Alliance</em>",
-    cta1_h:"Peneliti & Akademisi", cta1_p:"Bergabung ke klaster riset sesuai kepakaran. Akses jaringan hibah nasional dan internasional (FAO, ADB, Kementerian RI, BPDPKS).", cta1_btn:"Daftar →",
-    cta2_h:"Mitra Institusi", cta2_p:"Kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda. Dinas, BRIDA, dan pemerintah daerah dipersilakan.", cta2_btn:"Hubungi →",
-    cta3_h:"Pendana & Donor", cta3_p:"Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline hibah tersedia untuk kolaborasi strategis jangka panjang.", cta3_btn:"Jadi Donor →",
-    footer_desc:"Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus, komunitas, dan kebijakan dalam satu jaringan strategis.",
-    footer_col1:"Lembaga", footer_col2:"Bergabung", footer_col3:"Kontak",
-    footer_journal:"Jurnal", footer_researcher:"Peneliti", footer_partner:"Mitra Institusi", footer_funder:"Pendana",
-    footer_copy:"Semua hak dilindungi",
-    detected:"Terdeteksi: Indonesia", toast:"Halaman ditampilkan dalam Bahasa Indonesia"
-  },
-  en: {
-    nav_about:"About", nav_impact:"Impact", nav_clusters:"Clusters", nav_journey:"Coverage",
-    nav_portfolio:"Portfolio", nav_contact:"Contact", nav_join:"Support Us",
-    hero_tag:"Research & Community Empowerment Foundation",
-    hero_h1_html:"Impactful Research.<br><em>Empowered Communities.</em>",
-    hero_sub:"PAG Alliance connects academics from 8 Indonesian universities to address real challenges — food security, public health, digital innovation, and sustainable development.",
-    hero_btn1:"Explore Programs", hero_btn2:"Join as a Researcher",
-    hero_progress_label:"Active Projects",
-    stat1:"Partner Universities", stat2:"Research Clusters", stat3:"Active Researchers", stat4:"Proposals & Grants",
-    about_eyebrow:"About Us", about_title:"From Campus to Community — <em>Research That Lives</em>",
-    about_p1:"PAG Alliance is a multidisciplinary research and empowerment foundation built by leading Indonesian academics. Officially established in 2026 with notarial deed, NIB, and founding decree.",
-    about_p2:"We don't just publish journals. We work in the field — alongside farmers, pregnant mothers, SME entrepreneurs, and local governments — designing evidence-based solutions ready to be implemented.",
-    about_img_caption:"Multidisciplinary research network across islands, from campus to villages",
-    about_link:"View Research Portfolio →",
-    impact1_desc:"Pregnant women analyzed in the North Lombok anemia surveillance study — ML model with 87.7% accuracy, AUC 0.97",
-    impact2_desc:"Provinces impacted: Aceh, West Sumatra, West Java, East Java, South Sulawesi, NTB — with active grant pipelines",
-    impact3_desc:"Active proposals and grants throughout 2025–2026: BIMA, BRIDA, BPDPKS GRS schemes, and international collaborations with University of Michigan",
-    photo_cap1:"Field · Food Security", photo_cap2:"AI · Big Data", photo_cap3:"Community · Empowerment",
-    cluster_eyebrow:"Research Focus", cluster_title:"Seven <em>Multidisciplinary</em> Clusters",
-    cluster_link:"Join a Cluster →", cluster_open:"Open recruitment",
-    cluster_new:"New Cluster", cluster_propose:"Submit a cluster proposal →",
-    journey_eyebrow:"Research Coverage", journey_title:"PAG Alliance Research Locations Across <em>Indonesia</em>",
-    journey_sub:"From Aceh to Kalimantan — PAG Alliance research reaches regions across Indonesia with a focus on real impact at the local level.",
-    legend_title:"Project Status",
-    loc1_region:"Aceh", loc1_project:"TABRIE–BRIGHT mHealth",
-    loc2_region:"West Nusa Tenggara", loc2_project:"Anemia Dashboard & AI Nutrition",
-    loc3_region:"South Kalimantan", loc3_project:"KEK Value Chain",
-    loc4_region:"South Kalimantan", loc4_project:"Palm Oil Replanting DSS",
-    port_eyebrow:"Track Record", port_title:"Research Portfolio & <em>Active Grants</em>",
-    port_sub:"A selection of projects undertaken by the PAG Alliance team across national and international grant schemes throughout 2025–2026.",
-    port_item1_title:"Anemia Surveillance Dashboard for Pregnant Women",
-    port_item1_meta:"BRIDA NTB · North Lombok · N=401",
-    port_item1_desc:"K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target journal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.",
-    port_item2_title:"AI Healthy Traditional Foods — NTB",
-    port_item2_meta:"BRIDA NTB · Target: young mothers in Lombok",
-    port_item2_desc:"Web app + LLM (Gemini 1.5 Flash) for 50 participants. Intervention for stunting and non-communicable diseases in young families.",
-    port_item3_title:"Palm Oil Replanting DSS — Kotabaru",
-    port_item3_meta:"BPDPKS GRS · South Kalimantan",
-    port_item3_desc:"ML + remote sensing for smallholder palm oil replanting prioritization. 3-year roadmap across institutions.",
-    port_item4_title:"TABRIE–BRIGHT mHealth — Banda Aceh",
-    port_item4_meta:"University of Michigan · CGHE",
-    port_item4_desc:"Telehealth platform for the Aceh community. Subject pool estimation, success metrics, and collaborative gap analysis.",
-    port_item5_title:"KEK Banjarmasin & Mekar Putih Value Chain",
-    port_item5_meta:"Bappenas · KEK · Policy Consultation",
-    port_item5_desc:"Downstream processing of 5 commodities: coal, CPO, shrimp, rattan, sasirangan. Digital twin gap analysis for KEK Kotabaru.",
-    port_item6_title:"Agro-Waste Loop Platform",
-    port_item6_meta:"CIIC 2026 · East Ventures · Temasek",
-    port_item6_desc:"Circular economy platform for agricultural innovation in international food competition. Focus on food security &amp; waste reduction.",
-    status_active:"Active", status_submitted:"Submitted", status_international:"International",
-    cta_eyebrow:"Get Involved", cta_title:"Contribute Together with <em>PAG Alliance</em>",
-    cta1_h:"Researchers & Academics", cta1_p:"Join a research cluster matching your expertise. Access national and international grant networks (FAO, ADB, Ministries, BPDPKS).", cta1_btn:"Register →",
-    cta2_h:"Institutional Partners", cta2_p:"Collaborate on applied research and community empowerment programs in your region. Government agencies and BRIDA are welcome.", cta2_btn:"Contact →",
-    cta3_h:"Funders & Donors", cta3_p:"Support evidence-based research that creates real impact. Long-term strategic collaboration pipelines available.", cta3_btn:"Become a Donor →",
-    footer_desc:"Indonesia's multidisciplinary research and community empowerment foundation. Connecting campuses, communities, and policy in one strategic network.",
-    footer_col1:"Organization", footer_col2:"Get Involved", footer_col3:"Contact",
-    footer_journal:"Journal", footer_researcher:"Researchers", footer_partner:"Institutional Partners", footer_funder:"Funders",
-    footer_copy:"All rights reserved",
-    detected:"Detected: International visitor", toast:"Page displayed in English based on your location"
-  }
-};
-
-let lang = 'id';
-
-function applyLang(l) {
-  lang = l;
-  const t = T[l];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const k = el.getAttribute('data-i18n');
-    if (!t[k]) return;
-    const htmlKeys = ['hero_h1_html','about_title','cluster_title','port_title','journey_title','cta_title'];
-    if (htmlKeys.includes(k)) {
-      el.innerHTML = t[k];
-    } else {
-      el.textContent = t[k];
     }
-  });
-  document.getElementById('btn-id').classList.toggle('active', l==='id');
-  document.getElementById('btn-en').classList.toggle('active', l==='en');
-  document.getElementById('lang-msg').textContent = t.detected;
-  document.documentElement.lang = l;
-  if (researchMarkers.length) refreshMapPopups();
-}
 
-function setLang(l) {
-  applyLang(l);
-  showToast(T[l].toast);
-}
+    function initMap() {
+      if (typeof L === 'undefined' || researchMap) return;
+      researchMap = L.map('research-map', {
+        center: [-2.5, 118],
+        zoom: 5,
+        scrollWheelZoom: false,
+        zoomControl: true
+      });
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(researchMap);
 
-function detectLang() {
-  const langs = navigator.languages || [navigator.language || 'id'];
-  const primary = (langs[0] || 'id').toLowerCase();
-  const isID = primary.startsWith('id') || primary.startsWith('ms');
-  let tz = '';
-  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e) {}
-  const inID = ['Asia/Jakarta','Asia/Makassar','Asia/Jayapura','Asia/Pontianak'].includes(tz);
-  const l = (isID || inID) ? 'id' : 'en';
-  applyLang(l);
-  if (l === 'en') setTimeout(() => showToast(T.en.toast), 700);
-}
+      const l = (typeof lang !== 'undefined') ? lang : 'id';
+      researchData.forEach((d, i) => {
+        const marker = L.marker(d.latlng, { icon: buildMarkerIcon(d.status) })
+          .addTo(researchMap)
+          .bindPopup(buildPopup(d, l), { maxWidth: 260 });
+        researchMarkers.push(marker);
+      });
+    }
 
-detectLang();
-setTimeout(() => {
-  const f = document.getElementById('hp-fill');
-  if (f) f.style.width = '18%';
-}, 400);
-initMap();
-</script>
+    function focusMarker(i) {
+      const d = researchData[i];
+      researchMap.setView(d.latlng, 7, { animate: true, duration: 0.8 });
+      setTimeout(() => researchMarkers[i].openPopup(), 600);
+    }
+
+    function refreshMapPopups() {
+      const l = (typeof lang !== 'undefined') ? lang : 'id';
+      researchMarkers.forEach((m, i) => m.setPopupContent(buildPopup(researchData[i], l)));
+    }
+
+    /* initMap is called right after detectLang() below, once all defs are ready */
+
+    const T = {
+      id: {
+        nav_about: "Tentang", nav_impact: "Dampak", nav_clusters: "Klaster", nav_journey: "Cakupan",
+        nav_portfolio: "Portofolio", nav_contact: "Kontak", nav_join: "Dukung Kami",
+        hero_tag: "Yayasan Riset & Pemberdayaan",
+        hero_h1_html: "Riset yang Berdampak.<br><em>Komunitas yang Berdaya.</em>",
+        hero_sub: "PAG Alliance menghubungkan akademisi dari 8 perguruan tinggi Indonesia untuk menjawab tantangan nyata — ketahanan pangan, kesehatan masyarakat, inovasi digital, dan pembangunan berkelanjutan.",
+        hero_btn1: "Lihat Program", hero_btn2: "Bergabung Sebagai Peneliti",
+        hero_progress_label: "Proyek Aktif",
+        stat1: "Universitas Mitra", stat2: "Klaster Riset", stat3: "Peneliti Aktif", stat4: "Proposal & Grant",
+        about_eyebrow: "Tentang Kami", about_title: "Dari Kampus ke Lapangan — <em>Riset yang Hidup</em>",
+        about_p1: "PAG Alliance adalah yayasan riset dan pemberdayaan multidisiplin yang lahir dari kolaborasi akademisi terkemuka Indonesia. Berdiri resmi pada 2026 dengan akta notaris, NIB, dan SK pendirian lengkap.",
+        about_p2: "Kami tidak sekadar menerbitkan jurnal. Kami hadir di lapangan — bersama petani, ibu hamil, pelaku UMKM, dan pemerintah daerah — merancang solusi berbasis bukti yang siap diimplementasikan.",
+        about_img_caption: "Jaringan riset multidisiplin lintas pulau, dari kampus ke desa",
+        about_link: "Lihat Portofolio Riset →",
+        impact1_desc: "Ibu hamil dianalisis dalam studi surveilans anemia Lombok Utara — model ML dengan akurasi 87.7%, AUC 0.97",
+        impact2_desc: "Provinsi terdampak: Aceh, Sumatera Barat, Jawa Barat, Jawa Timur, Sulawesi Selatan, NTB — dengan pipeline hibah aktif",
+        impact3_desc: "Proposal & grant aktif 2025–2026: BIMA Kemdiktisaintek, BRIDA, BPDPKS GRS, hingga kolaborasi internasional dengan University of Michigan",
+        photo_cap1: "Lapangan · Ketahanan Pangan", photo_cap2: "AI · Big Data", photo_cap3: "Komunitas · Pemberdayaan",
+        cluster_eyebrow: "Fokus Riset", cluster_title: "Enam Klaster <em>Riset</em>",
+        cluster_link: "Bergabung ke Klaster →", cluster_open: "Rekrutmen terbuka",
+        cluster_new: "Klaster Baru", cluster_propose: "Ajukan proposal klaster baru →",
+        journey_eyebrow: "Cakupan Penelitian", journey_title: "Sebaran Riset PAG Alliance di <em>Seluruh Indonesia</em>",
+        journey_sub: "Dari Aceh hingga Kalimantan — riset PAG Alliance menjangkau berbagai wilayah Indonesia dengan fokus dampak nyata di tingkat daerah.",
+        legend_title: "Status Proyek",
+        loc1_region: "Aceh", loc1_project: "TABRIE–BRIGHT mHealth",
+        loc2_region: "Nusa Tenggara Barat", loc2_project: "Dashboard Anemia & AI Pangan",
+        loc3_region: "Kalimantan Selatan", loc3_project: "Value Chain KEK",
+        loc4_region: "Kalimantan Selatan", loc4_project: "DSS Prioritisasi PSR Sawit",
+        port_eyebrow: "Rekam Jejak", port_title: "Portofolio Riset & <em>Grant Aktif</em>",
+        port_sub: "Sebagian proyek yang telah dan sedang dijalankan tim PAG Alliance di berbagai skema hibah nasional dan internasional sepanjang 2025–2026.",
+        port_item1_title: "Dashboard Surveilans Anemia Ibu Hamil",
+        port_item1_meta: "BRIDA NTB · Lombok Utara · N=401",
+        port_item1_desc: "K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target jurnal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.",
+        port_item2_title: "AI Pangan Tradisional Sehat — NTB",
+        port_item2_meta: "BRIDA NTB · Sasaran: ibu muda Lombok",
+        port_item2_desc: "Web app + LLM (Gemini 1.5 Flash) untuk 50 peserta. Intervensi stunting dan penyakit tidak menular pada keluarga muda.",
+        port_item3_title: "DSS Prioritisasi PSR Sawit — Kotabaru",
+        port_item3_meta: "BPDPKS GRS · Kalimantan Selatan",
+        port_item3_desc: "ML + remote sensing untuk prioritisasi replanting lahan sawit rakyat. Roadmap 3 tahun lintas PT.",
+        port_item4_title: "TABRIE–BRIGHT mHealth — Banda Aceh",
+        port_item4_meta: "University of Michigan · CGHE",
+        port_item4_desc: "Platform telehealth untuk komunitas Aceh. Estimasi subject pool, success metrics, dan gap analysis kolaboratif.",
+        port_item5_title: "Value Chain KEK Banjarmasin & Mekar Putih",
+        port_item5_meta: "Bappenas · KEK · Konsultansi Kebijakan",
+        port_item5_desc: "Hilirisasi 5 komoditas: batu bara, CPO, udang, rotan, sasirangan. Digital twin gap analysis untuk KEK Kotabaru.",
+        port_item6_title: "Agro-Waste Loop Platform",
+        port_item6_meta: "CIIC 2026 · East Ventures · Temasek",
+        port_item6_desc: "Platform sirkular ekonomi pertanian untuk kompetisi inovasi pangan internasional. Fokus food security &amp; waste reduction.",
+        status_active: "Aktif", status_submitted: "Disubmit", status_international: "Internasional",
+        cta_eyebrow: "Bergabung", cta_title: "Mari Berkontribusi Bersama <em>PAG Alliance</em>",
+        cta1_h: "Peneliti & Akademisi", cta1_p: "Bergabung ke klaster riset sesuai kepakaran. Akses jaringan hibah nasional dan internasional (FAO, ADB, Kementerian RI, BPDPKS).", cta1_btn: "Daftar →",
+        cta2_h: "Mitra Institusi", cta2_p: "Kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda. Dinas, BRIDA, dan pemerintah daerah dipersilakan.", cta2_btn: "Hubungi →",
+        cta3_h: "Pendana & Donor", cta3_p: "Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline hibah tersedia untuk kolaborasi strategis jangka panjang.", cta3_btn: "Jadi Donor →",
+        footer_desc: "Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus, komunitas, dan kebijakan dalam satu jaringan strategis.",
+        footer_col1: "Lembaga", footer_col2: "Bergabung", footer_col3: "Kontak",
+        footer_journal: "Jurnal", footer_researcher: "Peneliti", footer_partner: "Mitra Institusi", footer_funder: "Pendana",
+        footer_copy: "Semua hak dilindungi",
+        detected: "Terdeteksi: Indonesia", toast: "Halaman ditampilkan dalam Bahasa Indonesia"
+      },
+      en: {
+        nav_about: "About", nav_impact: "Impact", nav_clusters: "Clusters", nav_journey: "Coverage",
+        nav_portfolio: "Portfolio", nav_contact: "Contact", nav_join: "Support Us",
+        hero_tag: "Research & Community Empowerment Foundation",
+        hero_h1_html: "Impactful Research.<br><em>Empowered Communities.</em>",
+        hero_sub: "PAG Alliance connects academics from 8 Indonesian universities to address real challenges — food security, public health, digital innovation, and sustainable development.",
+        hero_btn1: "Explore Programs", hero_btn2: "Join as a Researcher",
+        hero_progress_label: "Active Projects",
+        stat1: "Partner Universities", stat2: "Research Clusters", stat3: "Active Researchers", stat4: "Proposals & Grants",
+        about_eyebrow: "About Us", about_title: "From Campus to Community — <em>Research That Lives</em>",
+        about_p1: "PAG Alliance is a multidisciplinary research and empowerment foundation built by leading Indonesian academics. Officially established in 2026 with notarial deed, NIB, and founding decree.",
+        about_p2: "We don't just publish journals. We work in the field — alongside farmers, pregnant mothers, SME entrepreneurs, and local governments — designing evidence-based solutions ready to be implemented.",
+        about_img_caption: "Multidisciplinary research network across islands, from campus to villages",
+        about_link: "View Research Portfolio →",
+        impact1_desc: "Pregnant women analyzed in the North Lombok anemia surveillance study — ML model with 87.7% accuracy, AUC 0.97",
+        impact2_desc: "Provinces impacted: Aceh, West Sumatra, West Java, East Java, South Sulawesi, NTB — with active grant pipelines",
+        impact3_desc: "Active proposals and grants throughout 2025–2026: BIMA, BRIDA, BPDPKS GRS schemes, and international collaborations with University of Michigan",
+        photo_cap1: "Field · Food Security", photo_cap2: "AI · Big Data", photo_cap3: "Community · Empowerment",
+        cluster_eyebrow: "Research Focus", cluster_title: "Six Research <em>Clusters</em>",
+        cluster_link: "Join a Cluster →", cluster_open: "Open recruitment",
+        cluster_new: "New Cluster", cluster_propose: "Submit a cluster proposal →",
+        journey_eyebrow: "Research Coverage", journey_title: "PAG Alliance Research Locations Across <em>Indonesia</em>",
+        journey_sub: "From Aceh to Kalimantan — PAG Alliance research reaches regions across Indonesia with a focus on real impact at the local level.",
+        legend_title: "Project Status",
+        loc1_region: "Aceh", loc1_project: "TABRIE–BRIGHT mHealth",
+        loc2_region: "West Nusa Tenggara", loc2_project: "Anemia Dashboard & AI Nutrition",
+        loc3_region: "South Kalimantan", loc3_project: "KEK Value Chain",
+        loc4_region: "South Kalimantan", loc4_project: "Palm Oil Replanting DSS",
+        port_eyebrow: "Track Record", port_title: "Research Portfolio & <em>Active Grants</em>",
+        port_sub: "A selection of projects undertaken by the PAG Alliance team across national and international grant schemes throughout 2025–2026.",
+        port_item1_title: "Anemia Surveillance Dashboard for Pregnant Women",
+        port_item1_meta: "BRIDA NTB · North Lombok · N=401",
+        port_item1_desc: "K-Means clustering + Random Forest (Acc 87.7%, AUC 0.97). Target journal: <em>Informatics for Health and Social Care</em>, Taylor &amp; Francis.",
+        port_item2_title: "AI Healthy Traditional Foods — NTB",
+        port_item2_meta: "BRIDA NTB · Target: young mothers in Lombok",
+        port_item2_desc: "Web app + LLM (Gemini 1.5 Flash) for 50 participants. Intervention for stunting and non-communicable diseases in young families.",
+        port_item3_title: "Palm Oil Replanting DSS — Kotabaru",
+        port_item3_meta: "BPDPKS GRS · South Kalimantan",
+        port_item3_desc: "ML + remote sensing for smallholder palm oil replanting prioritization. 3-year roadmap across institutions.",
+        port_item4_title: "TABRIE–BRIGHT mHealth — Banda Aceh",
+        port_item4_meta: "University of Michigan · CGHE",
+        port_item4_desc: "Telehealth platform for the Aceh community. Subject pool estimation, success metrics, and collaborative gap analysis.",
+        port_item5_title: "KEK Banjarmasin & Mekar Putih Value Chain",
+        port_item5_meta: "Bappenas · KEK · Policy Consultation",
+        port_item5_desc: "Downstream processing of 5 commodities: coal, CPO, shrimp, rattan, sasirangan. Digital twin gap analysis for KEK Kotabaru.",
+        port_item6_title: "Agro-Waste Loop Platform",
+        port_item6_meta: "CIIC 2026 · East Ventures · Temasek",
+        port_item6_desc: "Circular economy platform for agricultural innovation in international food competition. Focus on food security &amp; waste reduction.",
+        status_active: "Active", status_submitted: "Submitted", status_international: "International",
+        cta_eyebrow: "Get Involved", cta_title: "Contribute Together with <em>PAG Alliance</em>",
+        cta1_h: "Researchers & Academics", cta1_p: "Join a research cluster matching your expertise. Access national and international grant networks (FAO, ADB, Ministries, BPDPKS).", cta1_btn: "Register →",
+        cta2_h: "Institutional Partners", cta2_p: "Collaborate on applied research and community empowerment programs in your region. Government agencies and BRIDA are welcome.", cta2_btn: "Contact →",
+        cta3_h: "Funders & Donors", cta3_p: "Support evidence-based research that creates real impact. Long-term strategic collaboration pipelines available.", cta3_btn: "Become a Donor →",
+        footer_desc: "Indonesia's multidisciplinary research and community empowerment foundation. Connecting campuses, communities, and policy in one strategic network.",
+        footer_col1: "Organization", footer_col2: "Get Involved", footer_col3: "Contact",
+        footer_journal: "Journal", footer_researcher: "Researchers", footer_partner: "Institutional Partners", footer_funder: "Funders",
+        footer_copy: "All rights reserved",
+        detected: "Detected: International visitor", toast: "Page displayed in English based on your location"
+      }
+    };
+
+    let lang = 'id';
+
+    function applyLang(l) {
+      lang = l;
+      const t = T[l];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (!t[k]) return;
+        const htmlKeys = ['hero_h1_html', 'about_title', 'cluster_title', 'port_title', 'journey_title', 'cta_title'];
+        if (htmlKeys.includes(k)) {
+          el.innerHTML = t[k];
+        } else {
+          el.textContent = t[k];
+        }
+      });
+      document.getElementById('btn-id').classList.toggle('active', l === 'id');
+      document.getElementById('btn-en').classList.toggle('active', l === 'en');
+      document.getElementById('lang-msg').textContent = t.detected;
+      document.documentElement.lang = l;
+      if (researchMarkers.length) refreshMapPopups();
+    }
+
+    function setLang(l) {
+      applyLang(l);
+      showToast(T[l].toast);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function animateNumber(el, duration = 1400) {
+      const target = Number(el.dataset.target);
+      if (Number.isNaN(target)) return;
+      const suffix = el.dataset.suffix || '';
+      const startTime = performance.now();
+
+      const tick = (now) => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const current = Math.round(progress * target);
+        el.innerHTML = current + (suffix ? `<em>${suffix}</em>` : '');
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    }
+
+    function initNumberCounters() {
+      const counters = Array.from(document.querySelectorAll('.stat-num[data-target], .impact-card-num[data-target]'));
+      if (!counters.length) return;
+
+      counters.forEach(el => {
+        const suffix = el.dataset.suffix || '';
+        el.innerHTML = `0${suffix ? `<em>${suffix}</em>` : ''}`;
+      });
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          if (!el.dataset.animated) {
+            animateNumber(el);
+            el.dataset.animated = 'true';
+          }
+          obs.unobserve(el);
+        });
+      }, { threshold: 0.35 });
+
+      counters.forEach(el => observer.observe(el));
+    }
+
+    function detectLang() {
+      const langs = navigator.languages || [navigator.language || 'id'];
+      const primary = (langs[0] || 'id').toLowerCase();
+      const isID = primary.startsWith('id') || primary.startsWith('ms');
+      let tz = '';
+      try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { }
+      const inID = ['Asia/Jakarta', 'Asia/Makassar', 'Asia/Jayapura', 'Asia/Pontianak'].includes(tz);
+      const l = (isID || inID) ? 'id' : 'en';
+      applyLang(l);
+      if (l === 'en') setTimeout(() => showToast(T.en.toast), 700);
+    }
+
+    detectLang();
+    initNumberCounters();
+    setTimeout(() => {
+      const f = document.getElementById('hp-fill');
+      if (f) f.style.width = '18%';
+    }, 400);
+    initMap();
+  </script>
 </body>
+
 </html>

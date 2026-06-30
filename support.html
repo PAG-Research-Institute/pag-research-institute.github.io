@@ -423,9 +423,21 @@
     }
 
     function detectLang() {
-      const langPref = navigator.language || 'id';
-      const short = langPref.split('-')[0];
-      return short === 'en' ? 'en' : 'id';
+      const langs = navigator.languages || [navigator.language || 'id'];
+      const primary = (langs[0] || 'id').toLowerCase();
+      const isIndonesian = primary.startsWith('id') || primary.startsWith('ms');
+
+      let timeZone = '';
+      try {
+        timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      } catch (e) {
+        timeZone = '';
+      }
+
+      const idTimeZones = ['asia/jakarta', 'asia/makassar', 'asia/jayapura', 'asia/pontianak'];
+      const inIndonesianZone = idTimeZones.includes(timeZone.toLowerCase());
+
+      return (isIndonesian || inIndonesianZone) ? 'id' : 'en';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
