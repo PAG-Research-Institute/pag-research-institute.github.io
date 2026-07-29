@@ -95,10 +95,6 @@
       font-family: var(--mono);
     }
 
-    .lang-detected {
-      color: var(--copper-light);
-    }
-
     .lang-toggle {
       display: flex;
       background: rgba(255, 255, 255, 0.06);
@@ -494,6 +490,12 @@
     }
 
     /* ─── ABOUT ─── */
+    #about {
+      position: relative;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+      overflow: hidden;
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -504,29 +506,40 @@
     .about-vis {
       position: relative;
       aspect-ratio: 4/5;
-      background: var(--surface);
+      background-image:
+        linear-gradient(135deg, rgba(10, 31, 68, 0.2) 0%, rgba(217, 119, 87, 0.1) 100%),
+        url('assets/img/about-field.jpeg');
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       overflow: hidden;
-    }
-
-    .about-vis svg {
-      width: 100%;
-      height: 100%;
+      box-shadow: 0 8px 32px rgba(10, 31, 68, 0.08);
     }
 
     .about-vis-tag {
       position: absolute;
       bottom: 20px;
       left: 20px;
-      background: var(--white);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
       border-left: 3px solid var(--copper);
       padding: 12px 16px;
       max-width: 240px;
       font-size: 12px;
       color: var(--text-2);
       line-height: 1.5;
+      z-index: 2;
     }
 
     .about-text {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px rgba(10, 31, 68, 0.04);
+      padding: 48px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
       gap: 22px;
@@ -719,6 +732,8 @@
       flex-direction: column;
       gap: 14px;
       border: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
     }
 
     .cluster-card:hover {
@@ -809,7 +824,6 @@
       background: var(--white);
       padding: 110px 48px;
       border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
     }
 
     .journey-header {
@@ -1195,31 +1209,41 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+
+    .cta-card:hover {
+      border-color: var(--copper-light);
+      box-shadow: 0 8px 30px rgba(10, 31, 68, 0.06);
+      transform: translateY(-2px);
     }
 
     .cta-icon {
       width: 56px;
       height: 56px;
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--copper-pale);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface);
+      background: var(--copper-pale);
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
     }
 
     .cta-icon svg {
       width: 28px;
       height: 28px;
-      stroke: var(--navy-900);
+      stroke: var(--copper);
+      transition: stroke 0.3s;
     }
 
-    .cta-card.featured .cta-icon {
+    .cta-card:hover .cta-icon {
       background: var(--copper);
       border-color: var(--copper);
     }
 
-    .cta-card.featured .cta-icon svg {
-      stroke: var(--navy-900);
+    .cta-card:hover .cta-icon svg {
+      stroke: var(--white);
     }
 
     .cta-title {
@@ -1239,6 +1263,9 @@
 
     .cta-btn {
       align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-family: var(--mono);
       font-size: 12px;
       letter-spacing: 1px;
@@ -1247,23 +1274,212 @@
       background: var(--navy-900);
       color: #fff;
       border: none;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
     }
 
     .cta-btn:hover {
       background: var(--copper);
-      color: var(--navy-900);
+      color: var(--white);
     }
 
-    .cta-btn-outline {
+    /* ─── CONTACT MODAL ─── */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 31, 68, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    
+    .modal-content {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 480px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 50px rgba(10, 31, 68, 0.15);
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1001;
+    }
+    
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+    
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
       background: transparent;
+      border: none;
+      color: var(--text-3);
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 4px;
+    }
+    
+    .modal-close-btn:hover {
+      color: var(--copper);
+    }
+    
+    .modal-close-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .modal-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    
+    .modal-icon-badge {
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--copper-pale);
+      background: var(--copper-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    
+    .modal-icon-badge svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--copper);
+    }
+    
+    .modal-title {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 500;
       color: var(--navy-900);
-      border: 1px solid var(--navy-900);
+      margin-bottom: 8px;
+    }
+    
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+    
+    .contact-method-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: border-color 0.2s;
+    }
+    
+    .contact-method-card:hover {
+      border-color: var(--copper-light);
+    }
+    
+    .contact-method-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .contact-method-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-3);
+    }
+    
+    .contact-method-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy-900);
+      word-break: break-all;
+      transition: color 0.2s;
+    }
+    
+    .contact-method-value:hover {
+      color: var(--copper);
+    }
+    
+    .contact-method-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .contact-action-btn {
+      flex: 1;
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--white);
+      color: var(--text-2);
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .contact-action-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .contact-action-btn.copy-btn:hover {
+      border-color: var(--navy-900);
+      color: var(--navy-900);
+    }
+    
+    .contact-action-btn.primary-btn {
+      background: var(--navy-900);
+      color: var(--white);
+      border-color: var(--navy-900);
+    }
+    
+    .contact-action-btn.primary-btn:hover {
+      background: var(--copper);
+      border-color: var(--copper);
     }
 
-    .cta-btn-outline:hover {
-      background: var(--navy-900);
-      color: #fff;
+    @media (max-width: 768px) {
+      .modal-content {
+        padding: 32px 20px;
+        width: 95%;
+      }
     }
 
     /* ─── FOOTER ─── */
@@ -1316,6 +1532,38 @@
       color: var(--copper-light);
       margin-top: 16px;
       letter-spacing: 0.5px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 4px;
+    }
+
+    .footer-socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.25s ease;
+    }
+
+    .footer-socials a:hover {
+      background: var(--copper);
+      color: var(--white);
+      border-color: var(--copper);
+      transform: translateY(-2px);
+    }
+
+    .footer-socials svg {
+      width: 18px;
+      height: 18px;
     }
 
     .footer-col h4 {
@@ -1483,7 +1731,6 @@
 
   <!-- ═══ LANG BAR ═══ -->
   <div class="lang-bar">
-    <span class="lang-detected" id="lang-msg"></span>
     <div class="lang-toggle">
       <button class="lang-btn" id="btn-id" onclick="setLang('id')">ID</button>
       <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
@@ -1526,9 +1773,9 @@
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
-          <button class="btn-outline" data-i18n="hero_btn2">
+          <a href="contact.html?type=researcher" class="btn-outline" data-i18n="hero_btn2">
             <span>Bergabung Sebagai Peneliti</span>
-          </button>
+          </a>
         </div>
         <div class="hero-progress">
           <span class="hp-label" data-i18n="hero_progress_label">Proyek Aktif</span>
@@ -1605,11 +1852,6 @@
           <circle cx="240" cy="240" r="60" stroke="#D97757" stroke-width="0.5" opacity="0.5" stroke-dasharray="1 3" />
           <circle cx="240" cy="240" r="80" stroke="#D97757" stroke-width="0.5" opacity="0.3" stroke-dasharray="1 3" />
 
-          <!-- Compass corners -->
-          <text x="240" y="30" font-family="JetBrains Mono" font-size="9" fill="#94A3B8" text-anchor="middle"
-            letter-spacing="2">UTARA</text>
-          <text x="240" y="465" font-family="JetBrains Mono" font-size="9" fill="#94A3B8" text-anchor="middle"
-            letter-spacing="2">SELATAN</text>
         </svg>
       </div>
     </div>
@@ -1641,68 +1883,8 @@
   <section id="about">
     <div class="container about-grid">
 
-      <!-- LEFT: Editorial illustration (SVG, no external dependency) -->
+      <!-- LEFT: Editorial illustration (Photo with overlay) -->
       <div class="about-vis">
-        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-          <!-- Background gradient mesh -->
-          <defs>
-            <linearGradient id="aboutBg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#FAFAF8" />
-              <stop offset="100%" stop-color="#EEF2FF" />
-            </linearGradient>
-            <pattern id="dotPattern" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1" fill="#0A1F44" opacity="0.08" />
-            </pattern>
-          </defs>
-          <rect width="400" height="500" fill="url(#aboutBg)" />
-          <rect width="400" height="500" fill="url(#dotPattern)" />
-
-          <!-- Mountain/Indonesia silhouette -->
-          <path d="M0 380 L60 320 L120 360 L180 280 L240 340 L300 290 L360 330 L400 310 L400 500 L0 500 Z"
-            fill="#0A1F44" opacity="0.9" />
-          <path d="M0 420 L80 380 L160 410 L240 370 L320 400 L400 380 L400 500 L0 500 Z" fill="#142849" />
-
-          <!-- Sun/research light -->
-          <circle cx="280" cy="140" r="48" fill="#D97757" opacity="0.95" />
-          <circle cx="280" cy="140" r="60" stroke="#D97757" stroke-width="1" opacity="0.4" fill="none" />
-          <circle cx="280" cy="140" r="76" stroke="#D97757" stroke-width="0.5" opacity="0.2" fill="none" />
-
-          <!-- Plants growing (representing community/research growth) -->
-          <g transform="translate(80 420)">
-            <line x1="0" y1="0" x2="0" y2="-50" stroke="#C9A84C" stroke-width="2" />
-            <path d="M0 -30 Q-12 -36 -16 -28 Q-8 -22 0 -28" fill="#C9A84C" />
-            <path d="M0 -42 Q12 -48 16 -40 Q8 -34 0 -40" fill="#C9A84C" />
-          </g>
-          <g transform="translate(160 410)">
-            <line x1="0" y1="0" x2="0" y2="-60" stroke="#C9A84C" stroke-width="2" />
-            <path d="M0 -35 Q-14 -42 -18 -32 Q-9 -26 0 -32" fill="#C9A84C" />
-            <path d="M0 -50 Q14 -56 18 -48 Q9 -42 0 -48" fill="#C9A84C" />
-          </g>
-          <g transform="translate(320 400)">
-            <line x1="0" y1="0" x2="0" y2="-55" stroke="#C9A84C" stroke-width="2" />
-            <path d="M0 -32 Q-13 -38 -17 -30 Q-8 -24 0 -30" fill="#C9A84C" />
-            <path d="M0 -46 Q13 -52 17 -44 Q8 -38 0 -44" fill="#C9A84C" />
-          </g>
-
-          <!-- Floating data points -->
-          <g opacity="0.8">
-            <circle cx="100" cy="120" r="3" fill="#D97757" />
-            <circle cx="150" cy="180" r="3" fill="#D97757" />
-            <circle cx="80" cy="220" r="3" fill="#D97757" />
-            <circle cx="180" cy="100" r="3" fill="#D97757" />
-            <line x1="100" y1="120" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5" />
-            <line x1="80" y1="220" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5" />
-            <line x1="180" y1="100" x2="150" y2="180" stroke="#D97757" stroke-width="0.5" opacity="0.5" />
-          </g>
-
-          <!-- Caption text inside SVG -->
-          <text x="30" y="60" font-family="JetBrains Mono" font-size="10" fill="#0A1F44"
-            letter-spacing="2">PAG/ALLIANCE</text>
-          <text x="30" y="78" font-family="Fraunces" font-size="22" font-style="italic" font-weight="400"
-            fill="#0A1F44">From data</text>
-          <text x="30" y="100" font-family="Fraunces" font-size="22" font-style="italic" font-weight="400"
-            fill="#0A1F44">to communities.</text>
-        </svg>
         <div class="about-vis-tag" data-i18n="about_img_caption">Jaringan riset multidisiplin lintas pulau, dari kampus
           ke desa</div>
       </div>
@@ -1710,12 +1892,19 @@
       <div class="about-text">
         <div class="eyebrow" data-i18n="about_eyebrow">Tentang Kami</div>
         <h2 class="section-title" data-i18n="about_title">Dari Kampus ke Lapangan — <em>Riset yang Hidup</em></h2>
-        <p class="text-body" data-i18n="about_p1">PAG Alliance adalah yayasan riset dan pemberdayaan multidisiplin yang
-          lahir dari kolaborasi akademisi terkemuka Indonesia. Berdiri resmi pada 2026 dengan akta notaris, NIB, dan SK
-          pendirian lengkap.</p>
-        <p class="text-body" data-i18n="about_p2">Kami tidak sekadar menerbitkan jurnal. Kami hadir di lapangan —
-          bersama petani, ibu hamil, pelaku UMKM, dan pemerintah daerah — merancang solusi berbasis bukti yang siap
-          diimplementasikan.</p>
+        <p class="text-body" data-i18n="about_p1">
+          PAG Alliance (Participatory Action Global Research Alliance) adalah yayasan riset partisipatif yang lahir dari
+          kolaborasi akademisi terkemuka Indonesia untuk mendorong kerja sama lintas disiplin dan lintas batas dalam
+          mengatasi tantangan pembangunan. Berdiri resmi sejak 2026 dengan akta notaris, NIB, dan legalitas lengkap di
+          bawah Keputusan Menteri Hukum RI Nomor AHU-0013422.AH.01.04.Tahun 2026, yayasan ini dibangun dari dedikasi
+          bersama antara akademisi, peneliti, praktisi, serta mitra pembangunan.
+        </p>
+        <p class="text-body" data-i18n="about_p2">
+          PAG berfungsi sebagai jembatan antara penelitian akademis, aksi komunitas, dan kebijakan publik, yang bekerja
+          di bidang ketahanan pangan, kesehatan masyarakat, mata pencaharian pedesaan, ketahanan bencana, transformasi
+          digital, AI, serta perumusan kebijakan berbasis bukti. Melalui pendekatan partisipatif, kami mengubah bukti
+          ilmiah menjadi aksi nyata yang inklusif demi mewujudkan masyarakat yang tangguh, sehat, dan berkelanjutan.
+        </p>
         <div class="partner-pills">
           <span class="pill">Bappenas</span>
           <span class="pill">FAO</span>
@@ -1808,7 +1997,7 @@
 
       <div class="cluster-grid">
         <!-- 1 -->
-        <div class="cluster-card">
+        <a href="cluster-1-afrl.html" class="cluster-card">
           <div class="cluster-num">RC.01</div>
           <div class="cluster-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -1817,11 +2006,11 @@
             </svg>
           </div>
           <div class="cluster-name">Agri-Food and Rural Livelihoods (AFRL)</div>
-          <div class="cluster-lead">Lead: Dr. Agus Nugroho<br><span style="opacity:0.7;"></span></div>
-        </div>
+          <div class="cluster-lead">Lead: Dr. Agus Nugroho<br><span style="opacity:0.7;" data-i18n="rc1_univ">Universitas Brawijaya</span></div>
+        </a>
 
         <!-- 2 -->
-        <div class="cluster-card">
+        <a href="cluster-2-cdr.html" class="cluster-card">
           <div class="cluster-num">RC.02</div>
           <div class="cluster-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -1831,10 +2020,10 @@
           </div>
           <div class="cluster-name">Climate and Disaster Resilience (CDR)</div>
           <div class="cluster-lead" data-i18n="cluster_open">Rekrutmen terbuka</div>
-        </div>
+        </a>
 
         <!-- 3 -->
-        <div class="cluster-card">
+        <a href="cluster-3-growth.html" class="cluster-card">
           <div class="cluster-num">RC.03</div>
           <div class="cluster-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -1843,11 +2032,11 @@
             </svg>
           </div>
           <div class="cluster-name">Global Research on One Health, Nutrition, and Transformative Health (GROWTH)</div>
-          <div class="cluster-lead">Lead: Dr. Lina Nurbaiti<br><span style="opacity:0.7;">Unram Mataram</span></div>
-        </div>
+          <div class="cluster-lead">Lead: Dr. Lina Nurbaiti<br><span style="opacity:0.7;" data-i18n="rc3_univ">Universitas Mataram</span></div>
+        </a>
 
         <!-- 4 -->
-        <div class="cluster-card">
+        <a href="cluster-4-hegsi.html" class="cluster-card">
           <div class="cluster-num">RC.04</div>
           <div class="cluster-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -1857,11 +2046,11 @@
             </svg>
           </div>
           <div class="cluster-name">Human Capital, Education, Gender, and Social Inclusion (HEGSI)</div>
-          <div class="cluster-lead">Lead: Prof. Sitti Bulkis<br><span style="opacity:0.7;">Unhas Makassar</span></div>
-        </div>
+          <div class="cluster-lead">Lead: Prof. Sitti Bulkis<br><span style="opacity:0.7;" data-i18n="rc4_univ">Universitas Hasanuddin</span></div>
+        </a>
 
         <!-- 5 -->
-        <div class="cluster-card">
+        <a href="cluster-5-diais.html" class="cluster-card">
           <div class="cluster-num">RC.05</div>
           <div class="cluster-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -1872,12 +2061,11 @@
             </svg>
           </div>
           <div class="cluster-name">Digital Innovation & AI Systems (DIAIS)</div>
-          <div class="cluster-lead">Lead: Dr. Rifki Wijaya<br><span style="opacity:0.6;">Telkom University
-              Bandung</span></div>
-        </div>
+          <div class="cluster-lead">Lead: Dr. Rifki Wijaya<br><span style="opacity:0.6;" data-i18n="rc5_univ">Telkom University Bandung</span></div>
+        </a>
 
         <!-- 6 -->
-        <div class="cluster-card">
+        <a href="cluster-6-gprt.html" class="cluster-card">
           <div class="cluster-num">RC.06</div>
           <div class="cluster-icon-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -1886,8 +2074,8 @@
             </svg>
           </div>
           <div class="cluster-name">Governance, Policy, and Regional Transformation (GPRT)</div>
-          <div class="cluster-lead">Lead: Prof. Gunawan Prayitno<br><span style="opacity:0.6;"></span></div>
-        </div>
+          <div class="cluster-lead">Lead: Prof. Gunawan Prayitno<br><span style="opacity:0.7;" data-i18n="rc6_univ">Universitas Brawijaya</span></div>
+        </a>
       </div>
     </div>
   </section>
@@ -2034,7 +2222,7 @@
       <h2 class="section-title" data-i18n="cta_title">Mari Berkontribusi Bersama <em>PAG Alliance</em></h2>
 
       <div class="cta-grid">
-        <div class="cta-card featured">
+        <div class="cta-card">
           <div class="cta-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
               stroke-linejoin="round">
@@ -2044,7 +2232,7 @@
           <div class="cta-title" data-i18n="cta1_h">Peneliti & Akademisi</div>
           <p class="cta-desc" data-i18n="cta1_p">Bergabung ke klaster riset sesuai kepakaran. Akses jaringan hibah
             nasional dan internasional (FAO, ADB, Kementerian RI, BPDPKS).</p>
-          <button class="cta-btn" data-i18n="cta1_btn">Daftar →</button>
+          <a href="contact.html?type=researcher" class="cta-btn" data-i18n="cta1_btn">Daftar →</a>
         </div>
 
         <div class="cta-card">
@@ -2058,7 +2246,7 @@
           <div class="cta-title" data-i18n="cta2_h">Mitra Institusi</div>
           <p class="cta-desc" data-i18n="cta2_p">Kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda.
             Dinas, BRIDA, dan pemerintah daerah dipersilakan.</p>
-          <button class="cta-btn cta-btn-outline" data-i18n="cta2_btn">Hubungi →</button>
+          <a href="contact.html?type=partner" class="cta-btn" data-i18n="cta2_btn">Hubungi →</a>
         </div>
 
         <div class="cta-card">
@@ -2071,7 +2259,7 @@
           <div class="cta-title" data-i18n="cta3_h">Pendana & Donor</div>
           <p class="cta-desc" data-i18n="cta3_p">Dukung riset berbasis bukti yang menghasilkan dampak nyata. Pipeline
             hibah tersedia untuk kolaborasi strategis jangka panjang.</p>
-          <a href="support.html" class="cta-btn cta-btn-outline" data-i18n="cta3_btn">Jadi Donor →</a>
+          <a href="support.html" class="cta-btn" data-i18n="cta3_btn">Jadi Donor →</a>
         </div>
       </div>
     </div>
@@ -2089,8 +2277,20 @@
               <div class="nav-logo-sub">Research · Empowerment</div>
             </div>
           </a>
-          <p data-i18n="footer_desc">Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus,
+          <p data-i18n="footer_desc">Yayasan riset dan pemberdayaan Indonesia. Menghubungkan kampus,
             komunitas, dan kebijakan dalam satu jaringan strategis.</p>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/company/pag-alliance" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/>
+              </svg>
+            </a>
+            <a href="https://wa.me/6285190866645" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.25 8.477 3.517 2.266 2.268 3.513 5.28 3.511 8.482-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.775-1.455L0 24zm6.59-4.846c1.785 1.058 3.537 1.588 5.415 1.589 5.482 0 9.944-4.461 9.947-9.945.002-2.657-1.03-5.153-2.903-7.027A9.877 9.877 0 0 0 12.004 1.83c-5.485 0-9.95 4.46-9.953 9.944-.001 2.02.531 3.993 1.545 5.727L2.59 21.07l3.86-.101-.365-.213-.038-.002zM17.47 14.38c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              </svg>
+            </a>
+          </div>
           <div class="domain">pagalliance.org</div>
         </div>
         <div class="footer-col">
@@ -2110,7 +2310,6 @@
           <h4 data-i18n="footer_col3">Kontak</h4>
           <a href="mailto:info@pagalliance.org">info@pagalliance.org</a>
           <a href="tel:+6285190866645">+62 851-9086-6645</a>
-          <a href="#">pagalliance.org</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -2119,6 +2318,74 @@
       </div>
     </div>
   </footer>
+
+  <!-- ═══ CONTACT MODAL ═══ -->
+  <div id="contact-modal" class="modal" aria-hidden="true" role="dialog">
+    <div class="modal-overlay" onclick="closeContactModal()"></div>
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close-btn" onclick="closeContactModal()" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <div class="modal-header">
+        <div class="modal-icon-badge" id="modal-badge-icon"></div>
+        <h3 id="modal-title" class="modal-title" data-i18n="modal_title">Hubungi Kami</h3>
+        <p id="modal-subtitle" class="modal-subtitle" data-i18n="modal_subtitle">Silakan hubungi tim kami untuk pendaftaran atau kemitraan.</p>
+      </div>
+
+      <div class="modal-body">
+        <!-- Email Contact Box -->
+        <div class="contact-method-card">
+          <div class="contact-method-info">
+            <span class="contact-method-label" data-i18n="modal_email_label">Alamat Email</span>
+            <a id="modal-email-link" href="mailto:info@pagalliance.org" class="contact-method-value">info@pagalliance.org</a>
+          </div>
+          <div class="contact-method-actions">
+            <button id="modal-copy-email" class="contact-action-btn copy-btn" onclick="copyContactDetail('info@pagalliance.org', 'modal-copy-email')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span class="copy-text" data-i18n="modal_copy">Salin</span>
+            </button>
+            <a id="modal-email-action" href="mailto:info@pagalliance.org" class="contact-action-btn primary-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <span data-i18n="modal_send">Kirim</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Phone/WA Contact Box -->
+        <div class="contact-method-card">
+          <div class="contact-method-info">
+            <span class="contact-method-label" data-i18n="modal_phone_label">WhatsApp / Telepon</span>
+            <a id="modal-phone-link" href="https://wa.me/6285190866645" target="_blank" rel="noopener" class="contact-method-value">+62 851-9086-6645</a>
+          </div>
+          <div class="contact-method-actions">
+            <button id="modal-copy-phone" class="contact-action-btn copy-btn" onclick="copyContactDetail('+62 851-9086-6645', 'modal-copy-phone')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span class="copy-text" data-i18n="modal_copy">Salin</span>
+            </button>
+            <a id="modal-phone-action" href="https://wa.me/6285190866645" target="_blank" rel="noopener" class="contact-action-btn primary-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.25 8.477 3.517 2.266 2.268 3.513 5.28 3.511 8.482-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.775-1.455L0 24zm6.59-4.846c1.785 1.058 3.537 1.588 5.415 1.589 5.482 0 9.944-4.461 9.947-9.945.002-2.657-1.03-5.153-2.903-7.027A9.877 9.877 0 0 0 12.004 1.83c-5.485 0-9.95 4.46-9.953 9.944-.001 2.02.531 3.993 1.545 5.727L2.59 21.07l3.86-.101-.365-.213-.038-.002zM17.47 14.38c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              </svg>
+              <span data-i18n="modal_chat">Chat</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══ TOAST ═══ -->
   <div class="toast" id="toast">
@@ -2249,8 +2516,8 @@
         hero_progress_label: "Proyek Aktif",
         stat1: "Universitas Mitra", stat2: "Klaster Riset", stat3: "Peneliti Aktif", stat4: "Proposal & Grant",
         about_eyebrow: "Tentang Kami", about_title: "Dari Kampus ke Lapangan — <em>Riset yang Hidup</em>",
-        about_p1: "PAG Alliance adalah yayasan riset dan pemberdayaan multidisiplin yang lahir dari kolaborasi akademisi terkemuka Indonesia. Berdiri resmi pada 2026 dengan akta notaris, NIB, dan SK pendirian lengkap.",
-        about_p2: "Kami tidak sekadar menerbitkan jurnal. Kami hadir di lapangan — bersama petani, ibu hamil, pelaku UMKM, dan pemerintah daerah — merancang solusi berbasis bukti yang siap diimplementasikan.",
+        about_p1: "PAG Alliance (Participatory Action Global Research Alliance) adalah yayasan riset partisipatif yang lahir dari kolaborasi akademisi terkemuka Indonesia untuk mendorong kerja sama lintas disiplin dan lintas batas dalam mengatasi tantangan pembangunan. Berdiri resmi sejak 2026 dengan akta notaris, NIB, dan legalitas lengkap di bawah Keputusan Menteri Hukum RI Nomor AHU-0013422.AH.01.04.Tahun 2026, yayasan ini dibangun dari dedikasi bersama antara akademisi, peneliti, praktisi, serta mitra pembangunan.",
+        about_p2: "PAG berfungsi sebagai jembatan antara penelitian akademis, aksi komunitas, dan kebijakan publik, yang bekerja di bidang ketahanan pangan, kesehatan masyarakat, mata pencaharian pedesaan, ketahanan bencana, transformasi digital, AI, serta perumusan kebijakan berbasis bukti. Melalui pendekatan partisipatif, kami mengubah bukti ilmiah menjadi aksi nyata yang inklusif demi mewujudkan masyarakat yang tangguh, sehat, dan berkelanjutan.",
         about_img_caption: "Jaringan riset multidisiplin lintas pulau, dari kampus ke desa",
         about_link: "Lihat Portofolio Riset →",
         impact1_desc: "Ibu hamil dianalisis dalam studi surveilans anemia Lombok Utara — model ML dengan akurasi 87.7%, AUC 0.97",
@@ -2259,6 +2526,11 @@
         photo_cap1: "Lapangan · Ketahanan Pangan", photo_cap2: "AI · Big Data", photo_cap3: "Komunitas · Pemberdayaan",
         cluster_eyebrow: "Fokus Riset", cluster_title: "Enam Klaster <em>Riset</em>",
         cluster_link: "Bergabung ke Klaster →", cluster_open: "Rekrutmen terbuka",
+        rc1_univ: "Universitas Brawijaya",
+        rc3_univ: "Universitas Mataram",
+        rc4_univ: "Universitas Hasanuddin",
+        rc5_univ: "Telkom University Bandung",
+        rc6_univ: "Universitas Brawijaya",
         cluster_new: "Klaster Baru", cluster_propose: "Ajukan proposal klaster baru →",
         journey_eyebrow: "Cakupan Penelitian", journey_title: "Sebaran Riset PAG Alliance di <em>Seluruh Indonesia</em>",
         journey_sub: "Dari Aceh hingga Kalimantan — riset PAG Alliance menjangkau berbagai wilayah Indonesia dengan fokus dampak nyata di tingkat daerah.",
@@ -2296,7 +2568,18 @@
         footer_col1: "Lembaga", footer_col2: "Bergabung", footer_col3: "Kontak",
         footer_journal: "Jurnal", footer_researcher: "Peneliti", footer_partner: "Mitra Institusi", footer_funder: "Pendana",
         footer_copy: "Semua hak dilindungi",
-        detected: "Terdeteksi: Indonesia", toast: "Halaman ditampilkan dalam Bahasa Indonesia"
+        toast: "Halaman ditampilkan dalam Bahasa Indonesia",
+        modal_title: "Hubungi Kami",
+        modal_subtitle: "Silakan hubungi tim kami untuk pendaftaran atau kemitraan.",
+        modal_title_researcher: "Pendaftaran Peneliti",
+        modal_subtitle_researcher: "Silakan hubungi tim kami melalui email atau WhatsApp untuk bergabung ke klaster riset.",
+        modal_title_partner: "Kolaborasi Kemitraan",
+        modal_subtitle_partner: "Hubungi kami untuk kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda.",
+        modal_email_label: "Alamat Email",
+        modal_phone_label: "WhatsApp / Telepon",
+        modal_copy: "Salin",
+        modal_send: "Kirim",
+        modal_chat: "Chat"
       },
       en: {
         nav_about: "About", nav_impact: "Impact", nav_clusters: "Clusters", nav_journey: "Coverage",
@@ -2308,8 +2591,8 @@
         hero_progress_label: "Active Projects",
         stat1: "Partner Universities", stat2: "Research Clusters", stat3: "Active Researchers", stat4: "Proposals & Grants",
         about_eyebrow: "About Us", about_title: "From Campus to Community — <em>Research That Lives</em>",
-        about_p1: "PAG Alliance is a multidisciplinary research and empowerment foundation built by leading Indonesian academics. Officially established in 2026 with notarial deed, NIB, and founding decree.",
-        about_p2: "We don't just publish journals. We work in the field — alongside farmers, pregnant mothers, SME entrepreneurs, and local governments — designing evidence-based solutions ready to be implemented.",
+        about_p1: "PAG Alliance (Participatory Action Global Research Alliance) is a participatory research foundation born from the collaboration of leading Indonesian academics to foster cross-disciplinary and cross-border cooperation in addressing development challenges. Officially established in 2026 with a notarial deed, NIB, and complete legal status under the Decree of the Ministry of Law and Human Rights of the Republic of Indonesia (Nomor AHU-0013422.AH.01.04.Tahun 2026), the alliance is built upon years of partnership among academics, researchers, practitioners, and development partners.",
+        about_p2: "PAG serves as a bridge between academic research, community action, and public policy, working across fields such as food security, public health, rural livelihoods, disaster resilience, digital transformation, AI, and evidence-based policymaking. Through a participatory approach, we transform scientific evidence into practical impact—delivering inclusive solutions for resilient, healthy, and sustainable communities.",
         about_img_caption: "Multidisciplinary research network across islands, from campus to villages",
         about_link: "View Research Portfolio →",
         impact1_desc: "Pregnant women analyzed in the North Lombok anemia surveillance study — ML model with 87.7% accuracy, AUC 0.97",
@@ -2318,6 +2601,11 @@
         photo_cap1: "Field · Food Security", photo_cap2: "AI · Big Data", photo_cap3: "Community · Empowerment",
         cluster_eyebrow: "Research Focus", cluster_title: "Six Research <em>Clusters</em>",
         cluster_link: "Join a Cluster →", cluster_open: "Open recruitment",
+        rc1_univ: "Brawijaya University",
+        rc3_univ: "University of Mataram",
+        rc4_univ: "Hasanuddin University",
+        rc5_univ: "Telkom University Bandung",
+        rc6_univ: "Brawijaya University",
         cluster_new: "New Cluster", cluster_propose: "Submit a cluster proposal →",
         journey_eyebrow: "Research Coverage", journey_title: "PAG Alliance Research Locations Across <em>Indonesia</em>",
         journey_sub: "From Aceh to Kalimantan — PAG Alliance research reaches regions across Indonesia with a focus on real impact at the local level.",
@@ -2355,7 +2643,18 @@
         footer_col1: "Organization", footer_col2: "Get Involved", footer_col3: "Contact",
         footer_journal: "Journal", footer_researcher: "Researchers", footer_partner: "Institutional Partners", footer_funder: "Funders",
         footer_copy: "All rights reserved",
-        detected: "Detected: International visitor", toast: "Page displayed in English based on your location"
+        toast: "Page displayed in English based on your location",
+        modal_title: "Contact Us",
+        modal_subtitle: "Please contact our team for registration or partnership.",
+        modal_title_researcher: "Researcher Registration",
+        modal_subtitle_researcher: "Please contact our team via email or WhatsApp to join a research cluster.",
+        modal_title_partner: "Institutional Partnership",
+        modal_subtitle_partner: "Reach out to discuss applied research and community empowerment collaborations in your region.",
+        modal_email_label: "Email Address",
+        modal_phone_label: "WhatsApp / Phone",
+        modal_copy: "Copy",
+        modal_send: "Send",
+        modal_chat: "Chat"
       }
     };
 
@@ -2376,7 +2675,6 @@
       });
       document.getElementById('btn-id').classList.toggle('active', l === 'id');
       document.getElementById('btn-en').classList.toggle('active', l === 'en');
-      document.getElementById('lang-msg').textContent = t.detected;
       document.documentElement.lang = l;
       if (researchMarkers.length) refreshMapPopups();
     }
@@ -2432,6 +2730,107 @@
 
       counters.forEach(el => observer.observe(el));
     }
+
+    function openContactModal(type) {
+      const modal = document.getElementById('contact-modal');
+      const badgeIcon = document.getElementById('modal-badge-icon');
+      const title = document.getElementById('modal-title');
+      const subtitle = document.getElementById('modal-subtitle');
+      
+      const emailLink = document.getElementById('modal-email-link');
+      const emailAction = document.getElementById('modal-email-action');
+      const phoneLink = document.getElementById('modal-phone-link');
+      const phoneAction = document.getElementById('modal-phone-action');
+
+      const isID = lang === 'id';
+      let emailSubject = '';
+      let waMessage = '';
+      
+      if (type === 'researcher') {
+        badgeIcon.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 18h8M3 22h18M14 22a7 7 0 1 0 0-14h-1M9 14h2M9 12a2 2 0 0 1 4 0v2M8 4h4M9 2v6" />
+          </svg>
+        `;
+        title.setAttribute('data-i18n', 'modal_title_researcher');
+        title.textContent = isID ? 'Pendaftaran Peneliti' : 'Researcher Registration';
+        
+        subtitle.setAttribute('data-i18n', 'modal_subtitle_researcher');
+        subtitle.textContent = isID ? 
+          'Silakan hubungi tim kami melalui email atau WhatsApp untuk bergabung ke klaster riset.' : 
+          'Please contact our team via email or WhatsApp to join a research cluster.';
+
+        emailSubject = isID ? 'Pendaftaran Peneliti - PAG Alliance' : 'Researcher Registration - PAG Alliance';
+        waMessage = isID ? 
+          'Halo PAG Alliance, saya tertarik bergabung sebagai peneliti/akademisi. Berikut detail kepakaran saya:' : 
+          'Hello PAG Alliance, I am interested in joining as a researcher/academic. Here are my details:';
+      } else {
+        badgeIcon.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 17a2 2 0 1 0 4 0M14 11h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-7M3 11h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3M3 11V8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v3" />
+          </svg>
+        `;
+        title.setAttribute('data-i18n', 'modal_title_partner');
+        title.textContent = isID ? 'Kolaborasi Kemitraan' : 'Institutional Partnership';
+        
+        subtitle.setAttribute('data-i18n', 'modal_subtitle_partner');
+        subtitle.textContent = isID ? 
+          'Hubungi kami untuk kolaborasi riset terapan dan pemberdayaan komunitas di wilayah Anda.' : 
+          'Reach out to discuss applied research and community empowerment collaborations in your region.';
+
+        emailSubject = isID ? 'Kolaborasi Kemitraan - PAG Alliance' : 'Partnership Collaboration - PAG Alliance';
+        waMessage = isID ? 
+          'Halo PAG Alliance, kami tertarik berkolaborasi sebagai mitra institusi. Berikut deskripsi kerja sama yang kami ajukan:' : 
+          'Hello PAG Alliance, we are interested in collaborating as an institutional partner. Here is our proposed collaboration:';
+      }
+
+      const emailMailto = `mailto:info@pagalliance.org?subject=${encodeURIComponent(emailSubject)}`;
+      const waUrl = `https://wa.me/6285190866645?text=${encodeURIComponent(waMessage)}`;
+
+      emailLink.href = emailMailto;
+      emailAction.href = emailMailto;
+      phoneLink.href = waUrl;
+      phoneAction.href = waUrl;
+
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.getElementById('modal-close').focus();
+    }
+
+    function closeContactModal() {
+      const modal = document.getElementById('contact-modal');
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function copyContactDetail(text, btnId) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(btnId);
+        const originalHtml = btn.innerHTML;
+        const isID = lang === 'id';
+        
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--copper);">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span style="color: var(--copper); font-weight: 600;">${isID ? 'Tersalin!' : 'Copied!'}</span>
+        `;
+        
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          const textSpan = btn.querySelector('[data-i18n]');
+          if (textSpan) {
+            textSpan.textContent = T[lang][textSpan.getAttribute('data-i18n')];
+          }
+        }, 2000);
+      });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeContactModal();
+      }
+    });
 
     function detectLang() {
       const langs = navigator.languages || [navigator.language || 'id'];

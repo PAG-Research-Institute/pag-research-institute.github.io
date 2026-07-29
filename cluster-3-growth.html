@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support | PAG Alliance</title>
+  <title>GROWTH (One Health, Nutrition, & Transformative Health) | PAG Alliance</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300..900;1,300..900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -85,7 +85,6 @@
       letter-spacing: 0.4px;
       font-family: var(--mono);
     }
-    .lang-detected { color: var(--copper-light); }
     .lang-toggle {
       display: flex;
       background: rgba(255,255,255,0.06);
@@ -150,18 +149,18 @@
     .nav-cta:hover { background: var(--copper); }
 
     /* ─── MAIN CONTENT ─── */
-    .support-main {
+    .cluster-main {
       flex-grow: 1;
       max-width: 1400px;
       margin: 0 auto;
       padding: 80px 48px;
       width: 100%;
     }
-    .support-hero {
-      max-width: 720px;
+    .cluster-hero {
+      max-width: 800px;
       margin-bottom: 64px;
     }
-    .support-eyebrow {
+    .cluster-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -172,13 +171,13 @@
       color: var(--copper);
       margin-bottom: 16px;
     }
-    .support-eyebrow::before {
+    .cluster-eyebrow::before {
       content: '';
       width: 24px;
       height: 1px;
       background: var(--copper);
     }
-    .support-title {
+    .cluster-title {
       font-family: var(--serif);
       font-size: clamp(2.2rem, 4.5vw, 3.5rem);
       font-weight: 400;
@@ -187,147 +186,220 @@
       margin-bottom: 24px;
       letter-spacing: -0.02em;
     }
-    .support-intro {
+    .cluster-intro {
       font-size: 16px;
-      line-height: 1.7;
+      line-height: 1.8;
       color: var(--text-2);
     }
-    .support-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 48px;
-      max-width: 900px;
-      margin: 0 auto;
+
+    /* Coordinator block */
+    .cluster-coordinator {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
-    .support-card {
+    .coord-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--navy-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(10, 31, 68, 0.05);
+    }
+    .coord-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--copper);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .coord-name {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--navy-900);
+    }
+    .coord-univ {
+      font-size: 13px;
+      color: var(--text-3);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Research Group Cards List */
+    .rg-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .rg-card {
       background: var(--white);
       padding: 48px;
       border: 1px solid var(--border);
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(10, 31, 68, 0.03);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
     }
-    .support-card h3 {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 500;
-      color: var(--navy-900);
+    .rg-card:hover {
+      box-shadow: 0 12px 40px rgba(10, 31, 68, 0.06);
+      border-color: var(--border-strong);
+    }
+    .rg-header {
       margin-bottom: 24px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
+      padding-bottom: 20px;
     }
-    .support-options-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-    .bank-card {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      background: var(--surface);
+    .rg-badges {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .bank-header {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 12px;
     }
-    .bank-label {
+    .badge-code {
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--copper-pale);
+      color: var(--copper);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-status {
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      background: #ecfdf5;
+      color: #047857;
+    }
+    .rg-title {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--navy-900);
+      letter-spacing: -0.01em;
+    }
+    
+    /* Layout columns within card */
+    .rg-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+    }
+    .rg-focus-title {
       font-family: var(--mono);
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 1px;
-      color: var(--text-3);
       text-transform: uppercase;
-    }
-    .bank-badge {
-      background: var(--navy-700);
-      border-radius: 2px;
-      padding: 2px 8px;
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: bold;
-      color: var(--white);
-      letter-spacing: 0.5px;
-    }
-    .bank-name {
-      font-size: 16px;
-      font-weight: bold;
-      color: var(--navy-900);
-    }
-    .bank-note {
-      font-size: 12px;
       color: var(--text-3);
-      margin-top: 4px;
+      margin-bottom: 16px;
     }
-    .bank-number {
-      font-family: var(--mono);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--navy-900);
-      margin-top: 8px;
-      letter-spacing: 0.5px;
-    }
-    .bank-owner {
-      font-size: 11px;
-      color: var(--text-3);
-      margin-top: 4px;
-    }
-    .copy-btn {
-      margin-top: 24px;
-      width: 100%;
-      padding: 12px 24px;
-      background: var(--white);
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
-      font-family: var(--sans);
-      font-size: 12px;
-      font-weight: 600;
+    .rg-desc {
+      font-size: 14px;
+      line-height: 1.7;
       color: var(--text-2);
+      margin-bottom: 24px;
+    }
+    .rg-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .rg-tag {
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-2);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+    }
+
+    /* Associates sidebar */
+    .associates-sidebar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .associates-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 16px;
+    }
+    .associates-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .associate-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .associate-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: all 0.25s ease;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: bold;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
-    .copy-btn:hover {
-      border-color: var(--navy-900);
-      color: var(--navy-900);
-    }
-    .copy-btn svg {
-      width: 14px;
-      height: 14px;
-    }
-    .support-desc {
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--text-2);
-      margin-top: 16px;
-    }
-    .support-desc a {
-      color: var(--navy-700);
-      font-weight: 500;
-      text-decoration: underline;
-    }
-    .support-desc a:hover {
+    .associate-avatar.copper {
+      background: var(--copper-pale);
       color: var(--copper);
     }
-
-    /* Success States for JavaScript Interactions */
-    .text-emerald-600 {
-      color: #059669 !important;
+    .associate-avatar.navy {
+      background: var(--navy-50);
+      color: var(--navy-700);
     }
-    .bg-emerald-50 {
-      background-color: #ecfdf5 !important;
+    .associate-avatar.gray {
+      background: var(--surface-2);
+      color: var(--text-2);
     }
-    .border-emerald-200 {
-      border-color: #a7f3d0 !important;
+    .associate-info {
+      display: flex;
+      flex-direction: column;
     }
-    .font-semibold {
-      font-weight: 600 !important;
+    .associate-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy-900);
+      line-height: 1.3;
+    }
+    .associate-meta {
+      font-size: 10px;
+      color: var(--text-3);
+      margin-top: 2px;
     }
 
     /* ─── FOOTER ─── */
@@ -414,20 +486,19 @@
     }
 
     @media (max-width: 1024px) {
-      .lang-bar { padding-left: 24px; padding-right: 24px; }
       .nav { padding: 0 24px; }
-      .support-main { padding: 60px 24px; }
+      .cluster-main { padding: 60px 24px; }
       footer { padding-left: 24px; padding-right: 24px; }
       .footer-top { grid-template-columns: 1fr 1fr; }
       .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
     }
     @media (max-width: 768px) {
-      .lang-bar { padding-left: 16px; padding-right: 16px; }
       .nav { padding: 0 16px; }
       .nav-links { display: none; }
-      .support-main { padding: 48px 16px; }
-      .support-hero { margin-bottom: 40px; }
-      .support-card { padding: 24px; }
+      .cluster-main { padding: 48px 16px; }
+      .cluster-hero { margin-bottom: 40px; }
+      .rg-card { padding: 32px 24px; }
+      .rg-grid { grid-template-columns: 1fr; gap: 32px; }
       .footer-top { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
@@ -459,43 +530,90 @@
     </ul>
   </nav>
 
-  <main class="support-main">
-    <div class="support-hero">
-      <span class="support-eyebrow" data-i18n="support_eyebrow">Kolaborasi Pendanaan</span>
-      <h1 class="support-title" data-i18n="support_title">Akselerasikan Riset Kemanusiaan Berbasis Bukti</h1>
-      <p class="support-intro" data-i18n="support_intro">
-        PAG Alliance menjembatani para profesor, peneliti lintas universitas, dan praktisi lapangan untuk menghasilkan kajian multidisiplin yang berdampak nyata bagi masyarakat marjinal. Dukungan Anda memberdayakan ekosistem riset yang independen, terbuka, dan akuntabel.
+  <main class="cluster-main">
+    <div class="cluster-hero">
+      <span class="cluster-eyebrow" data-i18n="cluster_eyebrow">Klaster Riset</span>
+      <h1 class="cluster-title" data-i18n="cluster_title">Global Research on One Health, Nutrition, and Transformative Health (GROWTH)</h1>
+      <p class="cluster-intro" data-i18n="cluster_intro">
+        Klaster riset GROWTH berfokus pada pendekatan terpadu One Health yang menghubungkan kesehatan manusia, hewan, dan lingkungan, serta gizi masyarakat, intervensi stunting, dan transformasi pelayanan kesehatan inklusif.
       </p>
-    </div>
-
-    <div class="support-grid">
-      <div class="support-card">
-        <h3 data-i18n="support_funding_options">Pilihan Saluran Dana</h3>
-        <div class="support-options-grid">
-          <div class="bank-card">
-            <div>
-              <div class="bank-header">
-                <span class="bank-label" data-i18n="support_bank_label">Transfer Bank</span>
-                <div class="bank-badge" data-i18n="support_bank_badge">BANK</div>
-              </div>
-              <h4 class="bank-name" data-i18n="support_bank_name">Bank Mandiri</h4>
-              <p class="bank-note" data-i18n="support_bank_note">Rekening Resmi Yayasan:</p>
-              <p class="bank-number select-all" id="accountNo">1440055500885</p>
-              <p class="bank-owner" data-i18n="support_bank_owner">a.n. Yayasan Participatory Action Global</p>
-            </div>
-            <button onclick="copyAccountNumber()" id="copyBtn" class="copy-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-              </svg>
-              <span data-i18n="support_copy_btn">Salin No. Rekening</span>
-            </button>
-          </div>
+      
+      <!-- Cluster Coordinator -->
+      <div class="cluster-coordinator">
+        <div class="coord-avatar">LN</div>
+        <div>
+          <span class="coord-label" data-i18n="cluster_coordinator_label">Koordinator Klaster</span>
+          <span class="coord-name">Dr. dr. Lina Nurbaiti, M.Kes., FISPH., FISCM.</span>
+          <span class="coord-univ" data-i18n="cluster_coordinator_univ">Universitas Mataram</span>
         </div>
       </div>
+    </div>
 
-      <div class="support-card">
-        <h3 data-i18n="support_confirmation_title">Konfirmasi Dukungan Dana</h3>
-        <p class="support-desc" data-i18n="support_confirmation_desc">Terima kasih atas dukungan Anda. Silakan kirimkan bukti transfer Anda melalui email ke <a href="mailto:info@pagalliance.org">info@pagalliance.org</a> atau melalui WhatsApp/kontak ke <a href="tel:+6285190866645">+62 851-9086-6645</a> untuk pencatatan internal kami.</p>
+    <div class="rg-list">
+      <!-- RG1 Card -->
+      <div class="rg-card">
+        <div class="rg-header">
+          <div class="rg-badges">
+            <span class="badge-code">RG1</span>
+            <span class="badge-status" data-i18n="rg_status_active">Aktif</span>
+          </div>
+          <h3 class="rg-title" data-i18n="rg1_title">Global Research on One Health, Nutrition, and Transformative Health (GROWTH)</h3>
+        </div>
+
+        <div class="rg-grid">
+          <!-- Left Column: Focus -->
+          <div>
+            <h4 class="rg-focus-title" data-i18n="focus_title">Fokus Riset Utama</h4>
+            <p class="rg-desc" data-i18n="rg1_desc">
+              Fokus pada kesehatan masyarakat, gizi masyarakat, pencegahan stunting, pencegahan anemia, kesehatan ibu dan anak, nutrisi remaja, keragaman makanan, keamanan pangan, program nutrisi berbasis sekolah, literasi kesehatan, perilaku kesehatan, sanitasi, kesehatan lingkungan, One Health, risiko zoonosis, intervensi kesehatan berbasis komunitas, akses sistem kesehatan, dan evaluasi kebijakan nutrisi.
+            </p>
+            <div class="rg-tags">
+              <span class="rg-tag" data-i18n="tag_growth_1">Satu Kesehatan</span>
+              <span class="rg-tag" data-i18n="tag_growth_2">Gizi Masyarakat</span>
+              <span class="rg-tag" data-i18n="tag_growth_3">Kesehatan Masyarakat</span>
+              <span class="rg-tag" data-i18n="tag_growth_4">Pencegahan Stunting</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Associates -->
+          <div class="associates-sidebar">
+            <h4 class="associates-title" data-i18n="associates_title">Associate Peneliti</h4>
+            <div class="associates-list">
+              <!-- Dr. Sofia -->
+              <div class="associate-item">
+                <div class="associate-avatar copper">SF</div>
+                <div class="associate-info">
+                  <div class="associate-name">Dr. Sofia, S.Si., M.Sc</div>
+                  <div class="associate-meta">Public Health · Universitas Syiah Kuala</div>
+                </div>
+              </div>
+              <!-- dr. Marisa -->
+              <div class="associate-item">
+                <div class="associate-avatar navy">M</div>
+                <div class="associate-info">
+                  <div class="associate-name">dr. Marisa, M.Gizi., Sp.GK</div>
+                  <div class="associate-meta">Clinical Nutrition · Universitas Syiah Kuala</div>
+                </div>
+              </div>
+              <!-- Riasyah Al Waja Permatasari -->
+              <div class="associate-item">
+                <div class="associate-avatar gray">RP</div>
+                <div class="associate-info">
+                  <div class="associate-name">Riasyah Al Waja Permatasari, S.Tr.Gz, M.Gz</div>
+                  <div class="associate-meta">Community Nutrition · Universitas Brawijaya</div>
+                </div>
+              </div>
+              <!-- Nabila Reysa Putri -->
+              <div class="associate-item">
+                <div class="associate-avatar copper">NP</div>
+                <div class="associate-info">
+                  <div class="associate-name">Nabila Reysa Putri, S.Gz.</div>
+                  <div class="associate-meta">Clinical Nutrition · Universitas Brawijaya</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -554,28 +672,6 @@
   </footer>
 
   <script>
-    function copyAccountNumber() {
-      const copyText = document.getElementById("accountNo").innerText;
-      const copyBtn = document.getElementById("copyBtn");
-      
-      navigator.clipboard.writeText(copyText.replace(/-/g, '')).then(() => {
-        const originalContent = copyBtn.innerHTML;
-        const isID = lang === 'id';
-        copyBtn.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          <span class="text-emerald-600 font-semibold">${isID ? 'Tersalin!' : 'Copied!'}</span>
-        `;
-        copyBtn.classList.add("bg-emerald-50", "border-emerald-200");
-        
-        setTimeout(() => {
-          copyBtn.innerHTML = originalContent;
-          copyBtn.classList.remove("bg-emerald-50", "border-emerald-200");
-        }, 2000);
-      });
-    }
-
     const T = {
       id: {
         nav_about: "Tentang",
@@ -593,18 +689,21 @@
         footer_partner: "Mitra Institusi",
         footer_funder: "Pendana",
         footer_copy: "Semua hak dilindungi",
-        support_eyebrow: "Kolaborasi Pendanaan",
-        support_title: "Akselerasikan Riset Kemanusiaan Berbasis Bukti",
-        support_intro: "PAG Alliance menjembatani para profesor, peneliti lintas universitas, dan praktisi lapangan untuk menghasilkan kajian multidisiplin yang berdampak nyata bagi masyarakat marjinal. Dukungan Anda memberdayakan ekosistem riset yang independen, terbuka, dan akuntabel.",
-        support_funding_options: "Pilihan Saluran Dana",
-        support_bank_label: "Transfer Bank",
-        support_bank_name: "Bank Mandiri",
-        support_bank_note: "Rekening Resmi Yayasan:",
-        support_bank_owner: "Nama Akun: Yayasan Participatory Action Global",
-        support_bank_badge: "BANK",
-        support_copy_btn: "Salin No. Rekening",
-        support_confirmation_title: "Konfirmasi Dukungan Dana",
-        support_confirmation_desc: "Terima kasih atas dukungan Anda. Silakan kirimkan bukti transfer Anda melalui email ke <a href=\"mailto:info@pagalliance.org\" class=\"text-[#0b1e3f] underline\">info@pagalliance.org</a> atau melalui WhatsApp/kontak ke <a href=\"tel:+6285190866645\" class=\"text-[#0b1e3f] underline\">+62 851-9086-6645</a> untuk pencatatan internal kami.",
+        cluster_eyebrow: "Klaster Riset",
+        cluster_title: "Global Research on One Health, Nutrition, and Transformative Health (GROWTH)",
+        cluster_intro: "Klaster riset GROWTH berfokus pada pendekatan terpadu One Health yang menghubungkan kesehatan manusia, hewan, dan lingkungan, serta gizi masyarakat, intervensi stunting, dan transformasi pelayanan kesehatan inklusif.",
+        cluster_coordinator_label: "Koordinator Klaster",
+        cluster_coordinator_univ: "Universitas Mataram",
+        focus_title: "Fokus Riset Utama",
+        associates_title: "Associate Peneliti",
+        rg_section_title: "Kelompok Riset",
+        rg_status_active: "Aktif",
+        rg1_title: "Global Research on One Health, Nutrition, and Transformative Health (GROWTH)",
+        rg1_desc: "Fokus pada kesehatan masyarakat, gizi masyarakat, pencegahan stunting, pencegahan anemia, kesehatan ibu dan anak, nutrisi remaja, keragaman makanan, keamanan pangan, program nutrisi berbasis sekolah, literasi kesehatan, perilaku kesehatan, sanitasi, kesehatan lingkungan, One Health, risiko zoonosis, intervensi kesehatan berbasis komunitas, akses sistem kesehatan, dan evaluasi kebijakan nutrisi.",
+        tag_growth_1: "Satu Kesehatan",
+        tag_growth_2: "Gizi Masyarakat",
+        tag_growth_3: "Kesehatan Masyarakat",
+        tag_growth_4: "Pencegahan Stunting",
       },
       en: {
         nav_about: "About",
@@ -622,18 +721,21 @@
         footer_partner: "Institutional Partners",
         footer_funder: "Funders",
         footer_copy: "All rights reserved",
-        support_eyebrow: "Funding Collaboration",
-        support_title: "Accelerate Evidence-Based Humanitarian Research",
-        support_intro: "PAG Alliance bridges professors, cross-university researchers, and field practitioners to deliver multidisciplinary studies with real impact for marginalized communities. Your support empowers an independent, open, and accountable research ecosystem.",
-        support_funding_options: "Funding Channels",
-        support_bank_label: "Bank Transfer",
-        support_bank_name: "Bank Mandiri",
-        support_bank_note: "Official Foundation Account:",
-        support_bank_owner: "Account Name: Yayasan Participatory Action Global",
-        support_bank_badge: "BANK",
-        support_copy_btn: "Copy Account Number",
-        support_confirmation_title: "Confirm Your Support",
-        support_confirmation_desc: "Thank you for your support. Please send proof of transfer via email to <a href=\"mailto:info@pagalliance.org\" class=\"text-[#0b1e3f] underline\">info@pagalliance.org</a> or via WhatsApp/contact to <a href=\"tel:+6285190866645\" class=\"text-[#0b1e3f] underline\">+62 851-9086-6645</a> for our internal records.",
+        cluster_eyebrow: "Research Cluster",
+        cluster_title: "Global Research on One Health, Nutrition, and Transformative Health (GROWTH)",
+        cluster_intro: "The GROWTH research cluster focuses on an integrated One Health approach connecting human, animal, and environmental health, as well as community nutrition, stunting intervention, and transformative inclusive healthcare.",
+        cluster_coordinator_label: "Cluster Coordinator",
+        cluster_coordinator_univ: "University of Mataram",
+        focus_title: "Core Research Focus",
+        associates_title: "Research Associates",
+        rg_section_title: "Research Groups",
+        rg_status_active: "Active",
+        rg1_title: "Global Research on One Health, Nutrition, and Transformative Health (GROWTH)",
+        rg1_desc: "Focuses on public health, community nutrition, stunting prevention, anemia prevention, maternal and child health, adolescent nutrition, dietary diversity, food safety, school-based nutrition programs, health literacy, health behavior, sanitation, environmental health, One Health, zoonotic risk, community-based health intervention, health system access, and nutrition policy evaluation.",
+        tag_growth_1: "One Health",
+        tag_growth_2: "Community Nutrition",
+        tag_growth_3: "Public Health",
+        tag_growth_4: "Stunting Prevention",
       }
     };
 
@@ -644,13 +746,8 @@
       const t = T[l];
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const k = el.getAttribute('data-i18n');
-        const htmlKeys = ['support_confirmation_desc'];
         if (!t[k]) return;
-        if (htmlKeys.includes(k)) {
-          el.innerHTML = t[k];
-        } else {
-          el.textContent = t[k];
-        }
+        el.textContent = t[k];
       });
       document.getElementById('btn-id').classList.toggle('active', l === 'id');
       document.getElementById('btn-en').classList.toggle('active', l === 'en');
