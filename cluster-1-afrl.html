@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri-Food & Rural Livelihoods (AFRL) | PAG Alliance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300..900;1,300..900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Navy + Copper futuristic professional palette */
+      --navy-900: #0A1F44;
+      --navy-800: #142849;
+      --navy-700: #1E3A8A;
+      --navy-600: #2563EB;
+      --navy-50:  #EEF2FF;
+      --copper:   #D97757;
+      --copper-light: #F4A582;
+      --copper-pale:  #FBE5DD;
+      --gold:     #C9A84C;
+
+      --white:    #FFFFFF;
+      --surface:  #FAFAF8;
+      --surface-2:#F1F5F9;
+      --border:   #E5E7EB;
+      --border-strong: #CBD5E1;
+
+      --text-1:   #0F172A;
+      --text-2:   #334155;
+      --text-3:   #64748B;
+      --text-4:   #94A3B8;
+
+      --serif: 'Fraunces', Georgia, serif;
+      --sans:  'Manrope', system-ui, sans-serif;
+      --mono:  'JetBrains Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--surface);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .serif-heading {
+      font-family: var(--serif);
+    }
+
+    .mono-text {
+      font-family: var(--mono);
+    }
+
+    /* ─── LANG BAR ─── */
+    .lang-bar {
+      background: var(--navy-900);
+      padding: 8px 48px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.4px;
+      font-family: var(--mono);
+    }
+    .lang-detected { color: var(--copper-light); }
+    .lang-toggle {
+      display: flex;
+      background: rgba(255,255,255,0.06);
+      border-radius: 0;
+      padding: 0;
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .lang-btn {
+      padding: 4px 14px;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      font-size: 11px;
+      font-family: var(--mono);
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+    .lang-btn.active { background: var(--copper); color: var(--navy-900); }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0px; z-index: 200;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-logo img { width: 54px; height: 54px; }
+    .nav-logo-text {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy-900);
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .nav-logo-sub {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--copper);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; font-size: 14px; }
+    .nav-links a { color: var(--text-2); transition: color 0.2s; font-weight: 500; }
+    .nav-links a:hover { color: var(--copper); }
+    .nav-cta {
+      background: var(--navy-900);
+      color: #fff;
+      padding: 11px 22px;
+      font-size: 13px; font-weight: 600;
+      border: none;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--copper); }
+
+    /* ─── MAIN CONTENT ─── */
+    .cluster-main {
+      flex-grow: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 80px 48px;
+      width: 100%;
+    }
+    .cluster-hero {
+      max-width: 800px;
+      margin-bottom: 64px;
+    }
+    .cluster-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 16px;
+    }
+    .cluster-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--copper);
+    }
+    .cluster-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--navy-900);
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .cluster-intro {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-2);
+    }
+
+    /* Coordinator block */
+    .cluster-coordinator {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .coord-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--navy-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(10, 31, 68, 0.05);
+    }
+    .coord-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--copper);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .coord-name {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--navy-900);
+    }
+    .coord-univ {
+      font-size: 13px;
+      color: var(--text-3);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Research Group Cards List */
+    .rg-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .rg-card {
+      background: var(--white);
+      padding: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(10, 31, 68, 0.03);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .rg-card:hover {
+      box-shadow: 0 12px 40px rgba(10, 31, 68, 0.06);
+      border-color: var(--border-strong);
+    }
+    .rg-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+    .rg-badges {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .badge-code {
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--copper-pale);
+      color: var(--copper);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-status {
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      background: #ecfdf5;
+      color: #047857;
+    }
+    .rg-title {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--navy-900);
+      letter-spacing: -0.01em;
+    }
+    
+    /* Layout columns within card */
+    .rg-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+    }
+    .rg-focus-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 16px;
+    }
+    .rg-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-2);
+      margin-bottom: 24px;
+    }
+    .rg-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .rg-tag {
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-2);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+    }
+
+    /* Associates sidebar */
+    .associates-sidebar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .associates-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 16px;
+    }
+    .associates-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .associate-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .associate-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: bold;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .associate-avatar.copper {
+      background: var(--copper-pale);
+      color: var(--copper);
+    }
+    .associate-avatar.navy {
+      background: var(--navy-50);
+      color: var(--navy-700);
+    }
+    .associate-avatar.gray {
+      background: var(--surface-2);
+      color: var(--text-2);
+    }
+    .associate-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .associate-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy-900);
+      line-height: 1.3;
+    }
+    .associate-meta {
+      font-size: 10px;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--navy-900); padding: 72px 48px 36px; position: relative; overflow: hidden; }
+    footer::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .footer-inner { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand .nav-logo img { filter: brightness(1.1); }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-top: 18px; max-width: 280px; }
+    .footer-brand .domain {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--gold);
+      margin-top: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 4px;
+    }
+
+    .footer-socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.25s ease;
+    }
+
+    .footer-socials a:hover {
+      background: var(--copper);
+      color: var(--white);
+      border-color: var(--copper);
+      transform: translateY(-2px);
+    }
+
+    .footer-socials svg {
+      width: 18px;
+      height: 18px;
+    }
+    .footer-col h4 {
+      font-family: var(--mono);
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 12px;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 1024px) {
+      .nav { padding: 0 24px; }
+      .cluster-main { padding: 60px 24px; }
+      footer { padding-left: 24px; padding-right: 24px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+    @media (max-width: 768px) {
+      .nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .cluster-main { padding: 48px 16px; }
+      .cluster-hero { margin-bottom: 40px; }
+      .rg-card { padding: 32px 24px; }
+      .rg-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lang-bar">
+    <div class="lang-toggle">
+      <button class="lang-btn" id="btn-id" onclick="setLang('id')">ID</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html#home" class="nav-logo">
+      <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
+      <div>
+        <div class="nav-logo-text">PAG Alliance</div>
+        <div class="nav-logo-sub">Research · Empowerment</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about" data-i18n="nav_about">Tentang</a></li>
+      <li><a href="index.html#impact" data-i18n="nav_impact">Dampak</a></li>
+      <li><a href="index.html#clusters" data-i18n="nav_clusters">Klaster</a></li>
+      <li><a href="index.html#journey" data-i18n="nav_journey">Cakupan</a></li>
+      <li><a href="index.html#portfolio" data-i18n="nav_portfolio">Portofolio</a></li>
+    </ul>
+  </nav>
+
+  <main class="cluster-main">
+    <div class="cluster-hero">
+      <span class="cluster-eyebrow" data-i18n="cluster_eyebrow">Klaster Riset</span>
+      <h1 class="cluster-title" data-i18n="cluster_title">Agri-Food and Rural Livelihoods (AFRL)</h1>
+      <p class="cluster-intro" data-i18n="cluster_intro">
+        Klaster riset Agri-Food and Rural Livelihoods (AFRL) berfokus pada transformasi sistem pangan berkelanjutan dan penguatan ketahanan ekonomi masyarakat pedesaan. Melalui penelitian kolaboratif lintas disiplin, kami mengkaji ketahanan pangan, rantai nilai pertanian, agroekologi, dan keanekaragaman hayati untuk merumuskan kebijakan serta solusi praktis bagi kesejahteraan petani kecil.
+      </p>
+      
+      <!-- Cluster Coordinator -->
+      <div class="cluster-coordinator">
+        <div class="coord-avatar">AN</div>
+        <div>
+          <span class="coord-label" data-i18n="cluster_coordinator_label">Koordinator Klaster</span>
+          <span class="coord-name">Dr. Agus Nugroho, S.P., M.Com.</span>
+          <span class="coord-univ" data-i18n="cluster_coordinator_univ">Universitas Brawijaya</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rg-list">
+      <!-- RG1 Card -->
+      <div class="rg-card">
+        <div class="rg-header">
+          <div class="rg-badges">
+            <span class="badge-code">RG1</span>
+            <span class="badge-status" data-i18n="rg_status_active">Aktif</span>
+          </div>
+          <h3 class="rg-title" data-i18n="rg1_title">RG1: Food Security, & Rural Livelihoods (FOSE)</h3>
+        </div>
+
+        <div class="rg-grid">
+          <!-- Left Column: Focus -->
+          <div>
+            <h4 class="rg-focus-title" data-i18n="focus_title">Fokus Riset Utama</h4>
+            <p class="rg-desc" data-i18n="rg1_desc">
+              Fokus pada ketahanan pangan, mata pencaharian pedesaan, ekonomi rumah tangga pertanian, peternakan, kemiskinan pedesaan, akses pangan, keterjangkauan pangan, ketahanan rumah tangga petani, rantai nilai pertanian-pangan, rantai pasok peternakan, UMKM pangan, pengembangan usaha pedesaan, akses pasar, pengembangan masyarakat, kelembagaan petani, dan transformasi ekonomi rakyat.
+            </p>
+            <div class="rg-tags">
+              <span class="rg-tag" data-i18n="tag_food_security">Ketahanan Pangan</span>
+              <span class="rg-tag" data-i18n="tag_rural_livelihoods">Mata Pencaharian Pedesaan</span>
+              <span class="rg-tag" data-i18n="tag_value_chains">Rantai Nilai</span>
+              <span class="rg-tag" data-i18n="tag_rural_enterprise">UMKM & Usaha Desa</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Associates -->
+          <div class="associates-sidebar">
+            <h4 class="associates-title" data-i18n="associates_title">Associate Peneliti</h4>
+            <div class="associates-list">
+              <!-- Prof. Dr. Ir. Agussabti -->
+              <div class="associate-item">
+                <div class="associate-avatar copper">AS</div>
+                <div class="associate-info">
+                  <div class="associate-name">Prof. Dr. Ir. Agussabti, M.Si.</div>
+                  <div class="associate-meta">ComDev · Universitas Syiah Kuala</div>
+                </div>
+              </div>
+              <!-- Dr. Jaisy Aghniarahim Putritamara -->
+              <div class="associate-item">
+                <div class="associate-avatar navy">JP</div>
+                <div class="associate-info">
+                  <div class="associate-name">Dr. Jaisy Aghniarahim Putritamara</div>
+                  <div class="associate-meta">Rural Enterprise · Universitas Brawijaya</div>
+                </div>
+              </div>
+              <!-- Ir. Wike Andre Septian -->
+              <div class="associate-item">
+                <div class="associate-avatar gray">WS</div>
+                <div class="associate-info">
+                  <div class="associate-name">Ir. Wike Andre Septian, S.Pt., M.Si.</div>
+                  <div class="associate-meta">Livestock Supply Chain · Universitas Brawijaya</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RG2 Card -->
+      <div class="rg-card">
+        <div class="rg-header">
+          <div class="rg-badges">
+            <span class="badge-code">RG2</span>
+            <span class="badge-status" data-i18n="rg_status_active">Aktif</span>
+          </div>
+          <h3 class="rg-title" data-i18n="rg2_title">RG2: Food System, Agroecology, and Biodiversity (FSAB)</h3>
+        </div>
+
+        <div class="rg-grid">
+          <!-- Left Column: Focus -->
+          <div>
+            <h4 class="rg-focus-title" data-i18n="focus_title">Fokus Riset Utama</h4>
+            <p class="rg-desc" data-i18n="rg2_desc">
+              Fokus pada produksi pangan berkelanjutan, agroekologi, agrobiodiversitas, konservasi keanekaragaman hayati, ilmu tanaman, agroklimatologi, ilmu tanah, kesehatan tanah, pengendalian hama terpadu, teknologi pangan, inovasi pangan lokal, teknologi pascapanen, mutu dan keamanan pangan, sistem pertanian berkelanjutan, jasa ekosistem, serta solusi berbasis alam untuk produksi pangan.
+            </p>
+            <div class="rg-tags">
+              <span class="rg-tag" data-i18n="tag_sustainable_food">Produksi Pangan Berkelanjutan</span>
+              <span class="rg-tag" data-i18n="tag_agroecology">Agroekologi & Tanah</span>
+              <span class="rg-tag" data-i18n="tag_biodiversity">Biodiversitas</span>
+              <span class="rg-tag" data-i18n="tag_food_tech">Teknologi Pangan</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Associates -->
+          <div class="associates-sidebar">
+            <h4 class="associates-title" data-i18n="associates_title">Associate Peneliti</h4>
+            <div class="associates-list">
+              <!-- Prof. Dr.Agr.Sc. Hagus Tarno -->
+              <div class="associate-item">
+                <div class="associate-avatar copper">HT</div>
+                <div class="associate-info">
+                  <div class="associate-name">Prof. Dr.Agr.Sc. Hagus Tarno, S.P., MP.</div>
+                  <div class="associate-meta">PI · Universitas Brawijaya</div>
+                </div>
+              </div>
+              <!-- Yasa Palaguna Umar -->
+              <div class="associate-item">
+                <div class="associate-avatar navy">YU</div>
+                <div class="associate-info">
+                  <div class="associate-name">Yasa Palaguna Umar, Ph.D.</div>
+                  <div class="associate-meta">Biodiversity · Universitas Brawijaya</div>
+                </div>
+              </div>
+              <!-- Dr. Siska Septiana -->
+              <div class="associate-item">
+                <div class="associate-avatar gray">SS</div>
+                <div class="associate-info">
+                  <div class="associate-name">Dr. Siska Septiana, S.Si.</div>
+                  <div class="associate-meta">Food Technology · Universitas Brawijaya</div>
+                </div>
+              </div>
+              <!-- Sisca Fajriani -->
+              <div class="associate-item">
+                <div class="associate-avatar copper">SF</div>
+                <div class="associate-info">
+                  <div class="associate-name">Sisca Fajriani, SP., MP.</div>
+                  <div class="associate-meta">Crop Science & Agroclimate · Universitas Brawijaya</div>
+                </div>
+              </div>
+              <!-- Syamsul Arifin -->
+              <div class="associate-item">
+                <div class="associate-avatar navy">SA</div>
+                <div class="associate-info">
+                  <div class="associate-name">Syamsul Arifin S.P., M.Si.</div>
+                  <div class="associate-meta">Soil Science · Universitas Brawijaya</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html#home" class="nav-logo">
+            <img src="assets/img/pag_logo.png" alt="PAG Alliance logo" />
+            <div>
+              <div class="nav-logo-text" style="color:#fff;">PAG Alliance</div>
+              <div class="nav-logo-sub">Research · Empowerment</div>
+            </div>
+          </a>
+          <p data-i18n="footer_desc">Yayasan riset dan pemberdayaan Indonesia. Menghubungkan kampus,
+            komunitas, dan kebijakan dalam satu jaringan strategis.</p>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/company/pag-alliance" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/>
+              </svg>
+            </a>
+            <a href="https://wa.me/6285190866645" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.25 8.477 3.517 2.266 2.268 3.513 5.28 3.511 8.482-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.775-1.455L0 24zm6.59-4.846c1.785 1.058 3.537 1.588 5.415 1.589 5.482 0 9.944-4.461 9.947-9.945.002-2.657-1.03-5.153-2.903-7.027A9.877 9.877 0 0 0 12.004 1.83c-5.485 0-9.95 4.46-9.953 9.944-.001 2.02.531 3.993 1.545 5.727L2.59 21.07l3.86-.101-.365-.213-.038-.002zM17.47 14.38c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              </svg>
+            </a>
+          </div>
+          <div class="domain">pagalliance.org</div>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_col1">Lembaga</h4>
+          <a href="index.html#about" data-i18n="nav_about">Tentang</a>
+          <a href="index.html#clusters" data-i18n="nav_clusters">Klaster Riset</a>
+          <a href="index.html#portfolio" data-i18n="nav_portfolio">Portofolio</a>
+          <a href="#" data-i18n="footer_journal">Jurnal</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_col2">Bergabung</h4>
+          <a href="index.html#contact" data-i18n="footer_researcher">Peneliti</a>
+          <a href="index.html#contact" data-i18n="footer_partner">Mitra Institusi</a>
+          <a href="index.html#contact" data-i18n="footer_funder">Pendana</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_col3">Kontak</h4>
+          <a href="mailto:info@pagalliance.org">info@pagalliance.org</a>
+          <a href="tel:+6285190866645">+62 851-9086-6645</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 YAYASAN PAG ALLIANCE — <span data-i18n="footer_copy">SEMUA HAK DILINDUNGI</span></span>
+        <span>BUILT WITH CARE · BANDUNG / MALANG / ACEH</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const T = {
+      id: {
+        nav_about: "Tentang",
+        nav_impact: "Dampak",
+        nav_clusters: "Klaster",
+        nav_journey: "Cakupan",
+        nav_portfolio: "Portofolio",
+        nav_join: "Dukung Kami",
+        footer_desc: "Yayasan riset dan pemberdayaan multidisiplin Indonesia. Menghubungkan kampus, komunitas, dan kebijakan dalam satu jaringan strategis.",
+        footer_col1: "Lembaga",
+        footer_col2: "Bergabung",
+        footer_col3: "Kontak",
+        footer_journal: "Jurnal",
+        footer_researcher: "Peneliti",
+        footer_partner: "Mitra Institusi",
+        footer_funder: "Pendana",
+        footer_copy: "Semua hak dilindungi",
+        cluster_eyebrow: "Klaster Riset",
+        cluster_title: "Agri-Food and Rural Livelihoods (AFRL)",
+        cluster_intro: "Klaster riset Agri-Food and Rural Livelihoods (AFRL) berfokus pada transformasi sistem pangan berkelanjutan dan penguatan ketahanan ekonomi masyarakat pedesaan. Melalui penelitian kolaboratif lintas disiplin, kami mengkaji ketahanan pangan, rantai nilai pertanian, agroekologi, dan keanekaragaman hayati untuk merumuskan kebijakan serta solusi praktis bagi kesejahteraan petani kecil.",
+        cluster_coordinator_label: "Koordinator Klaster",
+        cluster_coordinator_univ: "Universitas Brawijaya",
+        focus_title: "Fokus Riset Utama",
+        associates_title: "Associate Peneliti",
+        rg_section_title: "Kelompok Riset",
+        rg_status_active: "Aktif",
+        rg1_title: "RG1: Food Security, & Rural Livelihoods (FOSE)",
+        rg1_desc: "Fokus pada ketahanan pangan, mata pencaharian pedesaan, ekonomi rumah tangga pertanian, peternakan, kemiskinan pedesaan, akses pangan, keterjangkauan pangan, ketahanan rumah tangga petani, rantai nilai pertanian-pangan, rantai pasok peternakan, UMKM pangan, pengembangan usaha pedesaan, akses pasar, pengembangan masyarakat, kelembagaan petani, dan transformasi ekonomi rakyat.",
+        tag_food_security: "Ketahanan Pangan",
+        tag_rural_livelihoods: "Mata Pencaharian Pedesaan",
+        tag_value_chains: "Rantai Nilai",
+        tag_rural_enterprise: "UMKM & Usaha Desa",
+        rg2_title: "RG2: Food System, Agroecology, and Biodiversity (FSAB)",
+        rg2_desc: "Fokus pada produksi pangan berkelanjutan, agroekologi, agrobiodiversitas, konservasi keanekaragaman hayati, ilmu tanaman, agroklimatologi, ilmu tanah, kesehatan tanah, pengendalian hama terpadu, teknologi pangan, inovasi pangan lokal, teknologi pascapanen, mutu dan keamanan pangan, sistem pertanian berkelanjutan, jasa ekosistem, serta solusi berbasis alam untuk produksi pangan.",
+        tag_sustainable_food: "Produksi Pangan Berkelanjutan",
+        tag_agroecology: "Agroekologi & Tanah",
+        tag_biodiversity: "Biodiversitas",
+        tag_food_tech: "Teknologi Pangan",
+      },
+      en: {
+        nav_about: "About",
+        nav_impact: "Impact",
+        nav_clusters: "Clusters",
+        nav_journey: "Coverage",
+        nav_portfolio: "Portfolio",
+        nav_join: "Support Us",
+        footer_desc: "Indonesia's multidisciplinary research and empowerment foundation. Connecting campuses, communities, and policy in one strategic network.",
+        footer_col1: "Organization",
+        footer_col2: "Get Involved",
+        footer_col3: "Contact",
+        footer_journal: "Journal",
+        footer_researcher: "Researchers",
+        footer_partner: "Institutional Partners",
+        footer_funder: "Funders",
+        footer_copy: "All rights reserved",
+        cluster_eyebrow: "Research Cluster",
+        cluster_title: "Agri-Food and Rural Livelihoods (AFRL)",
+        cluster_intro: "The Agri-Food and Rural Livelihoods (AFRL) research cluster is dedicated to transforming sustainable food systems and strengthening the economic resilience of rural communities. Through collaborative, multidisciplinary research, we study food security, agricultural value chains, agroecology, and biodiversity to formulate policies and practical solutions for smallholder farmers.",
+        cluster_coordinator_label: "Cluster Coordinator",
+        cluster_coordinator_univ: "Brawijaya University",
+        focus_title: "Core Research Focus",
+        associates_title: "Research Associates",
+        rg_section_title: "Research Groups",
+        rg_status_active: "Active",
+        rg1_title: "RG1: Food Security, & Rural Livelihoods (FOSE)",
+        rg1_desc: "Focuses on food security, rural livelihoods, agricultural household economy, livestock-based livelihoods, rural poverty, food access, food affordability, farmer household resilience, agri-food value chains, livestock supply chains, food-based MSMEs, rural enterprise development, market access, community development, farmer institutions, and smallholder economic transformation.",
+        tag_food_security: "Food Security",
+        tag_rural_livelihoods: "Rural Livelihoods",
+        tag_value_chains: "Value Chains",
+        tag_rural_enterprise: "Rural Enterprise",
+        rg2_title: "RG2: Food System, Agroecology, and Biodiversity (FSAB)",
+        rg2_desc: "Focuses on sustainable food production, agroecology, agrobiodiversity, biodiversity conservation, crop science, agroclimate, soil science, soil health, integrated pest management, food technology, local food innovation, post-harvest technology, food quality and safety, sustainable farming systems, ecosystem services, and nature-based solutions for food production.",
+        tag_sustainable_food: "Sustainable Food",
+        tag_agroecology: "Agroecology & Soil",
+        tag_biodiversity: "Biodiversity",
+        tag_food_tech: "Food Technology",
+      }
+    };
+
+    let lang = 'id';
+
+    function applyLang(l) {
+      lang = l;
+      const t = T[l];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (!t[k]) return;
+        el.textContent = t[k];
+      });
+      document.getElementById('btn-id').classList.toggle('active', l === 'id');
+      document.getElementById('btn-en').classList.toggle('active', l === 'en');
+      document.documentElement.lang = l;
+    }
+
+    function setLang(l) {
+      applyLang(l);
+    }
+
+    function detectLang() {
+      const langs = navigator.languages || [navigator.language || 'id'];
+      const primary = (langs[0] || 'id').toLowerCase();
+      const isIndonesian = primary.startsWith('id') || primary.startsWith('ms');
+
+      let timeZone = '';
+      try {
+        timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      } catch (e) {
+        timeZone = '';
+      }
+
+      const idTimeZones = ['asia/jakarta', 'asia/makassar', 'asia/jayapura', 'asia/pontianak'];
+      const inIndonesianZone = idTimeZones.includes(timeZone.toLowerCase());
+
+      return (isIndonesian || inIndonesianZone) ? 'id' : 'en';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLang(detectLang());
+    });
+  </script>
+</body>
+</html>
